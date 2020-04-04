@@ -1,0 +1,56 @@
+<div class="container-fluid">
+    <div class="error">{{errorMessage}}</div>
+    <div *ngIf='dataLoading'>
+        <mat-spinner mode="indeterminate"></mat-spinner>
+        <b>Loading...</b>
+    </div>
+    <a [routerLink]="['/']" class="btn btn-link">Back</a>
+    <button mat-icon-button (click)="$event.stopPropagation();onReportAll();">
+        Get All
+    </button>
+    <div *ngIf='searchHistory && searchHistory.length'>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <!-- <th></th> -->
+                    <th>Report Num</th>
+                    <th>Seller</th>
+                    <th class="text-right">Listing Count</th>
+                    <th>UserName</th>
+                    <th>Updated</th>
+                    <th>Calculate Match</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of searchHistory'>
+                    <td>
+                        <button mat-icon-button
+                            (click)="$event.stopPropagation();onReport(item.id, item.seller, item.updated);">
+                            {{item.id}}
+                        </button>
+                    </td>
+                    <td>
+                        <button mat-icon-button (click)="$event.stopPropagation();onProfile(item.seller);">
+                            {{item.seller}}
+                        </button>
+                    </td>
+                    <td class="text-right">
+                        {{item.listingCount}}
+                    </td>
+                    <td>{{item.userName}}</td>
+                    <td>{{item.updated | date:'M/d/yyyy h:mm a'}}</td>
+                    <td>{{item.calculateMatch | date:'M/d/yyyy h:mm a'}}</td>
+                    <td>
+                        <button mat-button (click)="onDelete(item.id);">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
+    [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
+</app-progress-spinner>

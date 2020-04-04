@@ -1,0 +1,28 @@
+.example-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+}
+
+/* what is this doing? */
+.example-header {
+    min-height: 64px;
+    padding: 8px 8px 0;
+}
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+.mat-table {
+    overflow: auto;
+    max-height: 600px;
+}
+.rowhighlight{
+  background: #FCE9FD;
+}
+.filter {
+  width: 300px !important;
+ }
+ .mat-icon {
+    font-size: 10px;
+  }

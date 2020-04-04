@@ -1,0 +1,16 @@
+<div>
+    Seller: {{seller}}
+</div>
+<br/>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div>
+        <textarea rows="5" matInput formControlName="note" maxlength="5000" placeholder="Note"
+            style="width: 500px;"></textarea>
+    </div>
+    <br/>
+    <button class="btn" mat-button mat-raised-button color="primary" type="submit">Submit</button>
+    <button mat-button type="button" (click)="onCancel()" tabindex="-1">Cancel</button>
+</form>
+<div>
+{{ errorMessage }}
+</div>

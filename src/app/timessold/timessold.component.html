@@ -1,0 +1,192 @@
+<br/>
+<div class="container">
+    <form [formGroup]="settingsForm" (ngSubmit)="onSubmit(settingsForm.value)">
+        <div class="row">
+            <div class="col">
+                <mat-form-field appearance="outline" class="seller outlinepadding">
+                    <mat-label>eBay Seller</mat-label>
+                    <input matInput formControlName="seller" maxlength="40" placeholder="" id="seller"
+                        (change)="onSellerChange()">
+                </mat-form-field>
+                &nbsp;<a (click)="onProfile()" [class.disabled]="!ctlSeller.value || isDisplaying">Seller note</a>
+                <!-- &nbsp;<button color="primary" type="button" (click)="onProfile()" mat-raised-button [disabled]="!ctlSeller.value || isDisplaying">Add note</button> -->
+                &nbsp;<mat-slide-toggle formControlName="showFilter" (change)="onShowFilterChange($event)">Show Filter
+                </mat-slide-toggle>
+                &nbsp;&nbsp;&nbsp;<span class="largeFont" *ngIf="logErrorCount > 0">Log Error Count: {{logErrorCount}}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div [hidden]="!showFilterDiv">
+                    <span class="paddingleft">
+                        <mat-form-field appearance="outline" class="filter outlinepadding">
+                            <mat-label>Days back</mat-label>
+                            <input matInput formControlName="daysBack" maxlength="40" placeholder="Days back"
+                                (change)="onSellerChange()">
+                        </mat-form-field>
+                    </span>
+                    <span class="paddingleft">
+                        <mat-form-field appearance="outline" class="filter outlinepadding">
+                            <mat-label>Min sold</mat-label>
+                            <input matInput formControlName="minSold" maxlength="40" placeholder="">
+                        </mat-form-field>
+                    </span>
+                    <span class="paddingleft">
+                        <mat-form-field appearance="outline" class="filter outlinepadding">
+                            <mat-label>Min price</mat-label>
+                            <input matInput formControlName="minPrice" maxlength="40" placeholder="">
+                        </mat-form-field>
+                    </span>
+                    <span class="paddingleft">
+                        <mat-form-field appearance="outline" class="filter outlinepadding">
+                            <mat-label>Max price</mat-label>
+                            <input matInput formControlName="maxPrice" maxlength="40" placeholder="">
+                        </mat-form-field>
+                    </span>
+                    <span>
+                        &nbsp;<mat-slide-toggle formControlName="activeStatusOnly">Active</mat-slide-toggle>
+                    </span>
+                    <span>
+                        &nbsp;<mat-slide-toggle formControlName="nonVariation">No eBay seller variation</mat-slide-toggle>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div *ngIf="rptNumber !== 0">Report #: {{rptNumber}}
+                    Scan date: {{lastScan | date:'M/d/yyyy h:mm a'}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button mat-button mat-raised-button color="primary" type="submit"
+                    [disabled]="(isDisplaying || !settingsForm.valid) || invalidAPIKey">Process</button>
+                &nbsp;<button color="warn" type="button" (click)="onCancelScan()" mat-raised-button
+                    [disabled]="!isProcessing">Cancel</button>
+                &nbsp;<button matTooltip="Clear filter" mat-mini-fab type="button" (click)="onClearFilter()"
+                    [disabled]="isProcessing" class="my-fab">
+                    <mat-icon>close</mat-icon>
+                </button>
+                &nbsp;<button color="primary" type="button" (click)="calculateMatch()" mat-raised-button matTooltip="Update WM fields in OrderHistory">Calculate Match</button>
+                &nbsp;<button color="primary" type="button" (click)="filterMatch(1)" mat-raised-button matTooltip="count=1, Sold & Shipped by Walmart">Filter Match</button>
+                <br/><br/><a [routerLink]="" (click)="filterMatch(2)">Filter Match no WM variation</a>
+                &nbsp;<a [routerLink]="" (click)="filterMatch(3)">Filter Match w/Brand</a>
+                &nbsp;<a [routerLink]="" (click)="filterMatch(4)">Filter No VERO</a>
+                &nbsp;<a [routerLink]="" (click)="filterMatch(0)">Filter Off</a>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-12 col-xs-12 col-md-12">
+            <!-- <div *ngIf="rptNumber !== 0"> -->
+                <span>Completed Listings: <b>{{completedListings}}</b></span>
+                Sold Listings: <b>{{soldListings}}</b><span class="error" *ngIf="showFilterMsg"><i>&nbsp;(Filter
+                        applied)</i></span>
+                <br />
+                <span *ngIf="isProcessing">Progress: <b>{{percentComplete | number:'1.0-0'}}%</b></span>
+            <!-- </div> -->
+        </div>
+    </div>
+    <p *ngIf="errorMessage" class="error">{{ERR_HDR}}</p>
+    <p *ngIf="errorMessage" class="error">{{errorMessage}}</p>
+    <br />
+    <div *ngIf='isDisplaying'>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        <b>Processing - please allow up to a minute or two...</b>
+    </div>
+    <div *ngIf="loadingUserProfile">Get user profile
+        <img
+            src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    </div>
+    <div *ngIf="apiStatusMsg">
+        <div class='error'>{{apiStatusMsg}}
+            <br />
+            <pre class='helpText'>{{apiHelpText}}</pre>
+        </div>
+    </div>
+    <div *ngIf='statusMsg'>{{statusMsg}}</div>
+    <table class='table' *ngIf='orderItems && orderItems.length'>
+        <thead>
+            <tr>
+                <th>Pic</th>
+                <th>eBay Seller Title</th>
+                <th>Seller</th>
+                <!-- <th class="numericcell">Last Sold At</th> -->
+                <th class="numericcell">Seller Price</th>
+                <th>WM Price</th>
+                <th>Propose Price</th>
+                <th>Price Delta</th>
+                <th class="numericcell">Qty Sold</th>
+                <th class="numericcell">Most Recent</th>
+                <th>Seller Item Id</th>
+                <th>Detail</th>
+                <th>Listing Status</th>
+                <th>eBay Seller Variation</th>
+                <th>WM Variation</th>
+                <th>Listed</th>
+                <th>Store Price</th>
+                <th>Seller UPC</th>
+                <th>Seller MPN</th>
+                <th>Match</th>
+                <th>Supplier Brand</th>
+                <th>Seller Brand</th>
+                <th>Sold & Shipped by Supplier</th>
+                <!-- <th>Create Listing Rec</th> -->
+                <th>Listing Rec Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let item of orderItems'>
+                <!-- <td><img [src]='item.ImageUrl' height="100" width="100" *ngIf='item.ImageUrl'/></td> -->
+                <!-- <td><a target="_blank" [href]='item.Url'>{{item.Title}}</a></td> -->
+                <!-- <td><a hef='#{{item.Url}}'>{{item.Title}}</a></td> -->
+                <!-- <td>{{item.Price}}</td> -->
+                <!-- <td>{{item.Qty}}</td>  -->
+
+                <!-- <td>
+                        <img [src]='item.ImageUrl' height="100" width="100" *ngIf='item.ImageUrl' />
+                    </td> -->
+                <td><div *ngIf="item.SupplierPicURL"><img [src]="getThumbnail(item.SupplierPicURL)" height="150px" width="150px"></div></td>
+                <td>
+                    <a target="_blank" [href]='item.EbayURL'>{{item.EbaySellerTitle}}</a>
+                </td>
+                <td>{{item.Seller}}</td>
+                <!-- <td class="numericcell">{{item.Price | currency}}</td> -->
+                <td class="numericcell">{{item.EbaySellerPrice | currency}}</td>
+                <td class="numericcell">{{item.SupplierPrice | currency}}</td>
+                <td class="numericcell">{{item.ProposePrice | currency}}</td>
+                <td class="numericcell">{{item.PriceDelta | percent: '1.0-2'}}</td>
+                <td class="numericcell">{{item.SoldQty}}</td>
+                <td class="numericcell">{{item.LastSold | date:'M/d/y HH:mm'}}</td>
+                <td>{{item.ItemID}}</td>
+                <td>
+                    <button [disabled]="isDisplaying" mat-icon-button (click)="$event.stopPropagation();onDetail(item.ItemID, item.SoldQty);">
+                        <mat-icon>information</mat-icon>
+                    </button>
+                </td>
+                <td><span
+                        [ngClass]="item.ListingStatus == 'Completed' ? 'redText' : 'greenText'">{{item.ListingStatus}}</span>
+                </td>
+                <td>{{item.IsSellerVariation}}</td>
+                <td>{{item.IsSupplierVariation}}</td>
+                <td>{{item.Listed | date:'M/d/y'}}</td>
+                <td>{{item.ListingPrice | number:'1.2-2'}}</td>
+                <td *ngIf="item.ItemURL"><a target="_blank" [href]='item.ItemURL'>{{item.SellerUPC}}</a></td>
+                <td *ngIf="item.ItemURL"><a target="_blank" [href]='item.ItemURL'>{{item.SellerMPN}}</a></td>
+                <td *ngIf="!item.ItemURL">{{item.SellerUPC}}</td>
+                <td *ngIf="!item.ItemURL">{{item.SellerMPN}}</td>
+                <td class="numericcell"><span>{{item.MatchCount}}</span></td>
+                <td [ngClass]="{'redText': item.IsVero}">{{item.SupplierBrand}}</td>
+                <td>{{item.SellerBrand}}</td>
+                <td>{{item.SoldAndShippedBySupplier}}</td>
+                <!-- <td><mat-checkbox *ngIf="!item.ListingRecCreated" [checked]="item.ToListing" (change)="onToListChange(item.ItemID, $event)">Check to stage</mat-checkbox></td> -->
+                <td>{{item.ListingRecCreated | date:'MM/dd/yyyy hh:mm a'}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
+  [positionGloballyCenter]="true" [displayProgressSpinner]="_displayProgressSpinner">
+</app-progress-spinner>

@@ -1,0 +1,33 @@
+<mat-nav-list>
+    <div class="profile-card">
+        <div class="header">
+            <h2 *ngIf="userSettingsView">{{userSettingsView.firstName}}</h2>
+            <h4>weidnerk@gmail.com</h4>
+        </div>
+        <img src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Soufiane FADIL">
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <h2 matSubheader>Pages</h2>
+
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/">Dashboard</a>
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/gamma">Listings</a>
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/research">Research</a>
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/scanhistory">Scan History</a>
+
+    <mat-divider></mat-divider>
+
+    <h2 matSubheader>Tools</h2>
+
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/contacts">
+        <mat-icon>security</mat-icon>
+        Admin
+    </a>
+
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/contacts">
+        <mat-icon>vpn_key</mat-icon>
+        API Keys
+    </a>
+
+</mat-nav-list>

@@ -1,0 +1,51 @@
+export class UserProfile {
+    userID: string;
+    firstname: string;
+    lastname: string;
+}
+
+// a little different from actual UserProfile in AccountController since need to pass userName so we can look up id
+// export class UserProfileVM extends UserProfile {
+//     userName: string;
+//     ApplicationID: number;
+// }
+
+// see comment in API for TokenStatusTypeCustom
+export class TokenStatusTypeCustom {
+    ExpirationTime: string;
+    Status: string;
+    StatusStr: string;
+}
+
+export class UserSettings {
+    userID: string;
+    //appID: string;
+    //devID: string;
+    //certID: string;
+    //token: string;
+    //userName: string;
+    //storeName: string;
+    //firstName: string;
+    storeID: number;
+}
+
+export class UserSettingsView extends UserSettings {
+    //userID: string;
+    appID: string;
+    devID: string;
+    certID: string;
+    token: string;
+    userName: string;
+    storeName: string;
+    firstName: string;
+}
+
+export class AppIDSelect {
+    value: string;          // presently, both value and viewValue set to AppID
+    viewValue: string;
+}
+export class UserStoreView {
+    userID: string;
+    storeID: number;
+    storeName: string;
+}

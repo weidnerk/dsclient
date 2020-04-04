@@ -1,0 +1,428 @@
+<div class="container">
+  <mat-tab-group>
+    <mat-tab label="Listing">
+
+      <div class="container">
+        <br />
+        <form [formGroup]="listingForm" (ngSubmit)="onSubmit(listingForm.value)">
+          <h3 *ngIf="listing && listing.SellerListing">Seller: {{listing.SellerListing.Seller}}</h3>
+
+          <div class="row">
+            <!-- <div class="col-2">
+            <div *ngIf="imgSource" class="col-3" style="padding: 1px;">
+              <a href="{{ebayURL}}" target="_blank"><img [src]="imgSource" height="100px" width="100px"></a>
+            </div>
+          </div> -->
+            <div class="col-10">
+              <span *ngFor='let img of imgSourceArray' style="padding: 1px;">
+                <img [src]="img" height="100px" width="100px">
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <a *ngIf="listing && listing.Created" (click)="onProfile()"
+              [class.disabled]="!listing.Created || !listingForm.valid">
+              {{notesButtonText}}
+            </a>
+            <br />
+            <div class="error">
+              <span [innerHTML]="errorMessage"></span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              <label>Listing Id:</label>
+            </div>
+            <div class="col-2">
+              <span *ngIf="listing && listing.ListedItemID"><a target="_blank"
+                  href="https://www.ebay.com/itm/{{listing.ListedItemID}}">{{listing.ListedItemID}}</a></span>
+              <span *ngIf="!listing || (listing && !listing.ListedItemID)">Not listed.</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-10">
+              <mat-form-field appearance="outline" class="outlinepadding Url">
+                <mat-label>Supplier URL</mat-label>
+                <input matInput formControlName="sourceURL" maxlength="500" placeholder="Supplier URL"
+                  class="sourceURL">
+                <mat-error *ngIf="ctlSourceURL.hasError('required')">
+                  <mat-icon>error</mat-icon>&nbsp;
+                  Source URL is required
+                </mat-error>
+              </mat-form-field>
+              <label *ngIf="ctlSourceURL.value" class="lbl">
+                <a target="_blank" href='{{ctlSourceURL.value}}'>&nbsp;GO</a>
+              </label>
+            </div>
+          </div>
+
+          <!-- <div class="row">
+          <div class="col-2">
+            <label class="lbl">Title:</label>
+          </div>
+          <div *ngIf="listing && listing.SellerListing" class="col-10">
+            {{listing.SellerListing.Title}}
+          </div>
+        </div> -->
+
+          <div class="row">
+
+            <div class="col-10">
+              <mat-form-field appearance="outline" class="outlinepadding title">
+                <mat-label>Listing Title</mat-label>
+                <input matInput formControlName="listingTitle" maxlength="80" placeholder="listing title" class="title">
+                <mat-error *ngIf="ctlListingTitle.hasError('required')">
+                  <mat-icon>error</mat-icon>&nbsp;
+                  Listing title is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-8">
+              <span *ngIf="listing && listing.SupplierItem" class="relative rounded">
+                Supplier Price: {{listing.SupplierItem.SupplierPrice | currency}}
+              </span>&nbsp;
+              <mat-form-field appearance="outline" class="outlinepadding">
+                <mat-label>Listing Price</mat-label>
+                <input matInput formControlName="listingPrice" maxlength="40" placeholder="listing price">
+                <mat-error *ngIf="ctlListingPrice.invalid">
+                  <mat-icon>error</mat-icon>&nbsp;ListingPrice is invalid
+                </mat-error>
+              </mat-form-field>
+              <span class="col-2" *ngIf="priceProfit">
+                {{(priceProfit.proposePrice - priceProfit.breakEven) | currency}}</span>
+              <span>&nbsp;
+                <mat-form-field appearance="outline" class="outlinepadding">
+                  <mat-label>Listing Qty</mat-label>
+                  <input matInput formControlName="listingQty" maxlength="2" placeholder="listing qty">
+                  <mat-error *ngIf="ctlListingQty.invalid">
+                    <mat-icon>error</mat-icon>&nbsp;ListingPrice is invalid
+                  </mat-error>
+                </mat-form-field>
+              </span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-3">
+              <mat-form-field appearance="outline" class="outlinepadding">
+                <mat-label>Seller Item ID</mat-label>
+                <input matInput formControlName="sellerItemID" maxlength="80" placeholder="seller item ID">
+              </mat-form-field>
+              <span class="relative" *ngIf="listing && listing.SellerListing">
+                <a target="_blank" href='{{listing.SellerListing.EbayURL}}'>&nbsp;GO</a>
+              </span>
+            </div>
+            <div class="col-4">
+              <span class="sellerItemID"><i> Click Save will then store seller's item specifics.</i></span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              <label class="lbl">Primary Category ID:</label>
+            </div>
+            <div *ngIf="listing" class="col-10">
+              {{listing.PrimaryCategoryID}}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              <label class="lbl">Primary Category Name:</label>
+            </div>
+            <div *ngIf="listing" class="col-10">
+              {{listing.PrimaryCategoryName}}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              <label class="lbl"></label>
+            </div>
+            <div class="col-10">
+              <mat-slide-toggle formControlName="checkDescription">Any Description issues
+              </mat-slide-toggle>
+            </div>
+          </div>
+
+          <br />
+          <div>
+            &nbsp;<a (click)="goBack()" class="btn btn-link">Back</a>
+            <button color="primary" type="button" (click)="getWmItem()" mat-raised-button
+              [disabled]="!ctlSourceURL.value">Load Walmart</button>&nbsp;
+            <span class="error">{{supplierPicsMsg}}</span>
+            <span *ngIf="loading">
+              <img
+                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            </span>
+            <button color="primary" type="button" (click)="calculateWMPrice()" mat-raised-button
+              [disabled]="!walItem">Calculate Price</button>
+            <button class="btn" mat-button mat-raised-button color="primary" type="submit" (click)="storeButtonVal=true"
+              [disabled]="!listingForm.valid || !walItem">Save</button>
+
+            <button class="btn" mat-button mat-raised-button color="primary" type="submit" (click)="listButtonVal=true"
+              [disabled]="!listingButtonEnable || !listingForm.valid || formIsDirty()">List</button>
+            <button [hidden]="!isAdmin()" class="btn" mat-button mat-raised-button color="primary" type="submit"
+              [disabled]="listing && listing.ListedItemID" (click)="deleteButtonVal=true">Delete</button>
+
+            <button [hidden]="!isAdmin()" class="btn" mat-button mat-raised-button color="primary"
+              (click)="refreshItemSpecifics()" [disabled]="!storeButtonEnable || !listingForm.valid || !walItem">Refresh
+              Item Specifics</button>
+            <ng-container *ngIf="admin">
+              <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="endListing()"
+                [disabled]="listing && !listing.ListedItemID">End Listing</button>
+
+            </ng-container>
+            <span *ngIf="storing">
+              <img
+                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==">
+            </span>
+            <div class="redText" [innerHTML]="validationMessage"></div>
+          </div>
+          <br />
+          <mat-card *ngIf="walItem">
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-2"> Price:</div>
+              <div class="col-3">{{walItem.SupplierPrice}}</div>
+            </div>
+
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-2"> Variation:</div>
+              <div class="col-3" [ngClass]="{ 'error': walItem.IsVariation }">{{walItem.IsVariation}}</div>
+            </div>
+
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-2">OOS:</div>
+              <div class="col-3" [ngClass]="{ 'error': walItem.OutOfStock }">{{walItem.OutOfStock}}</div>
+              <div class="col-4">(repricer runs 2nd step)</div>
+            </div>
+
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-2">Arrives:</div>
+              <div class="col-3">{{walItem.Arrives | date:'M/d/y'}}</div>
+            </div>
+
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-2">Fulfilled:</div>
+              <div class="col-3" [ngClass]="{ 'error': !walItem.SoldAndShippedBySupplier }">
+                {{walItem.SoldAndShippedBySupplier}}</div>
+            </div>
+
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-2">VERO:</div>
+              <div class="col-3" [ngClass]="{ 'error': walItem.IsVERO }">{{walItem.IsVERO}}</div>
+            </div>
+
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-2">Freight Shipping:</div>
+              <div class="col-3" [ngClass]="{ 'error': walItem.IsFreightShipping }">
+                {{walItem.IsFreightShipping}}</div>
+            </div>
+
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-2">Can list:</div>
+              <div class="col-3">
+                <div *ngFor='let problem of walItem.CanList'>
+                  <label class="redText">{{problem}}</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-2">ItemID:</div>
+              <div class="col-3">{{walItem.ItemID}}</div>
+            </div>
+
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-2">UPC:</div>
+              <div class="col-3">{{walItem.UPC}}</div>
+            </div>
+
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-2">MPN:</div>
+              <div class="col-3">{{walItem.MPN}}</div>
+            </div>
+
+            <!-- <div class="row">
+            <div class="col-2">&nbsp;</div>
+            <div class="col-3">Warnings:</div>
+            <div class="col-3">
+              <div *ngFor='let warning of walItem.Warning'>
+                <label class="redText">{{warning}}</label>
+              </div>
+            </div>
+          </div> -->
+          </mat-card>
+          <br />
+          <div class="error">
+            <span [innerHTML]="errorMessage"></span>
+          </div>
+          <div class="error">
+            <div [innerHTML]="statusMessage"></div>
+          </div>
+          <div *ngIf="admin && listing">
+          </div>
+          <a href="https://html-online.com/editor/" target="_blank">HTML editor</a>
+
+          <div class="row">
+            <div class="col-2">
+              <button color="primary" type="button" (click)="checkDescription()" mat-raised-button
+                [disabled]="!ctlSourceURL.value">Check description</button>&nbsp;
+            </div>
+            <div class="col-3">Warnings:</div>
+            <div class="col-3">
+              <div *ngIf="listing">
+                <div *ngFor='let warning of listing.Warning'>
+                  <label class="redText">{{warning}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div *ngIf="ctlDescription.value" class="row">
+            <div class="col-2">
+              <label class="lbl">Render: </label>
+            </div>
+            <div class="col-10">
+              <div [innerHTML]='ctlDescription.value'></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              <label class="lbl">Description: </label>
+            </div>
+            <div class="col-10">
+              <mat-form-field appearance="outline" class="outlinepadding descriptionWidth">
+                <mat-label>Description</mat-label>
+                <textarea rows="20" matInput formControlName="description"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Item Specifics">
+      <div class="container">
+        <div *ngIf="listing && listing.SellerListing">
+          <br />
+          <div *ngFor='let sp of listing.SellerListing.ItemSpecifics' class="row">
+            <div class="col-3">
+              <label>{{sp.itemName}}</label>
+            </div>
+            <div class="col-3">
+              <label>{{sp.itemValue}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab [disabled]='true' label="Orders">
+      <ng-container *ngIf="isAdmin()">
+        <div class="container">
+          <br />
+          <form *ngIf="listing" [formGroup]="orderForm" (ngSubmit)="salesOrderStore()">
+            <div class="row">
+              <div class="col-2">
+                <label class="lbl">eBay order #:</label>
+              </div>
+              <div class="col-10">
+                <mat-form-field appearance="outline" class="outlinepadding Url">
+                  <input matInput formControlName="ebayOrderNumber" maxlength="40" placeholder="ebay order #">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-2">
+                <label class="lbl">Supplier order #:</label>
+              </div>
+              <div class="col-10">
+                <mat-form-field appearance="outline" class="outlinepadding Url">
+                  <input matInput formControlName="supplierOrderNumber" maxlength="40" placeholder="supplier order #">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-2">
+                <label class="lbl">I Paid:</label>
+              </div>
+              <div class="col-10">
+                <mat-form-field appearance="outline" class="outlinepadding Url">
+                  <input matInput formControlName="ipaid" maxlength="40" placeholder="i paid">
+                </mat-form-field>
+              </div>
+            </div>
+            <button class="btn" mat-button mat-raised-button color="primary" type="submit"
+              [disabled]="listing && !listing.ListedItemID">Save an Order</button>
+          </form>
+        </div>
+      </ng-container>
+    </mat-tab>
+    <mat-tab [disabled]='true' label="Variations">
+      <br />
+      <ng-container *ngIf="isAdmin()">
+        <button class="btn" mat-button mat-raised-button color="primary" type="button"
+          (click)="createVariationListing()">Create Variation Listing</button>
+        <button class="btn" mat-button mat-raised-button color="primary" type="button"
+          (click)="getVariationDisplay()">Get
+          Variation Listing</button>
+        <br /><br />
+        <div *ngIf="sellerVariationItem">
+          <b>Seller</b>
+          <div>{{sellerVariationItem.EbayURL}}</div>
+          <div>{{sellerVariationItem.Title}}</div>
+          <div>{{sellerVariationItem.VariationName}}</div>
+          <div *ngFor='let variation of sellerVariationItem.Variations'>
+            <ul>
+              <li>
+                {{variation.VariationSpecifics.NameValueList.Value}}<br />
+                {{variation.StartPrice}}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <ng-container *ngIf="variationItem">
+          <ng-container *ngIf="variationItem.SupplierVariation">
+            <br /><b>Walmart</b>
+            <br /><span>{{variationItem.ItemURL}}</span><br />
+            {{ variationItem.VariationName }}
+            <ul>
+              <li *ngFor='let supplierVariation of variationItem.SupplierVariation'>
+                {{ supplierVariation.Variation }}<br />
+                {{ supplierVariation.ItemID }}<br />
+                {{ supplierVariation.URL }}
+                <ul>
+                  <li *ngFor='let pic of supplierVariation.Images'>
+                    <img [src]="pic" height="100px" width="100px" style="padding-top: 15px;">
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>
+<app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
+  [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
+</app-progress-spinner>

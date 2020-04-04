@@ -1,0 +1,100 @@
+<form [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
+    <div class="container">
+        <h2>Register</h2>
+        <div class="row">
+            <div class="col-sm-12 col-xs-12 col-md-12">
+                <div>
+                    <mat-form-field appearance="outline" class="outlinepadding inputWidth">
+                        <mat-label>Username</mat-label>
+                        <input matInput formControlName="userName" maxlength="30" placeholder="username" id="userName">
+                        <mat-error *ngIf="userName.hasError('usernameTaken')">
+                            Username is taken
+                        </mat-error>
+                        <mat-error *ngIf="userName.hasError('pattern') && !userName.hasError('required')">
+                            <mat-icon>error</mat-icon>&nbsp;
+                            Username is invalid
+                        </mat-error>
+                        <mat-error *ngIf="userName.hasError('required')">
+                            <mat-icon>error</mat-icon>&nbsp;
+                            Username required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field appearance="outline" class="outlinepadding inputWidth">
+                        <mat-label>First name</mat-label>
+                        <input matInput formControlName="firstName" maxlength="40" placeholder="first name"
+                            id="firstName">
+                        <mat-error *ngIf="firstName.hasError('required')">
+                            <mat-icon>error</mat-icon>&nbsp;
+                            Firstname required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field appearance="outline" class="outlinepadding inputWidth">
+                        <mat-label>Last name</mat-label>
+                        <input matInput formControlName="lastName" maxlength="30" placeholder="last name" id="lastName">
+                        <mat-error *ngIf="lastName.hasError('required')">
+                            <mat-icon>error</mat-icon>&nbsp;
+                            Lastname required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field appearance="outline" class="outlinepadding inputWidth">
+                        <mat-label>Email address</mat-label>
+                        <input matInput formControlName="emailAddress" maxlength="40" placeholder="email address"
+                            id="emailAddress">
+                        <mat-error *ngIf="emailAddress.hasError('emailTaken')">
+                            Email address is taken
+                        </mat-error>
+                        <mat-error *ngIf="emailAddress.hasError('email') && !emailAddress.hasError('required')">
+                            Please enter a valid email address
+                        </mat-error>
+                        <mat-error *ngIf="emailAddress.hasError('required')">
+                            <mat-icon>error</mat-icon>&nbsp;
+                            Email required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field appearance="outline" class="outlinepadding inputWidth">
+                        <mat-label>Password</mat-label>
+                        <input type="password" matInput formControlName="password" maxlength="40" placeholder="password"
+                            id="password">
+                        <mat-error *ngIf="password.hasError('required')">
+                            <mat-icon>error</mat-icon>&nbsp;
+                            Password required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field appearance="outline" class="outlinepadding inputWidth">
+                        <mat-label>Confirm</mat-label>
+                        <input type="password" matInput formControlName="confirm" maxlength="40" placeholder="confirm"
+                            id="confirm">
+                        <mat-error *ngIf="registerForm.controls['confirm'].hasError('nomatch')">
+                            <mat-icon>error</mat-icon>&nbsp;
+                            Passwords do not match
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <br />
+                <div>
+                    <button mat-button mat-raised-button color="primary" type="submit">Submit</button>
+                    <a [routerLink]="['/']" class="btn btn-link">Cancel</a>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="error">
+            {{errorMessage}} <!-- needed for message like 'passwords must be at least 6 chars' -->
+        </div>
+    </div>
+</form>
+<br />
+<!-- Form status: {{ registerForm.status }}<br />
+Pwd status: {{ registerForm.errors | json }}<br />
+Pwd has error: {{ registerForm.get('confirm').hasError('nomatch') }}<br /> 
+-->

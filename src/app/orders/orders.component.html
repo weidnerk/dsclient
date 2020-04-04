@@ -1,0 +1,76 @@
+<div class='table-responsive'>
+    <h3>Scraper</h3>
+    <br/>
+    <form [formGroup]="settingsForm">
+        <div>
+            <div>
+                If, for example, you ask eBay for last 7 days of sold listings, it includes Ended listings in last 7 days<br/>
+                even if nothing sold in last 7 days.  
+            </div>
+            <div>
+                <span style="width: 100px;">
+                    <b>Seller</b>:</span>
+                <br/>
+                <input matInput formControlName="seller" maxlength="40" placeholder="Seller"> (NOTE: Special characters don't work yet, such as **justforyou**)
+            </div>
+            <br/>
+            <div>
+                <span style="width: 100px;">
+                    <b>Days back: </b>(Hint: start with '2')</span>
+                <br/>
+                <input matInput formControlName="daysBack" maxlength="40" placeholder="">
+                <p>
+                    Reach back to earliest item whose last sale date is within 'days back'.
+                    <br/> But that item could, in turn, have 50 orders behind it extending much earlier than 'days back'.
+                </p>
+            </div>
+            <div>
+                <span style="width: 100px;">
+                    <b>Results Per Page</b>:</span>
+                <br/>
+                <input matInput formControlName="resultsPerPage" maxlength="40">
+            </div>
+            <br/>
+            <div>
+                <span style="width: 100px;">
+                    <b>Delay (sec.):</b></span>
+                <br/>
+                <input matInput formControlName="delay" maxlength="40" placeholder=""> If you think all data is not being returned, then increase this value.
+            </div>
+        </div>
+        <br>
+        <p>
+            <button mat-button mat-raised-button color="primary" type="submit" [disabled]="isProcessing || !settingsForm.valid">Process</button>
+        </p>
+    </form>
+    <div>
+        Total Items: {{totalItems}} Total Orders: {{totalOrders}} Elapsed Seconds: {{elapsedSeconds}}
+    </div>
+    <br/>
+    <div *ngIf='isProcessing'>
+        <b>Processing</b> (Please allow up to several minutes of processing.) ....
+    </div>
+    <table class='table' *ngIf='orderItems && orderItems.length'>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Date of Purchase</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let item of orderItems'>
+                <td><img [src]='item.ImageUrl' height="100" width="100" *ngIf='item.ImageUrl'/></td>
+                <td><a target="_blank" [href]='item.Url'>{{item.Title}}</a></td>
+                <!-- <td><a hef='#{{item.Url}}'>{{item.Title}}</a></td> -->
+                <td class="right">{{item.Price | number:'4.2-2'}}</td>
+                <td>{{item.Qty}}</td>
+                <td>{{item.DateOfPurchase | date: 'dd/MM/yyyy'}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br/>
+    <p class="error">{{errorMessage}}</p>
+</div>

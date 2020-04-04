@@ -1,0 +1,59 @@
+.lbl {
+    width: 200px;
+}
+.Url {
+    width: 500px;
+    /* padding-left: 20px; */
+  }
+.width100 {
+    width: 100px;
+    /* padding-left: 20px; */
+  }
+.btn {
+    margin: 0 4px;
+}
+.title {
+    width: 650px;
+    /* padding-left: 20px; */
+}
+.outlinepadding ::ng-deep .mat-form-field-infix {
+    padding: 3px 0 3px 0; /* top,right,bottom,right */
+}
+
+/* moves input up/down, affects padding - helps to manage height of control */
+.outlinepaddingselect ::ng-deep .mat-form-field-infix {
+    padding: 12px 0 7px 0; /* top,right,bottom,right */
+    // font-size: 13px;
+    // bottom: 10px;        /* moves text in textbox up and down, but arrow not aligned */
+}
+a.disabled {
+    color: gray;
+    cursor: not-allowed;
+    text-decoration: underline;
+}
+// a {
+//         color: gray;
+//     }
+    
+.descriptionWidth {
+    width: 85%;
+}
+mat-card{
+    width: 500px;
+}
+.rounded {
+    border: 1px solid purple;
+    padding: 10px;
+    border-radius: 5px;
+  }
+//   get a label to align with a mat-form-field on same row
+span.relative {
+    position: relative;
+    top: -8px;
+}
+
+// align items on seller item id row
+span.sellerItemID {
+    position: relative;
+    top: 12px;
+}

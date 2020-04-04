@@ -1,0 +1,163 @@
+<br/>
+<!-- container-fluid leaves less left/right margin -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="filter col-2">
+            <mat-form-field>
+                <mat-label>Stores</mat-label>
+                <mat-select [(ngModel)]="selectedStore" (selectionChange)="storeSelected($event)">
+                    <mat-option *ngFor="let m of userStores" [value]="m.storeID">
+                        {{ m.storeName }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>&nbsp;
+        </div>
+        <div class="filter col-2">
+            <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+            </mat-form-field>
+        </div>
+        <div *ngIf="isAdmin()" class="col-2">
+            <mat-slide-toggle [checked]="suppressSupplierVar" (change)="onSupplierSuppressVarChange($event)">No Supplier Variation
+            </mat-slide-toggle><br/>
+            <mat-slide-toggle [checked]="suppressSellerVar" (change)="onSellerSuppressVarChange($event)">No Seller Variation
+            </mat-slide-toggle><br/>
+            <mat-slide-toggle [checked]="priceDelta" (change)="onPriceDeltaChange($event)">Price Delta
+            </mat-slide-toggle>
+        </div>
+        <div *ngIf="isAdmin()" class="col-2">
+            <mat-slide-toggle [checked]="excludeListed" (change)="onListedChange($event)">Exclude Listed
+            </mat-slide-toggle><br/>
+            <mat-slide-toggle [checked]="excludeFreight" (change)="onFreightChange($event)">Exclude Freight
+            </mat-slide-toggle>
+            <mat-slide-toggle>Exclude Motors
+            </mat-slide-toggle>
+        </div>
+        <div class="filter col-2">
+            &nbsp;<a [routerLink]="" (click)="storeToListing()">Store to Listing</a>
+            <span *ngIf="isProcessing">
+                <img
+                    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            </span>
+        </div>
+        <div *ngIf="toListingCount" class="col-1">
+            Stage count: {{toListingCount}}
+        </div>
+        <div class="col-1">
+            {{statusMessage}}
+        </div>
+        <div class="col-1 error">
+            {{logStatus}}
+        </div>
+    </div>
+    <br />
+    <!-- class="mat-elevation-z8" -->
+    <div> 
+        <mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="Src">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <!-- only enable button if we committed to Listing table but haven't listed yet -->
+                    <button [disabled]="!(row.ListingRecCreated && !row.Listed)" mat-icon-button
+                        (click)="$event.stopPropagation();onDetail(row.ItemID);">
+                        <mat-icon svgIcon="wmicon"></mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Pic">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Pic </mat-header-cell>
+                <mat-cell *matCellDef="let row" [matTooltip]="row.EbaySellerTitle">
+                    <span *ngIf="row.SupplierPicURL">
+                        <a [routerLink]="" (click)='passTheSalt(row.EbayURL, row.ItemURL)'>
+                            <img [src]="getThumbnail(row.SupplierPicURL)" height="150px" width="150px">
+                        </a>
+                    </span></mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Seller">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Seller </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.Seller}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="EbaySellerPrice">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Seller Px</mat-header-cell>
+                <mat-cell class="cellright" *matCellDef="let row"> {{row.EbaySellerPrice | currency}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="SupplierPrice">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Supplier Px</mat-header-cell>
+                <mat-cell class="cellright" *matCellDef="let row"> {{row.SupplierPrice | currency}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="PriceDelta">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Px Delta</mat-header-cell>
+                <mat-cell class="cellright" *matCellDef="let row"> {{row.PriceDelta | percent: '1.0-2'}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="SoldQty">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Qty Sold</mat-header-cell>
+                <mat-cell class="cellright" *matCellDef="let row"> {{row.SoldQty}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="LastSold">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Last Sold</mat-header-cell>
+                <mat-cell class="cellright" *matCellDef="let row"> {{row.LastSold | date:'M/d/yy'}} </mat-cell>
+            </ng-container>
+            <!-- <ng-container matColumnDef="ItemID">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>ItemID</mat-header-cell>
+                <mat-cell class="cellright" *matCellDef="let row"> {{row.ItemID}} </mat-cell>
+            </ng-container> -->
+
+            <ng-container matColumnDef="SellerUPC">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Seller UPC</mat-header-cell>
+                <mat-cell class="cellright" *matCellDef="let row">
+                    <span *ngIf="row.ItemURL"><a target="_blank" [href]='row.ItemURL'>{{row.SellerUPC}}</a></span>
+                    <span *ngIf="!row.ItemURL">{{row.SellerUPC}}</span>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="SellerMPN">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Seller MPN</mat-header-cell>
+                <mat-cell class="cellright" *matCellDef="let row">
+                    <span *ngIf="row.ItemURL"><a target="_blank" [href]='row.ItemURL'>{{row.SellerMPN}}</a></span>
+                    <span *ngIf="!row.ItemURL">{{row.SellerMPN}}</span>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="SoldAndShippedBySupplier">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Fulfilled</mat-header-cell>
+                <mat-cell class="cellright" *matCellDef="let row"> {{row.SoldAndShippedBySupplier}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="IsSellerVariation">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>ebay Var</mat-header-cell>
+                <mat-cell [ngClass]="{ 'redText': row.IsSellerVariation }" class="cellright" *matCellDef="let row"> {{row.IsSellerVariation}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="IsSupplierVariation">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>wm var</mat-header-cell>
+                <mat-cell [ngClass]="{ 'redText': row.IsSupplierVariation }" class="cellright" *matCellDef="let row">
+                    {{row.IsSupplierVariation}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Listed">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Listed</mat-header-cell>
+                <mat-cell class="cellright" *matCellDef="let row">{{row.Listed | date:'M/d/y'}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="MatchType">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>MT</mat-header-cell>
+                <mat-cell class="cellright" *matCellDef="let row">{{row.MatchType }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="ToListing">
+                <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Stage</mat-header-cell>
+                <mat-cell class="cellright" *matCellDef="let row">
+                    <mat-checkbox *ngIf="!row.ListingRecCreated" [checked]="row.ToListing"
+                        (change)="onToListChange(row.ItemID, $event)">
+                    </mat-checkbox>
+                    <span *ngIf="row.ListingRecCreated">{{row.ListingRecCreated | date:'MM/dd/yyyy'}}</span>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns" class="example-element-row"
+                [ngClass]="{ 'rowhighlight': row.Listed }">
+            </mat-row>
+        </mat-table>
+
+        <mat-paginator [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
+</div>
+<app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
+    [positionGloballyCenter]="true" [displayProgressSpinner]="isProcessing">
+</app-progress-spinner>
