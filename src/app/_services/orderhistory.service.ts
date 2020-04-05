@@ -450,7 +450,7 @@ export class OrderHistoryService {
                     'Authorization': 'Bearer ' + currentUser.access_token
                 })
             };
-            
+
             return this.http.post(url, body, httpOptions).pipe(
                 catchError(this.handleError)
             );
@@ -543,7 +543,7 @@ export class OrderHistoryService {
         if (userJson) {
             let currentUser = JSON.parse(userJson);
             let url = this.getWMOrderUrl
-            + "?orderURL=" + orderURL
+                + "?orderURL=" + orderURL
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',
@@ -668,7 +668,7 @@ export class OrderHistoryService {
                 })
             };
             let url = this.getWalmarSearchProdIDtUrl + "?userName=" + currentUser.userName
-            + "&search=" + search;
+                + "&search=" + search;
             return this.http.get<WalmartSearchProdIDResponse>(url, httpOptions).pipe(
                 catchError(this.handleError)
             );
@@ -743,16 +743,15 @@ export class OrderHistoryService {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
             errDetail = `Backend returned code ${error.status}`;
-            if (error.error.Message) {
-                errMsg = error.error.Message;
+            if (error.error) {
+                errMsg = error.error;
             }
             else {
-                if (error.error) {
-                    errMsg = error.error;
-                }
-                else 
-                    errMsg = error.statusText;
+                errMsg = error.statusText;
             }
+            // if (error.error.Message) {
+            //     errMsg = error.error.Message;
+            // }
         }
         return observableThrowError(
             {

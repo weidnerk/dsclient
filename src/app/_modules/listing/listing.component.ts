@@ -40,7 +40,8 @@ export class ListingdbComponent implements OnInit {
     { value: '4', viewValue: 'Don\'t know' }
   ];
 
-  constructor(private route: ActivatedRoute,
+  constructor(private router: Router,
+    private route: ActivatedRoute,
     private _orderHistoryService: OrderHistoryService,
     private fb: FormBuilder,
     private _parmService: ParamService,
@@ -253,16 +254,23 @@ export class ListingdbComponent implements OnInit {
               this.ctlListingTitle.disable();
               this.ctlSourceURL.disable();
               this.ctlListingPrice.disable();
-              this.listingButtonEnable = false;
+              this.listingButtonEnable = false; 49
             }
           }
         }
         this.displayProgressSpinner = false;
       },
         error => {
-
           this.displayProgressSpinner = false;
-          this.errorMessage = error.errMsg;
+          setTimeout(() => {
+            if (error.errObj.status === 404) {
+              this.displayProgressSpinner = false;
+              this.router.navigate(['/']);
+            }
+            else {
+              this.errorMessage = error.errMsg;
+            }
+          }, 1000);
         });
   }
 
@@ -310,7 +318,7 @@ export class ListingdbComponent implements OnInit {
     if (this.storeButtonVal == true) {
       this.storeButtonVal = false;
       this.saveListing(listingForm);
-      
+
     }
     else {
       if (this.listButtonVal == true) {
