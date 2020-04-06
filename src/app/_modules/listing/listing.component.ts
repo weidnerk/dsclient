@@ -12,6 +12,7 @@ import { ParamService } from '../../_services/param.service';
 import { ListingnoteComponent } from '../../listingnote/listingnote.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ListCheckService } from '../../_services/listingcheck.service';
+import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
 
 @Component({
   selector: 'app-listing',
@@ -484,6 +485,7 @@ export class ListingdbComponent implements OnInit {
         this.statusMessage = this.delimitedToHTML(si);
         this.displayProgressSpinner = false;
         this.storeButtonEnable = true;
+        this.onShowMessages();
       },
         error => {
           this.errorMessage = this.delimitedToHTML(error.errMsg);
@@ -760,7 +762,6 @@ export class ListingdbComponent implements OnInit {
   }
 
   validateListingQty(c: AbstractControl) {
-    
     if (c.value === null) {
       console.log('value is null ');
       return { error: true };
@@ -775,5 +776,17 @@ export class ListingdbComponent implements OnInit {
         return null;    // control is valid
       }
     }
+  }
+
+  onShowMessages() {
+    const dialogRef = this.dialog.open(ShowmessagesComponent, {
+      height: '500px',
+      width: '600px',
+      data: { message: this.statusMessage }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log('The dialog was closed');
+    });
   }
 }

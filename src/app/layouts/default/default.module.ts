@@ -37,13 +37,13 @@ import { ForgotpasswordComponent } from 'src/app/forgotpassword/forgotpassword.c
 import { ApikeysComponent } from 'src/app/apikeys/apikeys.component';
 import { PasswordresetComponent } from 'src/app/passwordreset/passwordreset.component';
 import { ScanhistoryComponent } from 'src/app/scanhistory/scanhistory.component';
-// import { ListingsComponent } from 'src/app/listings/listings.component';
 import { SellerprofileComponent } from 'src/app/sellerprofile/sellerprofile.component';
 import { ListingnoteComponent } from 'src/app/listingnote/listingnote.component';
 import { ResearchComponent } from 'src/app/research/cr.component';
 import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
 import { GammaModule } from 'src/app/_modules/gamma/gamma.module';
 import { ListingdbModule } from 'src/app/_modules/listing/listing.module';
+import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
 
 @NgModule({
   declarations: [ 
@@ -63,7 +63,8 @@ import { ListingdbModule } from 'src/app/_modules/listing/listing.module';
     // ListingsComponent,
     SellerprofileComponent,
     ListingnoteComponent,
-    ResearchComponent
+    ResearchComponent,
+    ShowmessagesComponent
   ],
   imports: [
     CommonModule,

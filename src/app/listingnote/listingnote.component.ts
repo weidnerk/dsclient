@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { OrderHistoryService } from '../_services/orderhistory.service';
-import { SellerProfile, Listing, ListingNote, ListingNoteView } from '../_models/orderhistory';
+import { Listing, ListingNote, ListingNoteView } from '../_models/orderhistory';
 
 @Component({
   selector: 'app-listingnote',
