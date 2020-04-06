@@ -306,7 +306,7 @@ export class ListingdbComponent implements OnInit {
         });
   }
 
-  onSubmit(listingForm) {
+  onSubmit() {
     this.errorMessage = null;
     this.statusMessage = null;
     this.validationMessage = null;
@@ -317,7 +317,7 @@ export class ListingdbComponent implements OnInit {
 
     if (this.storeButtonVal == true) {
       this.storeButtonVal = false;
-      this.saveListing(listingForm);
+      this.saveListing();
 
     }
     else {
@@ -376,7 +376,7 @@ export class ListingdbComponent implements OnInit {
    * it's already been stored (when first created the Listing record).
    * @param listingForm 
    */
-  saveListing(listingForm: any) {
+  saveListing() {
 
     if (!this.listing) {
       this.listing = new Listing();
@@ -388,9 +388,9 @@ export class ListingdbComponent implements OnInit {
       this.listing.SellerListing = sellerListing;
       this.listing.PictureURL = this.walItem.SupplierPicURL;
     }
-    this.listing.ListingPrice = listingForm.listingPrice;
-    this.listing.ListingTitle = listingForm.listingTitle;
-    this.listing.Qty = listingForm.listingQty;
+    this.listing.ListingPrice = this.ctlListingPrice.value;
+    this.listing.ListingTitle = this.ctlListingTitle.value;
+    this.listing.Qty = this.ctlListingQty.value;
     this.listing.Description = this.ctlDescription.value;
     this.listing.SupplierItem.SupplierPrice = this.walItem.SupplierPrice;
 

@@ -1,7 +1,7 @@
 <br/>
 <div class="container-fluid example-container">
   <div class="example-header row">
-    <div class="example-header filter col-4">
+    <div class="example-header filter col-3">
       <mat-form-field>
         <mat-label>Stores</mat-label>
         <mat-select [(ngModel)]="selectedStore" (selectionChange)="storeSelected($event)">
@@ -11,7 +11,7 @@
         </mat-select>
       </mat-form-field>&nbsp;
     </div>
-    <div class="col-4">
+    <div class="col-5">
       <mat-form-field floatLabel="never" id="filter" class="filter">
         <input matInput #filter placeholder="Filter by Title, Seller, ListingID">
       </mat-form-field>

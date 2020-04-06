@@ -4,7 +4,7 @@
 
       <div class="container">
         <br />
-        <form [formGroup]="listingForm" (ngSubmit)="onSubmit(listingForm.value)">
+        <form [formGroup]="listingForm" (ngSubmit)="onSubmit()">
           <h3 *ngIf="listing && listing.SellerListing">Seller: {{listing.SellerListing.Seller}}</h3>
 
           <div class="row">
