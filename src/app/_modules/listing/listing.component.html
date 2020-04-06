@@ -100,7 +100,7 @@
                   <mat-label>Listing Qty</mat-label>
                   <input matInput formControlName="listingQty" maxlength="2" placeholder="listing qty">
                   <mat-error *ngIf="ctlListingQty.invalid">
-                    <mat-icon>error</mat-icon>&nbsp;ListingPrice is invalid
+                    <mat-icon>error</mat-icon>&nbsp;Listing Qty is invalid
                   </mat-error>
                 </mat-form-field>
               </span>
@@ -152,7 +152,6 @@
 
           <br />
           <div>
-            &nbsp;<a (click)="goBack()" class="btn btn-link">Back</a>
             <button color="primary" type="button" (click)="getWmItem()" mat-raised-button
               [disabled]="!ctlSourceURL.value">Load Walmart</button>&nbsp;
             <span class="error">{{supplierPicsMsg}}</span>

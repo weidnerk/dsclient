@@ -675,7 +675,9 @@ export class ListingdbComponent implements OnInit {
       listingTitle: [null, Validators.compose([Validators.required, Validators.maxLength(80)])],
       listingPrice: [null, Validators.compose([Validators.required])],
       profit: [null],
-      listingQty: [0, Validators.compose([Validators.required])],
+      listingQty: [null, {
+        validators: [Validators.required, this.validateListingQty.bind(this)]
+      }],
       sourceURL: [null, Validators.compose([Validators.required, Validators.maxLength(500)])],
       sourceId: [null],
       variation: [null],
@@ -757,4 +759,21 @@ export class ListingdbComponent implements OnInit {
         });
   }
 
+  validateListingQty(c: AbstractControl) {
+    
+    if (c.value === null) {
+      console.log('value is null ');
+      return { error: true };
+    }
+    if (c.value !== undefined) {
+      const strLength: number = (<string>c.value).length;
+
+      if (isNaN(c.value)) {
+        this.counties = null;
+        return { error: true };
+      } else {
+        return null;    // control is valid
+      }
+    }
+  }
 }
