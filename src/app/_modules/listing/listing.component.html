@@ -187,53 +187,45 @@
           <br />
           <mat-card *ngIf="walItem">
             <div class="row">
-              <div class="col-2"></div>
-              <div class="col-2"> Price:</div>
+              <div class="col-3"> Price:</div>
               <div class="col-3">{{walItem.SupplierPrice}}</div>
             </div>
 
             <div class="row">
-              <div class="col-2"></div>
-              <div class="col-2"> Variation:</div>
+              <div class="col-3"> Variation:</div>
               <div class="col-3" [ngClass]="{ 'error': walItem.IsVariation }">{{walItem.IsVariation}}</div>
             </div>
 
             <div class="row">
-              <div class="col-2"></div>
-              <div class="col-2">OOS:</div>
+              <div class="col-3">OOS:</div>
               <div class="col-3" [ngClass]="{ 'error': walItem.OutOfStock }">{{walItem.OutOfStock}}</div>
               <div class="col-4">(repricer runs 2nd step)</div>
             </div>
 
             <div class="row">
-              <div class="col-2"></div>
-              <div class="col-2">Arrives:</div>
+              <div class="col-3">Arrives:</div>
               <div class="col-3">{{walItem.Arrives | date:'M/d/y'}}</div>
             </div>
 
             <div class="row">
-              <div class="col-2"></div>
-              <div class="col-2">Fulfilled:</div>
+              <div class="col-3">Fulfilled:</div>
               <div class="col-3" [ngClass]="{ 'error': !walItem.SoldAndShippedBySupplier }">
                 {{walItem.SoldAndShippedBySupplier}}</div>
             </div>
 
             <div class="row">
-              <div class="col-2"></div>
-              <div class="col-2">VERO:</div>
+              <div class="col-3">VERO:</div>
               <div class="col-3" [ngClass]="{ 'error': walItem.IsVERO }">{{walItem.IsVERO}}</div>
             </div>
 
             <div class="row">
-              <div class="col-2"></div>
-              <div class="col-2">Freight Shipping:</div>
+              <div class="col-3">Freight Ship:</div>
               <div class="col-3" [ngClass]="{ 'error': walItem.IsFreightShipping }">
                 {{walItem.IsFreightShipping}}</div>
             </div>
 
             <div class="row">
-              <div class="col-2"></div>
-              <div class="col-2">Can list:</div>
+              <div class="col-3">Can list:</div>
               <div class="col-3">
                 <div *ngFor='let problem of walItem.CanList'>
                   <label class="redText">{{problem}}</label>
@@ -242,20 +234,17 @@
             </div>
 
             <div class="row">
-              <div class="col-2"></div>
-              <div class="col-2">ItemID:</div>
+              <div class="col-3">ItemID:</div>
               <div class="col-3">{{walItem.ItemID}}</div>
             </div>
 
             <div class="row">
-              <div class="col-2"></div>
-              <div class="col-2">UPC:</div>
+              <div class="col-3">UPC:</div>
               <div class="col-3">{{walItem.UPC}}</div>
             </div>
 
             <div class="row">
-              <div class="col-2"></div>
-              <div class="col-2">MPN:</div>
+              <div class="col-3">MPN:</div>
               <div class="col-3">{{walItem.MPN}}</div>
             </div>
 
