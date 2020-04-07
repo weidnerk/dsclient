@@ -682,10 +682,11 @@ export class ListingdbComponent implements OnInit {
   buildForm(): void {
     this.listingForm = this.fb.group({
       listingTitle: [null, Validators.compose([Validators.required, Validators.maxLength(80)])],
-      listingPrice: [null, Validators.compose([Validators.required])],
-      profit: [null],
+      listingPrice: [null, {
+        validators: [Validators.required, this.validateRequiredNumeric.bind(this)]
+      }],      profit: [null],
       listingQty: [null, {
-        validators: [Validators.required, this.validateListingQty.bind(this)]
+        validators: [Validators.required, this.validateRequiredNumeric.bind(this)]
       }],
       sourceURL: [null, Validators.compose([Validators.required, Validators.maxLength(500)])],
       sourceId: [null],
@@ -768,7 +769,7 @@ export class ListingdbComponent implements OnInit {
         });
   }
 
-  validateListingQty(c: AbstractControl) {
+  validateRequiredNumeric(c: AbstractControl) {
     if (c.value === null) {
       console.log('value is null ');
       return { error: true };
