@@ -331,6 +331,7 @@ export class ListingdbComponent implements OnInit {
         if (this.walItem.ItemURL != this.ctlSourceURL.value) {
           this.walItem = null;
           this.listing = null;
+          this.ctlSellerItemID.setValue(null);
           this.validationMessage = "supplier URL changed";
         }
         else {
