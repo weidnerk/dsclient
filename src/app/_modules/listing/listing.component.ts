@@ -51,8 +51,8 @@ export class ListingdbComponent implements OnInit {
 
   private sub: any;
   listingID: number;  // Listing.ID
-  listing: Listing;
-  walItem: SupplierItem;
+  listing: Listing | null = null;
+  walItem: SupplierItem | null = null;
 
   // used for testing fetch of variations
   variationItem: SupplierItem;
@@ -189,12 +189,16 @@ export class ListingdbComponent implements OnInit {
                   sourceURL: li.SupplierItem.ItemURL,
                 })
                 this.imgSource = this.getFirstInList();
-                this.imgSourceArray = this.convertStringListToArray(this.listing.SupplierItem.SupplierPicURL);
+                if (this.listing) {
+                  this.imgSourceArray = this.convertStringListToArray(this.listing.SupplierItem.SupplierPicURL);
+                }
               });
           }
           else {
             this.imgSource = this.getFirstInList();
-            this.imgSourceArray = this.convertStringListToArray(this.listing.SupplierItem.SupplierPicURL);
+            if (this.listing) {
+              this.imgSourceArray = this.convertStringListToArray(this.listing.SupplierItem.SupplierPicURL);
+            }
           }
           if (li.SellerListing) {
             this.ebayURL = li.SellerListing.EbayURL;
@@ -282,31 +286,33 @@ export class ListingdbComponent implements OnInit {
    */
   getVariationDisplay() {
 
-    this.displayProgressSpinner = true;
+    if (this.listing) {
+      this.displayProgressSpinner = true;
 
-    let supplierURL = this.listing.SupplierItem.ItemURL;
-    this._orderHistoryService.getWmItem(supplierURL)
-      .subscribe(wi => {
-        this.variationItem = wi;
-        this.displayProgressSpinner = false;
-      },
-        error => {
+      let supplierURL = this.listing.SupplierItem.ItemURL;
+      this._orderHistoryService.getWmItem(supplierURL)
+        .subscribe(wi => {
+          this.variationItem = wi;
           this.displayProgressSpinner = false;
-          this.errorMessage = error.errMsg;
-        });
+        },
+          error => {
+            this.displayProgressSpinner = false;
+            this.errorMessage = error.errMsg;
+          });
 
-    let itemID = this.listing.ItemID;
-    this._orderHistoryService.getSellerListing(itemID)
-      .subscribe(si => {
-        if (si.PictureURL === '') {
-          this.statusMessage = 'WARNING: Could not fetch seller listing images.';
-        }
-        this.sellerVariationItem = si;
-      },
-        error => {
-          this.displayProgressSpinner = false;
-          this.errorMessage = error.errMsg;
-        });
+      let itemID = this.listing.ItemID;
+      this._orderHistoryService.getSellerListing(itemID)
+        .subscribe(si => {
+          if (si.PictureURL === '') {
+            this.statusMessage = 'WARNING: Could not fetch seller listing images.';
+          }
+          this.sellerVariationItem = si;
+        },
+          error => {
+            this.displayProgressSpinner = false;
+            this.errorMessage = error.errMsg;
+          });
+    }
   }
 
   onSubmit() {
@@ -320,20 +326,30 @@ export class ListingdbComponent implements OnInit {
 
     if (this.storeButtonVal == true) {
       this.storeButtonVal = false;
-      this.saveListing();
 
-    }
-    else {
-      if (this.listButtonVal == true) {
-        this.listButtonVal = false;
-        this.validationMessage = this.isValid();
-        if (!this.validationMessage) {
-          this.createListing();
+      if (this.walItem) {
+        if (this.walItem.ItemURL != this.ctlSourceURL.value) {
+          this.walItem = null;
+          this.listing = null;
+          this.validationMessage = "supplier URL changed";
         }
         else {
-          this.validationMessage = this.validationMessage + ' - record not listed';
-          this.storeButtonEnable = true;
+          this.saveListing();
         }
+      }
+      else {
+        this.saveListing();
+      }
+    }
+    if (this.listButtonVal == true) {
+      this.listButtonVal = false;
+      this.validationMessage = this.isValid();
+      if (!this.validationMessage) {
+        this.createListing();
+      }
+      else {
+        this.validationMessage = this.validationMessage + ' - record not listed';
+        this.storeButtonEnable = true;
       }
     }
     if (this.deleteButtonVal == true) {
@@ -345,31 +361,32 @@ export class ListingdbComponent implements OnInit {
       this.storeButtonEnable = false;
     }
   }
-
   /**
    * Must pass all validation checks.
    */
   isValid(): string | null {
-    if (this.listing.SupplierItem.SupplierPrice === 0) {
-      return 'Validation: Supplier price cannot be 0';
-    }
-    if (this.listing.ListingPrice < 1) {
-      return 'Validation: price cannot be < 1.00';
-    }
-    if (this.ctlCheckDescription.value !== true) {
-      return 'Validation: description';
-    }
-    if (!this.ctlListingTitle.value) {
-      return 'Validation: listing title';
-    }
-    if (!this.ctlDescription.value) {
-      return 'Validation: description';
-    }
-    if (!this.ctlListingQty.value) {
-      return 'Validation: listing qty';
-    }
-    if (!this.listing.PictureURL) {
-      return 'Validation: could not fetch supplier pictures';
+    if (this.listing) {
+      if (this.listing.SupplierItem.SupplierPrice === 0) {
+        return 'Validation: Supplier price cannot be 0';
+      }
+      if (this.listing.ListingPrice < 1) {
+        return 'Validation: price cannot be < 1.00';
+      }
+      if (this.ctlCheckDescription.value !== true) {
+        return 'Validation: description';
+      }
+      if (!this.ctlListingTitle.value) {
+        return 'Validation: listing title';
+      }
+      if (!this.ctlDescription.value) {
+        return 'Validation: description';
+      }
+      if (!this.ctlListingQty.value) {
+        return 'Validation: listing qty';
+      }
+      if (!this.listing.PictureURL) {
+        return 'Validation: could not fetch supplier pictures';
+      }
     }
     return null;
   }
@@ -381,7 +398,7 @@ export class ListingdbComponent implements OnInit {
    */
   saveListing() {
 
-    if (!this.listing) {
+    if (!this.listing && this.walItem) {
       this.listing = new Listing();
       this.listing.SupplierItem = this.walItem;
       this.listing.SupplierItem.Updated = new Date();
@@ -391,49 +408,59 @@ export class ListingdbComponent implements OnInit {
       this.listing.SellerListing = sellerListing;
       this.listing.PictureURL = this.walItem.SupplierPicURL;
     }
-    this.listing.ListingPrice = this.ctlListingPrice.value;
-    this.listing.ListingTitle = this.ctlListingTitle.value;
-    this.listing.Qty = this.ctlListingQty.value;
-    this.listing.Description = this.ctlDescription.value;
-    this.listing.SupplierItem.SupplierPrice = this.walItem.SupplierPrice;
+    if (this.listing) {
+      this.listing.ListingPrice = this.ctlListingPrice.value;
+      this.listing.ListingTitle = this.ctlListingTitle.value;
+      this.listing.Qty = this.ctlListingQty.value;
+      this.listing.Description = this.ctlDescription.value;
+      if (this.walItem) {
+        this.listing.SupplierItem.SupplierPrice = this.walItem.SupplierPrice;
+      }
 
-    this.listing.Profit = 0;
-    this.listing.ProfitMargin = 0;
-    this.displayProgressSpinner = true;
+      this.listing.Profit = 0;
+      this.listing.ProfitMargin = 0;
+      this.displayProgressSpinner = true;
 
-    this._orderHistoryService.listingStore(this.listing,
-      ["ListingTitle",
-        "ListingPrice",
-        "Qty",
-        "Description",
-        "PictureURL",
-        "SupplierItem.SupplierPrice"])
-      .subscribe(listingID => {
-        this.listingID = listingID;
-        this.listing.ID = listingID;
-        this.displayProgressSpinner = false;
-        this.statusMessage = 'Record stored.';
-        if (this.walItem.CanList.length == 0) {
-          this.listingButtonEnable = true;
-        }
-        this.storeButtonEnable = true;
-        this.listing.Created = new Date();  // enable Add Note button
-
-        // Not ready yet for VA to list variations.
-        if (this.walItem.IsVariation && !this.admin) {
-          this.listingButtonEnable = false;
-        }
-        this.ctlListingQty.markAsPristine();
-        this.ctlListingTitle.markAsPristine();
-        this.ctlDescription.markAsPristine();
-        this.ctlListingPrice.markAsPristine();
-      },
-        error => {
+      this._orderHistoryService.listingStore(this.listing,
+        ["ListingTitle",
+          "ListingPrice",
+          "Qty",
+          "Description",
+          "PictureURL",
+          "SupplierItem.SupplierPrice"])
+        .subscribe(listingID => {
+          this.listingID = listingID;
+          if (this.listing) {
+            this.listing.ID = listingID;
+          }
           this.displayProgressSpinner = false;
-          this.errorMessage = error.errMsg;
+          this.statusMessage = 'Record stored.';
+          if (this.walItem?.CanList.length == 0) {
+            this.listingButtonEnable = true;
+          }
           this.storeButtonEnable = true;
-        });
+          if (this.listing) {
+            this.listing.Created = new Date();  // enable Add Note button
+          }
+          // Not ready yet for VA to list variations.
+          if (this.walItem?.IsVariation && !this.admin) {
+            this.listingButtonEnable = false;
+          }
+          this.ctlListingQty.markAsPristine();
+          this.ctlListingTitle.markAsPristine();
+          this.ctlDescription.markAsPristine();
+          this.ctlListingPrice.markAsPristine();
+        },
+          error => {
+            this.displayProgressSpinner = false;
+            this.errorMessage = error.errMsg;
+            this.storeButtonEnable = true;
+          });
+    }
   }
+  /**
+   * Can't list if form is ditry - must Save first.
+   */
   formIsDirty(): boolean {
     if (this.ctlListingQty.dirty) {
       return true;
@@ -450,31 +477,34 @@ export class ListingdbComponent implements OnInit {
     return false;
   }
   salesOrderStore() {
-    let salesOrder = new SalesOrder();
-    salesOrder.ListedItemID = this.listing.ListedItemID;
-    salesOrder.SupplierOrderNumber = this.ctlSupplierOrderNum.value;
-    salesOrder.eBayOrderNumber = this.ctlEbayOrderNum.value;
-    salesOrder.I_Paid = this.ctlIPaid.value;
-    salesOrder.Qty = 1;
-    this._orderHistoryService.salesOrderStore(salesOrder, ["SupplierOrderNumber", "Qty", "ListedItemID", "eBayOrderNumber", "I_Paid"])
-      .subscribe(si => {
-      },
-        error => {
-          this.errorMessage = error.errMsg;
-        });
-
+    if (this.listing) {
+      let salesOrder = new SalesOrder();
+      salesOrder.ListedItemID = this.listing.ListedItemID;
+      salesOrder.SupplierOrderNumber = this.ctlSupplierOrderNum.value;
+      salesOrder.eBayOrderNumber = this.ctlEbayOrderNum.value;
+      salesOrder.I_Paid = this.ctlIPaid.value;
+      salesOrder.Qty = 1;
+      this._orderHistoryService.salesOrderStore(salesOrder, ["SupplierOrderNumber", "Qty", "ListedItemID", "eBayOrderNumber", "I_Paid"])
+        .subscribe(si => {
+        },
+          error => {
+            this.errorMessage = error.errMsg;
+          });
+    }
   }
   endListing() {
-    this.displayProgressSpinner = true;
-    this._listCheckService.endListing(this.listing.ListedItemID)
-      .subscribe(si => {
-        this.statusMessage = si;
-        this.displayProgressSpinner = false;
-      },
-        error => {
-          this.errorMessage = error.errMsg;
+    if (this.listing) {
+      this.displayProgressSpinner = true;
+      this._listCheckService.endListing(this.listing.ListedItemID)
+        .subscribe(si => {
+          this.statusMessage = si;
           this.displayProgressSpinner = false;
-        })
+        },
+          error => {
+            this.errorMessage = error.errMsg;
+            this.displayProgressSpinner = false;
+          })
+    }
   }
   /**
    * Post to eBay
@@ -528,7 +558,7 @@ export class ListingdbComponent implements OnInit {
         setTimeout(() => {
           this.router.navigate(['/gamma']);
         }, 1000);
-        
+
       },
         error => {
           this.displayProgressSpinner = false;
@@ -542,6 +572,7 @@ export class ListingdbComponent implements OnInit {
    * Called when user clicks 'Load WM'
    */
   getWmItem() {
+    this.validationMessage = "";
     this.displayProgressSpinner = true;
     this.supplierPicsMsg = null;
     this._orderHistoryService.getWmItem(this.ctlSourceURL.value)
@@ -576,33 +607,37 @@ export class ListingdbComponent implements OnInit {
         });
   }
   calculateWMPrice() {
-    this.displayProgressSpinner = true;
-    this._orderHistoryService.calculateWMPx(this.walItem.SupplierPrice)
-      .subscribe(wi => {
-        this.priceProfit = wi;
-        let px = (Math.round(wi.proposePrice * 100) / 100).toFixed(2);
-        this.listingForm.patchValue({
-          listingPrice: px.toString()
-        });
-        this.displayProgressSpinner = false;
-      },
-        error => {
-          this.errorMessage = error.errMsg;
+    if (this.walItem) {
+      this.displayProgressSpinner = true;
+      this._orderHistoryService.calculateWMPx(this.walItem.SupplierPrice)
+        .subscribe(wi => {
+          this.priceProfit = wi;
+          let px = (Math.round(wi.proposePrice * 100) / 100).toFixed(2);
+          this.listingForm.patchValue({
+            listingPrice: px.toString()
+          });
           this.displayProgressSpinner = false;
-        });
+        },
+          error => {
+            this.errorMessage = error.errMsg;
+            this.displayProgressSpinner = false;
+          });
+    }
   }
 
   setOrder() {
-    let list = new Listing();
-    list.ItemID = this.listing.ItemID;
+    if (this.listing) {
+      let list = new Listing();
+      list.ItemID = this.listing.ItemID;
 
-    this._orderHistoryService.setOrder(list)
-      .subscribe(si => {
-        this.statusMessage = 'Record stored.';
-      },
-        error => {
-          this.errorMessage = error.errMsg;
-        });
+      this._orderHistoryService.setOrder(list)
+        .subscribe(si => {
+          this.statusMessage = 'Record stored.';
+        },
+          error => {
+            this.errorMessage = error.errMsg;
+          });
+    }
   }
 
   /**
@@ -684,7 +719,7 @@ export class ListingdbComponent implements OnInit {
       listingTitle: [null, Validators.compose([Validators.required, Validators.maxLength(80)])],
       listingPrice: [null, {
         validators: [Validators.required, this.validateRequiredNumeric.bind(this)]
-      }],      profit: [null],
+      }], profit: [null],
       listingQty: [null, {
         validators: [Validators.required, this.validateRequiredNumeric.bind(this)]
       }],
@@ -730,36 +765,42 @@ export class ListingdbComponent implements OnInit {
   }
 
   getNotes() {
-    let listingNotes: ListingNoteView[];
-    this._orderHistoryService.getListingNotes(this.listing.ItemID, this.listing.StoreID)
-      .subscribe(p => {
-        listingNotes = p;
-        if (listingNotes.length > 0) {
-          this.notesButtonText = "Notes (" + listingNotes.length.toString() + ")";
-        }
-      },
-        error => {
-          this.errorMessage = error.errMsg;
-        });
+    if (this.listing) {
+      let listingNotes: ListingNoteView[];
+      this._orderHistoryService.getListingNotes(this.listing.ItemID, this.listing.StoreID)
+        .subscribe(p => {
+          listingNotes = p;
+          if (listingNotes.length > 0) {
+            this.notesButtonText = "Notes (" + listingNotes.length.toString() + ")";
+          }
+        },
+          error => {
+            this.errorMessage = error.errMsg;
+          });
+    }
   }
 
   /**
    * Refresh my listing's item specifics from seller's listing.
    */
   refreshItemSpecifics() {
-    this._orderHistoryService.refreshItemSpecifics(this.listing.ID)
-      .subscribe(p => {
-      },
-        error => {
-          this.errorMessage = error.errMsg;
-        });
+    if (this.listing) {
+      this._orderHistoryService.refreshItemSpecifics(this.listing.ID)
+        .subscribe(p => {
+        },
+          error => {
+            this.errorMessage = error.errMsg;
+          });
+    }
   }
   checkDescription() {
     this.displayProgressSpinner = true;
     this._orderHistoryService.listingGet(this.listingID)
       .subscribe(li => {
         if (li) {
-          this.listing.Warning = li.Warning;
+          if (this.listing) {
+            this.listing.Warning = li.Warning;
+          }
         }
         this.displayProgressSpinner = false;
       },
