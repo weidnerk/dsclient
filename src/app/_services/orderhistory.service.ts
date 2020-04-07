@@ -730,6 +730,10 @@ export class OrderHistoryService {
             )
     }
 
+    /**
+     * Use this as model.
+     * @param error 
+     */
     private handleError(error: HttpErrorResponse) {
         let errMsg: string | null = null;
         let errDetail: string | null = null;
@@ -743,21 +747,21 @@ export class OrderHistoryService {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
             errDetail = `Backend returned code ${error.status}`;
-            if (error.error) {
+            if (error.error.Message) {
+                errMsg = error.error.Message;
+            }
+            else if (error.error) {
                 errMsg = error.error;
             }
             else {
                 errMsg = error.statusText;
             }
-            // if (error.error.Message) {
-            //     errMsg = error.error.Message;
-            // }
         }
         return observableThrowError(
             {
                 "errMsg": errMsg,
-                "errDetail": errDetail,
-                "errObj": error
+                "errStatus": error.status
             });
     };
+
 }
