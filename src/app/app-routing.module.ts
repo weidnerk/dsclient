@@ -8,15 +8,11 @@ import { ChangepasswordComponent } from './changepassword/changepassword.compone
 import { PasswordresetComponent } from './passwordreset/passwordreset.component';
 import { ApikeysComponent } from './apikeys/apikeys.component';
 import { ScanhistoryComponent } from './scanhistory/scanhistory.component';
-// import { ListingsComponent } from './listings/listings.component';
-// import { ListingdbComponent } from './listings/listings.component';
 import { ResearchComponent } from './research/cr.component';
 import { TimesSoldComponent } from './timessold/timessold.component';
 import { AuthGuard } from './_guards/index';
 import { Dashboardv2Component } from './dashboard-v2/dashboard.component';
 import { DefaultComponent } from './layouts/default/default.component';
-import { GammaComponent } from './_modules/gamma/gamma.component';
-import { ListingdbComponent } from './_modules/listing/listing.component';
 
 const routes: Routes = [
     {
@@ -52,10 +48,19 @@ const routes: Routes = [
             loadChildren: () => import('./_modules/listing/listing.module').then(m => m.ListingdbModule),
             canActivate: [AuthGuard]
         },
+        {
+            path: 'apikeys',
+            component: ApikeysComponent,
+            canActivate: [AuthGuard]
+        },
         { path: 'scanseller', component: TimesSoldComponent, canActivate: [AuthGuard] }
     ]
     },
-    { path: 'login', component: LoginComponent }
+    { path: 'login', component: LoginComponent },
+    {
+        path: 'register',
+        component: RegisterComponent
+    }
 ];
 /*
 const appRoutes: Routes = [

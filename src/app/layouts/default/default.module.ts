@@ -60,7 +60,6 @@ import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.compone
     ApikeysComponent,
     PasswordresetComponent,
     ScanhistoryComponent,
-    // ListingsComponent,
     SellerprofileComponent,
     ListingnoteComponent,
     ResearchComponent,

@@ -33,9 +33,9 @@ export class ApikeysComponent implements OnInit {
   ngOnInit() {
     this.buildForm();
     this.getUserSettings();
-    this.getAppIds(); // to fill selection drop down
+    // this.getAppIds();
     this.getTradingAPIUsage();
-    this.getTokenStatus();
+    // this.getTokenStatus();
   }
 
   getTokenStatus() {
