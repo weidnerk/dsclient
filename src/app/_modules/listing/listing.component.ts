@@ -263,6 +263,8 @@ export class ListingdbComponent implements OnInit {
       },
         error => {
           this.displayProgressSpinner = false;
+
+          // wait 1 sec before executing what's inside setTimeout
           setTimeout(() => {
             if (error.errObj.status === 404) {
               this.displayProgressSpinner = false;
@@ -485,7 +487,7 @@ export class ListingdbComponent implements OnInit {
         this.statusMessage = this.delimitedToHTML(si);
         this.displayProgressSpinner = false;
         this.storeButtonEnable = true;
-        this.onShowMessages();
+        this.showMessage();
       },
         error => {
           this.errorMessage = this.delimitedToHTML(error.errMsg);
@@ -519,9 +521,14 @@ export class ListingdbComponent implements OnInit {
         this.displayProgressSpinner = false;
 
         this.statusMessage = "Record deleted";
+        this.showMessage();
 
-        // don't leave page yet since want to see any messages
-        // this.router.navigate(['/listings']);
+        // Seems we have to give time for the progress overlay to finish
+        // otherwise, redirect to listings and overlay never goes away.
+        setTimeout(() => {
+          this.router.navigate(['/gamma']);
+        }, 1000);
+        
       },
         error => {
           this.displayProgressSpinner = false;
@@ -778,7 +785,7 @@ export class ListingdbComponent implements OnInit {
     }
   }
 
-  onShowMessages() {
+  showMessage() {
     const dialogRef = this.dialog.open(ShowmessagesComponent, {
       height: '500px',
       width: '600px',
