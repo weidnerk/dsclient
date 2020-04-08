@@ -184,6 +184,10 @@
             <div class="redText" [innerHTML]="validationMessage"></div>
           </div>
           <br />
+          <div class="error">
+            <span [innerHTML]="errorMessage"></span>
+          </div>
+
           <mat-card *ngIf="walItem">
             <div class="row">
               <div class="col-3"> Price:</div>
@@ -257,10 +261,6 @@
             </div>
           </div> -->
           </mat-card>
-          <br />
-          <div class="error">
-            <span [innerHTML]="errorMessage"></span>
-          </div>
           <div class="error">
             <div [innerHTML]="statusMessage"></div>
           </div>
