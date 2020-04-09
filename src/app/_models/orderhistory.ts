@@ -122,13 +122,14 @@ export class Listing {
     CheckIsVariation: boolean;
     CheckVariationURL: boolean;
     Created: Date;
-    SellerListing: SellerListing;
+    // SellerListing: SellerListing;
     SupplierID: number;
     SupplierItem: SupplierItem;
     StoreID:  number;
     Qty: number;
     Updated: Date;
     Warning: string[];
+    ItemSpecifics: ListingItemSpecific[];
 }
 export class ListingView extends Listing {
     Seller: string;
@@ -296,4 +297,12 @@ export class SupplierVariation {
     Variation : string;
     Price : number;
     Images: string[];
+}
+export class ListingItemSpecific
+{
+    id: number;
+    listingID: number;
+    itemName: string;
+    itemValue: string;
+    // listing: Listing;
 }

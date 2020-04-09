@@ -13,6 +13,8 @@ import { ListingnoteComponent } from '../../listingnote/listingnote.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ListCheckService } from '../../_services/listingcheck.service';
 import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
+import { UserSettingsView } from 'src/app/_models/userprofile';
+import { UserService } from 'src/app/_services';
 
 @Component({
   selector: 'app-listing',
@@ -42,6 +44,7 @@ export class ListingdbComponent implements OnInit {
   ];
 
   constructor(private router: Router,
+    private _userService: UserService,
     private route: ActivatedRoute,
     private _orderHistoryService: OrderHistoryService,
     private fb: FormBuilder,
@@ -53,6 +56,7 @@ export class ListingdbComponent implements OnInit {
   listingID: number;  // Listing.ID
   listing: Listing | null = null;
   walItem: SupplierItem | null = null;
+  userSettingsView: UserSettingsView;
 
   // used for testing fetch of variations
   variationItem: SupplierItem;
@@ -129,6 +133,7 @@ export class ListingdbComponent implements OnInit {
     this.admin = this.isAdmin();
     this.buildForm();
     this.buildOrderForm();
+    this.getUserSettings();
 
     this.listingForm.controls['variation'].disable();
     this.listingForm.controls['variationDescription'].disable();
@@ -200,9 +205,9 @@ export class ListingdbComponent implements OnInit {
               this.imgSourceArray = this.convertStringListToArray(this.listing.SupplierItem.SupplierPicURL);
             }
           }
-          if (li.SellerListing) {
-            this.ebayURL = li.SellerListing.EbayURL;
-          }
+          // if (li.SellerListing) {
+          //   this.ebayURL = li.SellerListing.EbayURL;
+          // }
 
           if (li.CheckShipping !== null) {
             this.listingForm.patchValue({
@@ -320,17 +325,13 @@ export class ListingdbComponent implements OnInit {
     this.statusMessage = null;
     this.validationMessage = null;
 
-    // Soon as store/list clicked, disable both until operation complete.
-    this.storeButtonEnable = false;
-    this.listingButtonEnable = false;
-
     if (this.storeButtonVal == true) {
       this.storeButtonVal = false;
 
       if (this.walItem) {
         if (this.walItem.ItemURL != this.ctlSourceURL.value) {
           this.walItem = null;
-          this.listing = null;
+          // this.listing = null;
           this.ctlSellerItemID.setValue(null);
           this.validationMessage = "supplier URL changed";
         }
@@ -399,17 +400,18 @@ export class ListingdbComponent implements OnInit {
    */
   saveListing() {
 
+    // if new listing
     if (!this.listing && this.walItem) {
       this.listing = new Listing();
+      this.listing.ID = 0;
+    }
+    if (this.listing && this.walItem) {
+      this.listing.StoreID = this.userSettingsView.storeID;
       this.listing.SupplierItem = this.walItem;
       this.listing.SupplierItem.Updated = new Date();
-      let sellerListing = new SellerListing();
-      sellerListing.ItemID = this.ctlSellerItemID.value;
       this.listing.ItemID = this.ctlSellerItemID.value;
-      this.listing.SellerListing = sellerListing;
       this.listing.PictureURL = this.walItem.SupplierPicURL;
-    }
-    if (this.listing) {
+      this.listing.ItemID = this.ctlSellerItemID.value;
       this.listing.ListingPrice = this.ctlListingPrice.value;
       this.listing.ListingTitle = this.ctlListingTitle.value;
       this.listing.Qty = this.ctlListingQty.value;
@@ -417,7 +419,6 @@ export class ListingdbComponent implements OnInit {
       if (this.walItem) {
         this.listing.SupplierItem.SupplierPrice = this.walItem.SupplierPrice;
       }
-
       this.listing.Profit = 0;
       this.listing.ProfitMargin = 0;
       this.displayProgressSpinner = true;
@@ -428,18 +429,22 @@ export class ListingdbComponent implements OnInit {
           "Qty",
           "Description",
           "PictureURL",
-          "SupplierItem.SupplierPrice"])
-        .subscribe(listingID => {
-          this.listingID = listingID;
+          "ItemID",
+          "SupplierItem.SupplierPrice",
+          "SupplierItem.ItemURL"])
+        .subscribe(updatedListing => {
+          this.listingID = updatedListing.ID;
           if (this.listing) {
-            this.listing.ID = listingID;
+            this.listing.ID = updatedListing.ID;
+            this.listing.PrimaryCategoryID = updatedListing.PrimaryCategoryID;
+            this.listing.PrimaryCategoryName = updatedListing.PrimaryCategoryName;
           }
           this.displayProgressSpinner = false;
           this.statusMessage = 'Record stored.';
           if (this.walItem?.CanList.length == 0) {
             this.listingButtonEnable = true;
           }
-          this.storeButtonEnable = true;
+          // this.storeButtonEnable = true;
           if (this.listing) {
             this.listing.Created = new Date();  // enable Add Note button
           }
@@ -455,7 +460,7 @@ export class ListingdbComponent implements OnInit {
           error => {
             this.displayProgressSpinner = false;
             this.errorMessage = error.errMsg;
-            this.storeButtonEnable = true;
+            // this.storeButtonEnable = false;
           });
     }
   }
@@ -580,13 +585,9 @@ export class ListingdbComponent implements OnInit {
       .subscribe(wi => {
         this.walItem = wi;
         this.displayProgressSpinner = false;
-        if (!this.listing) {  // if adding new record
-          this.imgSource = wi.SupplierPicURL;
-          this.imgSourceArray = this.convertStringListToArray(wi.SupplierPicURL);
-        }
-        else {
-          this.listing.SupplierItem.SupplierPrice = wi.SupplierPrice;
-        }
+        this.imgSource = wi.SupplierPicURL;
+        this.imgSourceArray = this.convertStringListToArray(wi.SupplierPicURL);
+        // this.listing.SupplierItem.SupplierPrice = wi.SupplierPrice;
         if (!this.ctlDescription.value) {
           this.listingForm.patchValue({
             description: wi.Description
@@ -838,5 +839,20 @@ export class ListingdbComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       // console.log('The dialog was closed');
     });
+  }
+
+  /**
+   * Need storeID for new listing.
+   */
+  getUserSettings() {
+    this._userService.UserSettingsViewGet()
+      .subscribe(userSettings => {
+        this.userSettingsView = userSettings;
+      },
+        error => {
+          if (error.errorStatus !== 404) {
+            this.errorMessage = JSON.stringify(error);
+          }
+        });
   }
 }

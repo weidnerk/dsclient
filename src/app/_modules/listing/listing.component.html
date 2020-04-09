@@ -5,7 +5,7 @@
       <div class="container">
         <br />
         <form [formGroup]="listingForm" (ngSubmit)="onSubmit()">
-          <h3 *ngIf="listing && listing.SellerListing">Seller: {{listing.SellerListing.Seller}}</h3>
+          <!-- <h3 *ngIf="listing && listing.SellerListing">Seller: {{listing.SellerListing.Seller}}</h3> -->
 
           <div class="row">
             <!-- <div class="col-2">
@@ -113,9 +113,9 @@
                 <mat-label>Seller Item ID</mat-label>
                 <input matInput formControlName="sellerItemID" maxlength="80" placeholder="seller item ID">
               </mat-form-field>
-              <span class="relative" *ngIf="listing && listing.SellerListing">
+              <!-- <span class="relative" *ngIf="listing && listing.SellerListing">
                 <a target="_blank" href='{{listing.SellerListing.EbayURL}}'>&nbsp;GO</a>
-              </span>
+              </span> -->
             </div>
             <div class="col-4">
               <span class="sellerItemID"><i> Click Save will then store seller's item specifics.</i></span>
@@ -162,7 +162,7 @@
             <button color="primary" type="button" (click)="calculateWMPrice()" mat-raised-button
               [disabled]="!walItem">Calculate Price</button>
             <button class="btn" mat-button mat-raised-button color="primary" type="submit" (click)="storeButtonVal=true"
-              [disabled]="!listingForm.valid || !walItem">Save</button>
+              [disabled]="!storeButtonEnable || !listingForm.valid || !walItem">Save</button>
 
             <button class="btn" mat-button mat-raised-button color="primary" type="submit" (click)="listButtonVal=true"
               [disabled]="!listingButtonEnable || !listingForm.valid || formIsDirty()">List</button>
@@ -310,9 +310,9 @@
 
     <mat-tab label="Item Specifics">
       <div class="container">
-        <div *ngIf="listing && listing.SellerListing">
+        <div *ngIf="listing && listing.ItemSpecifics">
           <br />
-          <div *ngFor='let sp of listing.SellerListing.ItemSpecifics' class="row">
+          <div *ngFor='let sp of listing.ItemSpecifics' class="row">
             <div class="col-3">
               <label>{{sp.itemName}}</label>
             </div>

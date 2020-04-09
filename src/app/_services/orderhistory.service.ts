@@ -414,7 +414,7 @@ export class OrderHistoryService {
             )
     }
 
-    listingStore(listing: Listing, fieldNames: string[]): Observable<number> {
+    listingStore(listing: Listing, fieldNames: string[]): Observable<Listing> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
@@ -427,7 +427,7 @@ export class OrderHistoryService {
                     'Authorization': 'Bearer ' + currentUser.access_token
                 })
             };
-            return this.http.post<number>(url, body, httpOptions).pipe(
+            return this.http.post<Listing>(url, body, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }
