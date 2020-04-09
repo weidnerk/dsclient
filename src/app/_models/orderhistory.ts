@@ -122,7 +122,6 @@ export class Listing {
     CheckIsVariation: boolean;
     CheckVariationURL: boolean;
     Created: Date;
-    // SellerListing: SellerListing;
     SupplierID: number;
     SupplierItem: SupplierItem;
     StoreID:  number;
@@ -241,7 +240,6 @@ export class SupplierItem {
     ItemID : string;
     OutOfStock : boolean;
     ShippingNotAvailable: boolean; 
-    // Listing: Listing[];
     Arrives: Date;
     IsVERO: boolean;
     VariationPicURL: string[];

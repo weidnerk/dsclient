@@ -367,7 +367,6 @@ export class OrderHistoryService {
                 }
             )
     }
-
     variationListingCreate(): Observable<string> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
@@ -390,7 +389,6 @@ export class OrderHistoryService {
                 }
             )
     }
-
     deleteListingRecord(listingID: number) {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
@@ -413,7 +411,6 @@ export class OrderHistoryService {
                 }
             )
     }
-
     listingStore(listing: Listing, fieldNames: string[]): Observable<Listing> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {

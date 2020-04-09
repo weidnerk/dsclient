@@ -407,8 +407,13 @@ export class ListingdbComponent implements OnInit {
     }
     if (this.listing && this.walItem) {
       this.listing.StoreID = this.userSettingsView.storeID;
+
       this.listing.SupplierItem = this.walItem;
+      if (this.listing.SupplierID > 0) {
+        this.listing.SupplierItem.ID = this.listing.SupplierID;
+      }
       this.listing.SupplierItem.Updated = new Date();
+      this.listing.SupplierItem.SupplierPrice = this.walItem.SupplierPrice;
       this.listing.ItemID = this.ctlSellerItemID.value;
       this.listing.PictureURL = this.walItem.SupplierPicURL;
       this.listing.ItemID = this.ctlSellerItemID.value;
@@ -416,9 +421,6 @@ export class ListingdbComponent implements OnInit {
       this.listing.ListingTitle = this.ctlListingTitle.value;
       this.listing.Qty = this.ctlListingQty.value;
       this.listing.Description = this.ctlDescription.value;
-      if (this.walItem) {
-        this.listing.SupplierItem.SupplierPrice = this.walItem.SupplierPrice;
-      }
       this.listing.Profit = 0;
       this.listing.ProfitMargin = 0;
       this.displayProgressSpinner = true;
@@ -444,7 +446,6 @@ export class ListingdbComponent implements OnInit {
           if (this.walItem?.CanList.length == 0) {
             this.listingButtonEnable = true;
           }
-          // this.storeButtonEnable = true;
           if (this.listing) {
             this.listing.Created = new Date();  // enable Add Note button
           }
@@ -460,7 +461,6 @@ export class ListingdbComponent implements OnInit {
           error => {
             this.displayProgressSpinner = false;
             this.errorMessage = error.errMsg;
-            // this.storeButtonEnable = false;
           });
     }
   }
@@ -583,25 +583,47 @@ export class ListingdbComponent implements OnInit {
     this.supplierPicsMsg = null;
     this._orderHistoryService.getWmItem(this.ctlSourceURL.value)
       .subscribe(wi => {
-        this.walItem = wi;
+
+        // 04.09.2020 if i don't reassign walitem like this, then SupplierItem arrives as null on server (StoreListing)
+        // not sure why
+        let supp = new SupplierItem();
+        supp.ItemURL = wi.ItemURL;
+        supp.Arrives = wi.Arrives;
+        supp.Warning = wi.Warning;
+        supp.CanList = wi.CanList;
+        supp.Description = wi.Description;
+        supp.ID = wi.ID;
+        supp.IsFreightShipping = wi.IsFreightShipping;
+        supp.IsVERO = wi.IsVERO;
+        supp.IsVariation = wi.IsVariation;
+        supp.ItemID = wi.ItemID;
+        supp.MPN = wi.MPN;
+        supp.MatchCount = wi.MatchCount;
+        supp.OutOfStock = wi.OutOfStock;
+        supp.ShippingNotAvailable = wi.ShippingNotAvailable;
+        supp.SoldAndShippedBySupplier = wi.SoldAndShippedBySupplier;
+        supp.SupplierBrand = wi.SupplierBrand;
+        supp.SupplierPicURL = wi.SupplierPicURL;
+        supp.SupplierPrice = wi.SupplierPrice;
+        supp.SupplierVariation = wi.SupplierVariation;
+        supp.UPC = wi.UPC;
+        supp.Updated = wi.Updated;
+        supp.VariationName = wi.VariationName;
+        supp.VariationPicURL = wi.VariationPicURL;
+        
+        this.walItem = supp;
+
         this.displayProgressSpinner = false;
         this.imgSource = wi.SupplierPicURL;
         this.imgSourceArray = this.convertStringListToArray(wi.SupplierPicURL);
-        // this.listing.SupplierItem.SupplierPrice = wi.SupplierPrice;
         if (!this.ctlDescription.value) {
           this.listingForm.patchValue({
             description: wi.Description
           });
         }
-
-        // console.log("sp: " + this.listing.SupplierPrice.toString());
         if (!wi.SupplierPicURL) {
           this.supplierPicsMsg = "Failed to retrieve item images from supplier."
         }
-        // else {
-        // why exactly need this?
-        //   this.listing.PictureURL = wi.SupplierPicURL;
-        // }
       },
         error => {
           this.displayProgressSpinner = false;
@@ -814,7 +836,6 @@ export class ListingdbComponent implements OnInit {
 
   validateRequiredNumeric(c: AbstractControl) {
     if (c.value === null) {
-      console.log('value is null ');
       return { error: true };
     }
     if (c.value !== undefined) {
