@@ -129,6 +129,7 @@ export class Listing {
     Updated: Date;
     Warning: string[];
     ItemSpecifics: ListingItemSpecific[];
+    eBaySellerURL: string;
 }
 export class ListingView extends Listing {
     Seller: string;

@@ -27,7 +27,7 @@
         Admin
     </a>
 
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="/apikeys">
+    <a *ngIf="isAdmin" mat-list-item routerLinkActive="list-item-active" routerLink="/apikeys">
         <mat-icon>vpn_key</mat-icon>
         API Keys
     </a>

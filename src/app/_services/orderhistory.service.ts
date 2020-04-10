@@ -20,7 +20,7 @@ export class OrderHistoryService {
     private getNumItemssUrl: string = environment.API_ENDPOINT + 'numitemssold';
     private getProdByIdUrl: string = environment.API_ENDPOINT + 'prodbyid';
     private getSellerListingUrl: string = environment.API_ENDPOINT + 'getsellerlisting';
-    private storeListingUrl: string = environment.API_ENDPOINT + 'storelisting';
+    private storeListingUrl: string = environment.API_ENDPOINT + 'listingsave';
     private storeNoteUrl: string = environment.API_ENDPOINT + 'storenote';
     private setOrderUrl: string = environment.API_ENDPOINT + 'setorder';
     private getWMOrderUrl: string = environment.API_ENDPOINT + 'getwmorder';

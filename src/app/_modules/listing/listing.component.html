@@ -113,9 +113,9 @@
                 <mat-label>Seller Item ID</mat-label>
                 <input matInput formControlName="sellerItemID" maxlength="80" placeholder="seller item ID">
               </mat-form-field>
-              <!-- <span class="relative" *ngIf="listing && listing.SellerListing">
-                <a target="_blank" href='{{listing.SellerListing.EbayURL}}'>&nbsp;GO</a>
-              </span> -->
+              <span class="relative" *ngIf="listing && listing.eBaySellerURL">
+                <a target="_blank" href='{{listing.eBaySellerURL}}'>&nbsp;GO</a>
+              </span>
             </div>
             <div class="col-4">
               <span class="sellerItemID"><i> Click Save will then store seller's item specifics.</i></span>
