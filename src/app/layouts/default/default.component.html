@@ -1,6 +1,7 @@
 <app-header (toggleSideBarForMe)="sideBarToggler()"></app-header>
 
-<mat-drawer-container autosize>
+<!-- if use mat-sidenav instead of mat-drawer then lose header and footer since sidnav goes full screen -->
+<mat-drawer-container>
     <mat-drawer mode="side" [opened]="sideBarOpen" class="example-sidenav">
         <app-sidebar></app-sidebar>
     </mat-drawer>
