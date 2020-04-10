@@ -44,6 +44,7 @@ import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
 import { GammaModule } from 'src/app/_modules/gamma/gamma.module';
 import { ListingdbModule } from 'src/app/_modules/listing/listing.module';
 import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
+import { ConfirmComponent } from 'src/app/confirm/confirm.component';
 
 @NgModule({
   declarations: [ 
@@ -63,7 +64,8 @@ import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.compone
     SellerprofileComponent,
     ListingnoteComponent,
     ResearchComponent,
-    ShowmessagesComponent
+    ShowmessagesComponent,
+    ConfirmComponent
   ],
   imports: [
     CommonModule,

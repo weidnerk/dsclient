@@ -15,6 +15,7 @@ import { ListCheckService } from '../../_services/listingcheck.service';
 import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
 import { UserSettingsView } from 'src/app/_models/userprofile';
 import { UserService } from 'src/app/_services';
+import { ConfirmComponent } from 'src/app/confirm/confirm.component';
 
 @Component({
   selector: 'app-listing',
@@ -325,18 +326,16 @@ export class ListingdbComponent implements OnInit {
           }
           else {
             this.validationMessage = this.validationMessage + ' - record not listed';
-            // this.storeButtonEnable = true;
           }
         }
       }
     }
     if (this.deleteButtonVal == true) {
-      this.deleteListingRecord();
-      // this.storeButtonEnable = false;
+      this.onDelete();
+      // this.deleteListingRecord();
     }
     if (this.orderButtonVal == true) {
       this.setOrder();
-      // this.storeButtonEnable = false;
     }
   }
   /**
@@ -776,6 +775,19 @@ export class ListingdbComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       // console.log('The dialog was closed');
+    });
+  }
+
+  onDelete() {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      height: '500px',
+      width: '900px',
+      data: { listing: this.listing }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.deleteListingRecord();
     });
   }
 
