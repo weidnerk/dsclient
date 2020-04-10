@@ -176,38 +176,12 @@ export class ListingdbComponent implements OnInit {
             description: li.Description,
             sourceURL: li.SupplierItem.ItemURL,
             sellerItemID: li.ItemID
-            // ,
-            // sellerItemID: li.SellerListing.ItemID
           })
 
-          // For some reason if a supplierID is used more than once in the Listing table,
-          // meaning listed into multiple stores, the SupplierItem properties are not available
-          // from the client - you see it fine stepping through the server, but not on the client.
-          // and note that li.SupplierItem is NOT null, just the field values are aren't available.
-          // Yes, weird, and I don't know why so go out and get the SupplierItem.
-          if (li.SupplierItem.ItemURL == null) {
-            console.log('supplierItem is null');
-            this._orderHistoryService.supplierItemGet(li.SupplierID)
-              .subscribe(si => {
-                li.SupplierItem = si;
-                this.listingForm.patchValue({
-                  sourceURL: li.SupplierItem.ItemURL,
-                })
-                this.imgSource = this.getFirstInList();
-                if (this.listing) {
-                  this.imgSourceArray = this.convertStringListToArray(this.listing.SupplierItem.SupplierPicURL);
-                }
-              });
+          this.imgSource = this.getFirstInList();
+          if (this.listing) {
+            this.imgSourceArray = this.convertStringListToArray(this.listing.SupplierItem.SupplierPicURL);
           }
-          else {
-            this.imgSource = this.getFirstInList();
-            if (this.listing) {
-              this.imgSourceArray = this.convertStringListToArray(this.listing.SupplierItem.SupplierPicURL);
-            }
-          }
-          // if (li.SellerListing) {
-          //   this.ebayURL = li.SellerListing.EbayURL;
-          // }
 
           if (li.CheckShipping !== null) {
             this.listingForm.patchValue({
@@ -423,6 +397,7 @@ export class ListingdbComponent implements OnInit {
       this.listing.Description = this.ctlDescription.value;
       this.listing.Profit = 0;
       this.listing.ProfitMargin = 0;
+
       this.displayProgressSpinner = true;
 
       this._orderHistoryService.listingStore(this.listing,
@@ -441,7 +416,6 @@ export class ListingdbComponent implements OnInit {
             this.listing.PrimaryCategoryID = updatedListing.PrimaryCategoryID;
             this.listing.PrimaryCategoryName = updatedListing.PrimaryCategoryName;
           }
-          this.displayProgressSpinner = false;
           this.statusMessage = 'Record stored.';
           if (this.walItem?.CanList.length == 0) {
             this.listingButtonEnable = true;
@@ -457,6 +431,7 @@ export class ListingdbComponent implements OnInit {
           this.ctlListingTitle.markAsPristine();
           this.ctlDescription.markAsPristine();
           this.ctlListingPrice.markAsPristine();
+          this.displayProgressSpinner = false;
         },
           error => {
             this.displayProgressSpinner = false;
@@ -584,8 +559,36 @@ export class ListingdbComponent implements OnInit {
     this._orderHistoryService.getWmItem(this.ctlSourceURL.value)
       .subscribe(wi => {
 
+        let supp: SupplierItem = {
+          ItemURL: wi.ItemURL,
+          Arrives: wi.Arrives,
+          Warning: wi.Warning,
+          CanList: wi.CanList,
+          Description: wi.Description,
+          ID: wi.ID,
+          IsFreightShipping: wi.IsFreightShipping,
+          IsVERO: wi.IsVERO,
+          IsVariation: wi.IsVariation,
+          ItemID: wi.ItemID,
+          MPN: wi.MPN,
+          MatchCount: wi.MatchCount,
+          OutOfStock: wi.OutOfStock,
+          ShippingNotAvailable: wi.ShippingNotAvailable,
+          SoldAndShippedBySupplier: wi.SoldAndShippedBySupplier,
+          SupplierBrand: wi.SupplierBrand,
+          SupplierPicURL: wi.SupplierPicURL,
+          SupplierPrice: wi.SupplierPrice,
+          SupplierVariation: wi.SupplierVariation,
+          UPC: wi.UPC,
+          Updated: wi.Updated,
+          VariationName: wi.VariationName,
+          VariationPicURL: wi.VariationPicURL,
+          usItemId: wi.usItemId
+        }
+        // HACK
         // 04.09.2020 if i don't reassign walitem like this, then SupplierItem arrives as null on server (StoreListing)
-        // not sure why
+        // why?  (but doesn't happen on new listing)
+        /*
         let supp = new SupplierItem();
         supp.ItemURL = wi.ItemURL;
         supp.Arrives = wi.Arrives;
@@ -610,7 +613,11 @@ export class ListingdbComponent implements OnInit {
         supp.Updated = wi.Updated;
         supp.VariationName = wi.VariationName;
         supp.VariationPicURL = wi.VariationPicURL;
-        
+        */
+
+        // this.walItem = new SupplierItem();
+        // this.walItem = wi;
+
         this.walItem = supp;
 
         this.displayProgressSpinner = false;
