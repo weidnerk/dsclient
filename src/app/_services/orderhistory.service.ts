@@ -760,5 +760,18 @@ export class OrderHistoryService {
                 "errStatus": error.status
             });
     };
-
+    isAdmin(): boolean {
+        const userJson = localStorage.getItem('currentUser');
+        if (userJson) {
+          let currentUser = JSON.parse(userJson);
+          if (currentUser) {
+            if (currentUser.userName === 'ventures2018@gmail.com') {
+              return true;
+            }
+            return false;
+          }
+        }
+        return false;
+      }
+    
 }
