@@ -561,6 +561,7 @@ export class ListingdbComponent implements OnInit {
    */
   getWmItem() {
     this.validationMessage = "";
+    this.errorMessage = "";
     this.displayProgressSpinner = true;
     this.supplierPicsMsg = null;
     this._orderHistoryService.getWmItem(this.ctlSourceURL.value)
