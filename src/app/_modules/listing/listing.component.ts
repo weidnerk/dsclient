@@ -567,6 +567,9 @@ export class ListingdbComponent implements OnInit {
     this._orderHistoryService.getWmItem(this.ctlSourceURL.value)
       .subscribe(wi => {
 
+        // HACK
+        // 04.09.2020 if i don't reassign walitem like this, then SupplierItem arrives as null on server (StoreListing)
+        // why?  (but doesn't happen on new listing)
         let supp: SupplierItem = {
           ItemURL: wi.ItemURL,
           Arrives: wi.Arrives,
@@ -593,42 +596,9 @@ export class ListingdbComponent implements OnInit {
           VariationPicURL: wi.VariationPicURL,
           usItemId: wi.usItemId
         }
-        // HACK
-        // 04.09.2020 if i don't reassign walitem like this, then SupplierItem arrives as null on server (StoreListing)
-        // why?  (but doesn't happen on new listing)
-        /*
-        let supp = new SupplierItem();
-        supp.ItemURL = wi.ItemURL;
-        supp.Arrives = wi.Arrives;
-        supp.Warning = wi.Warning;
-        supp.CanList = wi.CanList;
-        supp.Description = wi.Description;
-        supp.ID = wi.ID;
-        supp.IsFreightShipping = wi.IsFreightShipping;
-        supp.IsVERO = wi.IsVERO;
-        supp.IsVariation = wi.IsVariation;
-        supp.ItemID = wi.ItemID;
-        supp.MPN = wi.MPN;
-        supp.MatchCount = wi.MatchCount;
-        supp.OutOfStock = wi.OutOfStock;
-        supp.ShippingNotAvailable = wi.ShippingNotAvailable;
-        supp.SoldAndShippedBySupplier = wi.SoldAndShippedBySupplier;
-        supp.SupplierBrand = wi.SupplierBrand;
-        supp.SupplierPicURL = wi.SupplierPicURL;
-        supp.SupplierPrice = wi.SupplierPrice;
-        supp.SupplierVariation = wi.SupplierVariation;
-        supp.UPC = wi.UPC;
-        supp.Updated = wi.Updated;
-        supp.VariationName = wi.VariationName;
-        supp.VariationPicURL = wi.VariationPicURL;
-        */
-
-        // this.walItem = new SupplierItem();
-        // this.walItem = wi;
 
         this.walItem = supp;
 
-        this.displayProgressSpinner = false;
         this.imgSource = wi.SupplierPicURL;
         this.imgSourceArray = this.convertStringListToArray(wi.SupplierPicURL);
         if (!this.ctlDescription.value) {
@@ -638,6 +608,12 @@ export class ListingdbComponent implements OnInit {
         }
         if (!wi.SupplierPicURL) {
           this.supplierPicsMsg = "Failed to retrieve item images from supplier."
+        }
+        if (!this.ctlListingPrice.value) {
+          this.calculateWMPrice();
+        }
+        else {
+          this.displayProgressSpinner = false;
         }
       },
         error => {
