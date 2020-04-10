@@ -162,10 +162,10 @@
             <button color="primary" type="button" (click)="calculateWMPrice()" mat-raised-button
               [disabled]="!walItem">Calculate Price</button>
             <button class="btn" mat-button mat-raised-button color="primary" type="submit" (click)="storeButtonVal=true"
-              [disabled]="!storeButtonEnable || !listingForm.valid || !walItem">Save</button>
+              [disabled]="!listingForm.valid || !walItem">Save</button>
 
             <button class="btn" mat-button mat-raised-button color="primary" type="submit" (click)="listButtonVal=true"
-              [disabled]="!listingButtonEnable || !listingForm.valid || formIsDirty()">List</button>
+              [disabled]="!listingForm.valid || !walItem || formIsDirty() || !listingButtonEnable">List</button>
             <button [hidden]="!isAdmin()" class="btn" mat-button mat-raised-button color="primary" type="submit"
               [disabled]="!listing" (click)="deleteButtonVal=true">Delete</button>
 

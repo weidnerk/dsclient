@@ -54,7 +54,7 @@ export class ListingdbComponent implements OnInit {
 
   private sub: any;
   listingID: number;  // Listing.ID
-  listing: Listing | null = null;
+  listing: Listing;
   walItem: SupplierItem | null = null;
   userSettingsView: UserSettingsView;
 
@@ -82,7 +82,7 @@ export class ListingdbComponent implements OnInit {
 
   notesButtonText: string = "Notes";
 
-  storeButtonEnable = true; // form might be valid but still want to disable these buttons
+  // storeButtonEnable = true; form might be valid but still want to disable these buttons
   listingButtonEnable = false;
 
   // status spinner variables
@@ -238,7 +238,7 @@ export class ListingdbComponent implements OnInit {
               this.ctlListingTitle.disable();
               this.ctlSourceURL.disable();
               this.ctlListingPrice.disable();
-              this.listingButtonEnable = false; 49
+              // this.listingButtonEnable = false;
             }
           }
         }
@@ -299,42 +299,44 @@ export class ListingdbComponent implements OnInit {
     this.statusMessage = null;
     this.validationMessage = null;
 
-    if (this.storeButtonVal == true) {
-      this.storeButtonVal = false;
+    // this.storeButtonEnable = false;
+    this.listingButtonEnable = false;
 
-      if (this.walItem) {
-        if (this.walItem.ItemURL != this.ctlSourceURL.value) {
-          this.walItem = null;
-          // this.listing = null;
-          this.ctlSellerItemID.setValue(null);
-          this.validationMessage = "supplier URL changed";
-        }
-        else {
+    if (this.walItem) {
+      if (this.walItem.ItemURL != this.ctlSourceURL.value) {
+        this.walItem = null;
+
+        this.ctlSellerItemID.setValue(null);
+        this.ctlDescription.setValue(null);
+        this.ctlListingPrice.setValue(null);
+        this.ctlListingQty.setValue(null);
+        this.validationMessage = "Supplier URL changed";
+      }
+      else {
+        if (this.storeButtonVal == true) {
+          this.storeButtonVal = false;
           this.saveListing();
         }
-      }
-      else {
-        this.saveListing();
-      }
-    }
-    if (this.listButtonVal == true) {
-      this.listButtonVal = false;
-      this.validationMessage = this.isValid();
-      if (!this.validationMessage) {
-        this.createListing();
-      }
-      else {
-        this.validationMessage = this.validationMessage + ' - record not listed';
-        this.storeButtonEnable = true;
+        if (this.listButtonVal == true) {
+          this.listButtonVal = false;
+          this.validationMessage = this.isValid();
+          if (!this.validationMessage) {
+            this.createListing();
+          }
+          else {
+            this.validationMessage = this.validationMessage + ' - record not listed';
+            // this.storeButtonEnable = true;
+          }
+        }
       }
     }
     if (this.deleteButtonVal == true) {
       this.deleteListingRecord();
-      this.storeButtonEnable = false;
+      // this.storeButtonEnable = false;
     }
     if (this.orderButtonVal == true) {
       this.setOrder();
-      this.storeButtonEnable = false;
+      // this.storeButtonEnable = false;
     }
   }
   /**
@@ -418,24 +420,29 @@ export class ListingdbComponent implements OnInit {
           }
           this.statusMessage = 'Record stored.';
           if (this.walItem?.CanList.length == 0) {
-            this.listingButtonEnable = true;
+            // this.listingButtonEnable = true;
           }
+          // this.storeButtonEnable = true;
           if (this.listing) {
             this.listing.Created = new Date();  // enable Add Note button
           }
           // Not ready yet for VA to list variations.
           if (this.walItem?.IsVariation && !this.admin) {
-            this.listingButtonEnable = false;
+            // this.listingButtonEnable = false;
           }
           this.ctlListingQty.markAsPristine();
           this.ctlListingTitle.markAsPristine();
           this.ctlDescription.markAsPristine();
           this.ctlListingPrice.markAsPristine();
+          if (this.walItem?.CanList.length === 0) {
+            this.listingButtonEnable = true;
+          }
           this.displayProgressSpinner = false;
         },
           error => {
             this.displayProgressSpinner = false;
             this.errorMessage = error.errMsg;
+            // this.storeButtonEnable = true;
           });
     }
   }
@@ -497,13 +504,13 @@ export class ListingdbComponent implements OnInit {
       .subscribe(si => {
         this.statusMessage = this.delimitedToHTML(si);
         this.displayProgressSpinner = false;
-        this.storeButtonEnable = true;
+        this.listingButtonEnable = false;
         this.showMessage();
       },
         error => {
           this.errorMessage = this.delimitedToHTML(error.errMsg);
           this.displayProgressSpinner = false;
-          this.storeButtonEnable = true;
+          this.listingButtonEnable = false;
         });
   }
 
