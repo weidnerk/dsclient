@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserSettingsView } from 'src/app/_models/userprofile';
 import { UserService } from 'src/app/_services';
+import { OrderHistoryService } from 'src/app/_services/orderhistory.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,14 +10,18 @@ import { UserService } from 'src/app/_services';
 })
 export class SidebarComponent implements OnInit {
 
+  isAdmin = false;
   userSettingsView: UserSettingsView;
   errorMessage: string | null;
 
-  constructor(private _userService: UserService) { }
+  constructor(private _userService: UserService,
+    private _orderHistory: OrderHistoryService) { }
 
   ngOnInit() {
     this.getUserSettings();
     
+    this.isAdmin = this._orderHistory.isAdmin();
+
   }
 
   getUserSettings() {
