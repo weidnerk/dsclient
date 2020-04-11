@@ -1,3 +1,8 @@
+/*
+* Taken from https://www.youtube.com/watch?v=FP7Hs8lTy1k&t=293s
+*
+*/
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -45,6 +50,7 @@ import { GammaModule } from 'src/app/_modules/gamma/gamma.module';
 import { ListingdbModule } from 'src/app/_modules/listing/listing.module';
 import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
 import { ConfirmComponent } from 'src/app/confirm/confirm.component';
+import { UsersettingsComponent } from 'src/app/usersettings/usersettings.component';
 
 @NgModule({
   declarations: [ 
@@ -65,7 +71,8 @@ import { ConfirmComponent } from 'src/app/confirm/confirm.component';
     ListingnoteComponent,
     ResearchComponent,
     ShowmessagesComponent,
-    ConfirmComponent
+    ConfirmComponent,
+    UsersettingsComponent
   ],
   imports: [
     CommonModule,

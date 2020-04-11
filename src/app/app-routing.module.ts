@@ -9,6 +9,7 @@ import { ResearchComponent } from './research/cr.component';
 import { TimesSoldComponent } from './timessold/timessold.component';
 import { AuthGuard } from './_guards/index';
 import { Dashboardv2Component } from './dashboard-v2/dashboard.component';
+import { UsersettingsComponent } from './usersettings/usersettings.component';
 import { DefaultComponent } from './layouts/default/default.component';
 
 const routes: Routes = [
@@ -48,6 +49,11 @@ const routes: Routes = [
         {
             path: 'apikeys',
             component: ApikeysComponent,
+            canActivate: [AuthGuard]
+        },
+        {
+            path: 'usersettings',
+            component: UsersettingsComponent,
             canActivate: [AuthGuard]
         },
         { path: 'scanseller', component: TimesSoldComponent, canActivate: [AuthGuard] }

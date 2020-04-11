@@ -187,6 +187,9 @@
           <div class="error">
             <span [innerHTML]="errorMessage"></span>
           </div>
+          <div class="error">
+            <div [innerHTML]="statusMessage"></div>
+          </div>
 
           <mat-card *ngIf="walItem">
             <div class="row">
@@ -261,9 +264,6 @@
             </div>
           </div> -->
           </mat-card>
-          <div class="error">
-            <div [innerHTML]="statusMessage"></div>
-          </div>
           <div *ngIf="admin && listing">
           </div>
           <a href="https://html-online.com/editor/" target="_blank">HTML editor</a>

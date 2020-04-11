@@ -1,32 +1,17 @@
-// example classes come from this link - found this so that sidenav does not overlap content page
-// https://stackblitz.com/angular/xeogrgyovma?file=app%2Fsidenav-autosize-example.css
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+mat-drawer {
+  width: 350px;
+}
 
-.example-container {
-    // width: 500px;
-    height: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-  }
+// this setting appears to get ignored, causing the problem
+mat-drawer-container {
+  height: 100%; 
+}
 
-  // NO, lose header and footer
-  // .example-container {
-  //   position: absolute;
-  //   top: 0;
-  //   bottom: 0;
-  //   left: 0;
-  //   right: 0;
-  //   background: #eee;
-  // }
-  
-  .example-sidenav-content {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .example-sidenav {
-    padding: 20px;
-  }
-
-  // .app-sidenav { display: flex; }
-  // .mat-drawer-container { flex: 1 1 auto; }
+mat-drawer-content {
+  padding: 20px;
+}
