@@ -1,3 +1,7 @@
+// these classes important otherwise get weird overlapping issues
+// came from https://www.youtube.com/watch?v=FP7Hs8lTy1k&t=293s
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 :host {
   display: flex;
   flex-direction: column;
@@ -7,7 +11,6 @@ mat-drawer {
   width: 350px;
 }
 
-// this setting appears to get ignored, causing the problem
 mat-drawer-container {
   height: 100%; 
 }
@@ -15,3 +18,4 @@ mat-drawer-container {
 mat-drawer-content {
   padding: 20px;
 }
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

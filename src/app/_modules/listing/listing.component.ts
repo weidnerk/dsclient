@@ -131,7 +131,7 @@ export class ListingdbComponent implements OnInit {
   }
   ngOnInit() {
 
-    this.admin = this.isAdmin();
+    this.admin = this._orderHistoryService.isAdmin();
     this.buildForm();
     this.buildOrderForm();
     this.getUserSettings();
@@ -710,16 +710,16 @@ export class ListingdbComponent implements OnInit {
   /**
    * Am I signed in
    */
-  isAdmin(): boolean {
-    const userJson: string | null = localStorage.getItem('currentUser');
-    if (userJson) {
-      let currentUser = JSON.parse(userJson);
-      if (currentUser.userName === 'ventures2018@gmail.com') {
-        return true;
-      }
-    }
-    return false;
-  }
+  // isAdmin(): boolean {
+  //   const userJson: string | null = localStorage.getItem('currentUser');
+  //   if (userJson) {
+  //     let currentUser = JSON.parse(userJson);
+  //     if (currentUser.userName === 'ventures2018@gmail.com') {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
@@ -732,10 +732,11 @@ export class ListingdbComponent implements OnInit {
     this.listingForm = this.fb.group({
       listingTitle: [null, Validators.compose([Validators.required, Validators.maxLength(80)])],
       listingPrice: [null, {
-        validators: [Validators.required, this.validateRequiredNumeric.bind(this)]
-      }], profit: [null],
+        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
+      }], 
+      profit: [null],
       listingQty: [null, {
-        validators: [Validators.required, this.validateRequiredNumeric.bind(this)]
+        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }],
       sourceURL: [null, Validators.compose([Validators.required, Validators.maxLength(500)])],
       sourceId: [null],
@@ -835,22 +836,6 @@ export class ListingdbComponent implements OnInit {
           this.displayProgressSpinner = false;
           this.errorMessage = error.errMsg;
         });
-  }
-
-  validateRequiredNumeric(c: AbstractControl) {
-    if (c.value === null) {
-      return { error: true };
-    }
-    if (c.value !== undefined) {
-      const strLength: number = (<string>c.value).length;
-
-      if (isNaN(c.value)) {
-        this.counties = null;
-        return { error: true };
-      } else {
-        return null;    // control is valid
-      }
-    }
   }
 
   showMessage() {

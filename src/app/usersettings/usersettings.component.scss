@@ -1,0 +1,14 @@
+// These classes help format mat-input and seem to be needed in component itself as opposed to styles.scss
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.outlinepadding ::ng-deep .mat-form-field-infix {
+    padding: 3px 0 3px 0; /* top,right,bottom,right */
+}
+
+/* moves input up/down, affects padding - helps to manage height of control */
+.outlinepaddingselect ::ng-deep .mat-form-field-infix {
+    padding: 12px 0 7px 0; /* top,right,bottom,right */
+    // font-size: 13px;
+    // bottom: 10px;        /* moves text in textbox up and down, but arrow not aligned */
+}
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

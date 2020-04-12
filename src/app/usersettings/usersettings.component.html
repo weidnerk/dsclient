@@ -1,1 +1,15 @@
-<p>usersettings works!</p>
+<div class="container">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-2">
+                <label class="lbl">pct profit:</label>
+            </div>
+            <div class="col-10">
+                <mat-form-field appearance="outline" class="outlinepadding">
+                    <input matInput formControlName="pctProfit" maxlength="40" placeholder="pct profit">
+                </mat-form-field>
+            </div>
+        </div>
+        <button class="btn" mat-button mat-raised-button color="primary" type="submit">Save</button>
+    </form>
+</div>

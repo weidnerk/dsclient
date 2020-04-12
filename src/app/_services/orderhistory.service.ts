@@ -12,6 +12,7 @@ import { catchError } from 'rxjs/internal/operators';
 import { ModelView, Listing, SearchReport, SourceCategory, SellerProfile, Dashboard, ListingNote, ListingNoteView, ListingView, OrderHistory, SellerListing, SupplierItem, UpdateToListing, SalesOrder, PriceProfit } from '../_models/orderhistory';
 import { WalmartSearchProdIDResponse } from '../_models/walitem';
 import { environment } from '../../environments/environment';
+import { AbstractControl } from '@angular/forms';
 
 @Injectable()
 export class OrderHistoryService {
@@ -763,15 +764,29 @@ export class OrderHistoryService {
     isAdmin(): boolean {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
-          let currentUser = JSON.parse(userJson);
-          if (currentUser) {
-            if (currentUser.userName === 'ventures2018@gmail.com') {
-              return true;
+            let currentUser = JSON.parse(userJson);
+            if (currentUser) {
+                if (currentUser.userName === 'ventures2018@gmail.com') {
+                    return true;
+                }
+                return false;
             }
-            return false;
-          }
         }
         return false;
-      }
-    
+    }
+    validateRequiredNumeric(c: AbstractControl) {
+        if (c.value === null) {
+            return { error: true };
+        }
+        if (c.value !== undefined) {
+            const strLength: number = (<string>c.value).length;
+
+            if (isNaN(c.value)) {
+                return { error: true };
+            } else {
+                return null;    // control is valid
+            }
+        }
+    }
+
 }

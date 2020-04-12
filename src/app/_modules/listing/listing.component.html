@@ -69,7 +69,6 @@
         </div> -->
 
           <div class="row">
-
             <div class="col-10">
               <mat-form-field appearance="outline" class="outlinepadding title">
                 <mat-label>Listing Title</mat-label>
@@ -166,10 +165,10 @@
 
             <button class="btn" mat-button mat-raised-button color="primary" type="submit" (click)="listButtonVal=true"
               [disabled]="!listingForm.valid || !walItem || formIsDirty() || !listingButtonEnable">List</button>
-            <button [hidden]="!isAdmin()" class="btn" mat-button mat-raised-button color="primary" type="submit"
+            <button [hidden]="!admin" class="btn" mat-button mat-raised-button color="primary" type="submit"
               [disabled]="!listing" (click)="deleteButtonVal=true">Delete</button>
 
-            <button [hidden]="!isAdmin()" class="btn" mat-button mat-raised-button color="primary"
+            <button [hidden]="!admin" class="btn" mat-button mat-raised-button color="primary"
               (click)="refreshItemSpecifics()" [disabled]="!storeButtonEnable || !listingForm.valid || !walItem">Refresh
               Item Specifics</button>
             <ng-container *ngIf="admin">
@@ -324,7 +323,7 @@
       </div>
     </mat-tab>
     <mat-tab [disabled]='true' label="Orders">
-      <ng-container *ngIf="isAdmin()">
+      <ng-container *ngIf="admin">
         <div class="container">
           <br />
           <form *ngIf="listing" [formGroup]="orderForm" (ngSubmit)="salesOrderStore()">
@@ -366,7 +365,7 @@
     </mat-tab>
     <mat-tab [disabled]='true' label="Variations">
       <br />
-      <ng-container *ngIf="isAdmin()">
+      <ng-container *ngIf="admin">
         <button class="btn" mat-button mat-raised-button color="primary" type="button"
           (click)="createVariationListing()">Create Variation Listing</button>
         <button class="btn" mat-button mat-raised-button color="primary" type="button"
