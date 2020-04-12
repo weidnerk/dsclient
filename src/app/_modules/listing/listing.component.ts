@@ -780,15 +780,20 @@ export class ListingdbComponent implements OnInit {
   }
 
   onDelete() {
-    const dialogRef = this.dialog.open(ConfirmComponent, {
-      height: '500px',
+    const dialogRef = this.dialog.open(ConfirmComponent, 
+      { disableClose: true ,
+      height: '200px',
       width: '900px',
       data: { listing: this.listing }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.deleteListingRecord();
+      if (result === 'Yes') {
+        this.deleteListingRecord();
+      }
+      if (result === 'No') {
+        // console.log('No');
+      }
     });
   }
 
@@ -846,7 +851,13 @@ export class ListingdbComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed');
+      if (result === 'A') {
+        // handle A button close
+      }
+    
+      if (result === 'B') {
+        // handle B button close
+      }
     });
   }
 

@@ -1,1 +1,7 @@
-<p>confirm works!</p>
+<div>
+    Are you sure you want to delete?
+</div>
+<div mat-dialog-actions>
+    <button color="accent" type="button" (click)="dialogRef.close('Yes')" color="primary" mat-raised-button>Yes</button>
+    <button mat-button type="button" (click)="dialogRef.close('No')" tabindex="-1">No</button>
+</div>
