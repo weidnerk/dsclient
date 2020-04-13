@@ -137,8 +137,6 @@ export class ListingdbComponent implements OnInit {
     // passing rptNumber and qtySold to potentially record in Listing table.
     this.sub = this.route.params.subscribe(params => {
       this.listingID = params['listingID'];
-      // this.rptNumber = +params['rptNumber'];
-      // this.qtySold = +params['qtySold'];
       if (this.listingID > 0) {
         this.ctlSellerItemID.disable();
         this.getData();
@@ -451,6 +449,10 @@ export class ListingdbComponent implements OnInit {
           if (this.walItem?.CanList.length === 0) {
             this.listingButtonEnable = true;
           }
+
+          // Could be new listing, so once we save, lock down the supplier URL
+          this.ctlSourceURL.disable();
+          
           this.displayProgressSpinner = false;
         },
           error => {
