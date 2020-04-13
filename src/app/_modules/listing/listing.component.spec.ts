@@ -26,7 +26,8 @@ import { OrderHistoryService } from '../../_services/orderhistory.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ParamService } from '../../_services/param.service';
 import { ListCheckService } from '../../_services/listingcheck.service';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { UserService } from 'src/app/_services';
 
 fdescribe('Listing Component tests', () => {
   let component: ListingdbComponent;
@@ -64,9 +65,11 @@ fdescribe('Listing Component tests', () => {
         MatCardModule,
         RouterModule.forRoot([])
       ],
-      providers: [OrderHistoryService,
+      providers: [
+        OrderHistoryService,
         ParamService,
-      ListCheckService]
+        ListCheckService,
+        UserService]
     })
     fixture = TestBed.createComponent(ListingdbComponent);
     component = fixture.componentInstance;

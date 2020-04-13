@@ -13,7 +13,7 @@
     <div [ngClass]="{'error': tokenStatus.ExpirationTime==null}">
       Token status: {{tokenStatus.StatusStr}}
     </div>
-    <br/>
+    <br />
     <div>
       <mat-form-field appearance="outline" class="outlinepadding keyWidth">
         <mat-label>App ID Key</mat-label>
@@ -46,6 +46,16 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Stores</mat-label>
+        <mat-select formControlName="selectedStore" (selectionChange)="storeSelected($event)">
+          <mat-option *ngFor="let m of userStores" [value]="m.storeID">
+            {{ m.storeName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>&nbsp;
     </div>
     <div>
       <button mat-button mat-raised-button color="primary" type="submit" [disabled]="!apikeysForm.valid">Submit</button>

@@ -22,7 +22,7 @@ import { MatOption } from '@angular/material/core';
 @Component({
   selector: 'app-gamma',
   templateUrl: './gamma.component.html',
-  styleUrls: ['./gamma.component.css']
+  styleUrls: ['./gamma.component.scss']
 })
 export class GammaComponent {
   displayedColumns: string[] = [];

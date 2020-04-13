@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { TokenStatusTypeCustom, AppIDSelect, UserSettings, UserSettingsView } from '../_models/userprofile';
+import { TokenStatusTypeCustom, AppIDSelect, UserSettings, UserSettingsView, UserStoreView } from '../_models/userprofile';
 import { UserService } from '../_services/index';
 import { Token } from '@angular/compiler';
 import { environment } from '../../environments/environment';
@@ -25,6 +25,8 @@ export class ApikeysComponent implements OnInit {
   apiHelp: boolean = false;
   apiKeys: AppIDSelect[];
   apiHelpText: string = environment.HELP_TEXT;
+  userStores: UserStoreView[];
+  selectedStore: number;
 
   constructor(private route: Router, private fb: FormBuilder, private _userService: UserService) { }
 
@@ -36,6 +38,7 @@ export class ApikeysComponent implements OnInit {
     // this.getAppIds();
     this.getTradingAPIUsage();
     // this.getTokenStatus();
+    this.getStores();
   }
 
   getTokenStatus() {
@@ -113,7 +116,8 @@ export class ApikeysComponent implements OnInit {
       devidkey: [null, Validators.required],
       certidkey: [null, Validators.required],
       apitoken: [null, Validators.required],
-      apikeyselect: [null]
+      apikeyselect: [null],
+      selectedStore: [null]
     })
   }
 
@@ -170,5 +174,21 @@ export class ApikeysComponent implements OnInit {
           error => {
             this.errorMessage = <any>error;
           });
+    }
+    getStores() {
+      this._userService.getUserStores()
+        .subscribe(x => {
+          this.userStores = x;
+        },
+          error => {
+            this.errorMessage = error;
+          });
+    }
+    storeSelected(event: MatSelectChange) {
+      const selectedData = {
+        text: (event.source.selected as MatOption).viewValue,
+        value: event.source.value
+      };
+      this.selectedStore = selectedData.value;
     }
 }
