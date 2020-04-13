@@ -130,6 +130,7 @@ export class Listing {
     Warning: string[];
     ItemSpecifics: ListingItemSpecific[];
     eBaySellerURL: string;
+    SellerListing: SellerListing | null;
 }
 export class ListingView extends Listing {
     Seller: string;

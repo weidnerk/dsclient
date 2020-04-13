@@ -96,7 +96,7 @@ export class ListingdbComponent implements OnInit {
   listingForm: FormGroup;
   formatedPictureUrl: string;
   formatedOutput: string;
-  imgSource: string | null;
+  // imgSource: string | null;
   imgSourceArray: string[];
   orderForm: FormGroup;
 
@@ -105,21 +105,15 @@ export class ListingdbComponent implements OnInit {
   get ctlListingPrice() { return this.listingForm.controls['listingPrice']; }
   get ctlListingTitle() { return this.listingForm.controls['listingTitle']; }
   get ctlListingQty() { return this.listingForm.controls['listingQty']; }
-  get ctlCheckShipping() { return this.listingForm.controls['checkShipping']; }
-  get ctlCheckSource() { return this.listingForm.controls['checkSource']; }  // sold & shipped by supplier
-  get ctlCheckCategory() { return this.listingForm.controls['checkCategory']; }
   get ctlNote() { return this.listingForm.controls['note']; }
-  get ctlCheckSupplierPrice() { return this.listingForm.controls['checkSupplierPrice']; }
-  get ctlCheckSupplierItem() { return this.listingForm.controls['checkSupplierItem']; }
-  get ctlCheckSupplierPics() { return this.listingForm.controls['checkSupplierPics']; }
   get ctlDescription() { return this.listingForm.controls['description']; }
   get ctlCheckDescription() { return this.listingForm.controls['checkDescription']; }
+  
 
   get ctlEbayOrderNum() { return this.orderForm.controls['ebayOrderNumber']; }
   get ctlIPaid() { return this.orderForm.controls['ipaid']; }
   get ctlSupplierOrderNum() { return this.orderForm.controls['supplierOrderNumber']; }
 
-  get ctlCheckVariationURL() { return this.listingForm.controls['checkSupplierVariationURL']; }
   get ctlSellerItemID(): AbstractControl { return this.listingForm.controls['sellerItemID']; }
 
   /**
@@ -179,7 +173,7 @@ export class ListingdbComponent implements OnInit {
             sellerItemID: li.ItemID
           })
 
-          this.imgSource = this.getFirstInList();
+          // this.imgSource = this.getFirstInList(this.imgSource);
           if (this.listing) {
             this.imgSourceArray = this.convertStringListToArray(this.listing.SupplierItem.SupplierPicURL);
           }
@@ -300,7 +294,6 @@ export class ListingdbComponent implements OnInit {
     this.statusMessage = null;
     this.validationMessage = null;
 
-    // this.storeButtonEnable = false;
     this.listingButtonEnable = false;
 
     if (this.walItem) {
@@ -311,12 +304,23 @@ export class ListingdbComponent implements OnInit {
         this.ctlDescription.setValue(null);
         this.ctlListingPrice.setValue(null);
         this.ctlListingQty.setValue(null);
+        this.ctlListingTitle.setValue(null);
+        this.listing.PrimaryCategoryID = "";
+        this.listing.PrimaryCategoryName = "";
+        this.imgSourceArray = [];
+        this.listing.SellerListing = null;
         this.validationMessage = "Supplier URL changed";
       }
       else {
         if (this.storeButtonVal == true) {
           this.storeButtonVal = false;
-          this.saveListing();
+          this.validationMessage = this.isValid();
+          if (!this.validationMessage) {
+            this.saveListing();
+          }
+          else {
+            this.validationMessage = this.validationMessage + ' - record not saved';
+          }
         }
         if (this.listButtonVal == true) {
           this.listButtonVal = false;
@@ -332,7 +336,6 @@ export class ListingdbComponent implements OnInit {
     }
     if (this.deleteButtonVal == true) {
       this.onDelete();
-      // this.deleteListingRecord();
     }
     if (this.orderButtonVal == true) {
       this.setOrder();
@@ -363,6 +366,9 @@ export class ListingdbComponent implements OnInit {
       }
       if (!this.listing.PictureURL) {
         return 'Validation: could not fetch supplier pictures';
+      }
+      if (this.listing.ID > 0 && !this.ctlListingTitle) {
+        return 'Please provide a title';
       }
     }
     return null;
@@ -412,10 +418,19 @@ export class ListingdbComponent implements OnInit {
           "SupplierItem.ItemURL"])
         .subscribe(updatedListing => {
           this.listingID = updatedListing.ID;
+        
           if (this.listing) {
             this.listing.ID = updatedListing.ID;
             this.listing.PrimaryCategoryID = updatedListing.PrimaryCategoryID;
             this.listing.PrimaryCategoryName = updatedListing.PrimaryCategoryName;
+            this.listing.SellerListing = updatedListing.SellerListing;
+          }
+          if (!this.ctlListingTitle.value) {
+
+            // is title null here , why?
+            this.listingForm.patchValue({
+              listingTitle: updatedListing.SellerListing?.Title
+            });
           }
           this.statusMessage = 'Record stored.';
           if (this.walItem?.CanList.length == 0) {
@@ -537,8 +552,8 @@ export class ListingdbComponent implements OnInit {
       .subscribe(si => {
         this.displayProgressSpinner = false;
 
-        this.statusMessage = "Record deleted";
-        this.showMessage();
+        // this.statusMessage = "Record deleted";
+        // this.showMessage();
 
         // Seems we have to give time for the progress overlay to finish
         // otherwise, redirect to listings and overlay never goes away.
@@ -598,7 +613,7 @@ export class ListingdbComponent implements OnInit {
 
         this.walItem = supp;
 
-        this.imgSource = wi.SupplierPicURL;
+        // this.imgSource = wi.SupplierPicURL;
         this.imgSourceArray = this.convertStringListToArray(wi.SupplierPicURL);
         if (!this.ctlDescription.value) {
           this.listingForm.patchValue({
@@ -688,9 +703,9 @@ export class ListingdbComponent implements OnInit {
   /**
    * Get first item in semi-colon delimited string.
    */
-  getFirstInList(): string | null {
-    if (this.imgSource) {
-      var a = this.imgSource.split(';');
+  getFirstInList(item: string | null): string | null {
+    if (item) {
+      var a = item.split(';');
       return a[0];
     }
     else {
@@ -717,12 +732,12 @@ export class ListingdbComponent implements OnInit {
 
   buildForm(): void {
     this.listingForm = this.fb.group({
-      listingTitle: [null, Validators.compose([Validators.required, Validators.maxLength(80)])],
+      listingTitle: [null, Validators.compose([Validators.maxLength(80)])],
       listingPrice: [null, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }], 
       profit: [null],
-      listingQty: [null, {
+      listingQty: [1, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }],
       sourceURL: [null, Validators.compose([Validators.required, Validators.maxLength(500)])],
