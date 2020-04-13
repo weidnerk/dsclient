@@ -707,19 +707,6 @@ export class ListingdbComponent implements OnInit {
     return a[0];
   }
 
-  /**
-   * Am I signed in
-   */
-  // isAdmin(): boolean {
-  //   const userJson: string | null = localStorage.getItem('currentUser');
-  //   if (userJson) {
-  //     let currentUser = JSON.parse(userJson);
-  //     if (currentUser.userName === 'ventures2018@gmail.com') {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
@@ -851,13 +838,7 @@ export class ListingdbComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === 'A') {
-        // handle A button close
-      }
-    
-      if (result === 'B') {
-        // handle B button close
-      }
+     
     });
   }
 
