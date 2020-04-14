@@ -28,6 +28,7 @@ export class UserSettings {
     //storeName: string;
     //firstName: string;
     storeID: number;
+    pctProfit: number;
 }
 
 export class UserSettingsView extends UserSettings {

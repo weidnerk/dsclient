@@ -40,7 +40,8 @@ export class UsersettingsComponent implements OnInit {
     this._userService.UserSettingsViewGet()
       .subscribe(userSettings => {
         this.userSettingsView = userSettings;
-      
+        console.log('storeID: ' + userSettings.storeID);
+        console.log('pctProfit: ' + userSettings.pctProfit);
       },
         error => {
           if (error.errorStatus !== 404) {

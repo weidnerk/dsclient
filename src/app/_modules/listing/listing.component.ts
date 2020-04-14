@@ -104,7 +104,7 @@ export class ListingdbComponent implements OnInit {
   get ctlNote() { return this.listingForm.controls['note']; }
   get ctlDescription() { return this.listingForm.controls['description']; }
   get ctlCheckDescription() { return this.listingForm.controls['checkDescription']; }
-  
+
 
   get ctlEbayOrderNum() { return this.orderForm.controls['ebayOrderNumber']; }
   get ctlIPaid() { return this.orderForm.controls['ipaid']; }
@@ -411,7 +411,7 @@ export class ListingdbComponent implements OnInit {
           "SupplierItem.ItemURL"])
         .subscribe(updatedListing => {
           this.listingID = updatedListing.ID;
-        
+
           if (this.listing) {
             this.listing.ID = updatedListing.ID;
             this.listing.PrimaryCategoryID = updatedListing.PrimaryCategoryID;
@@ -447,7 +447,7 @@ export class ListingdbComponent implements OnInit {
 
           // Could be new listing, so once we save, lock down the supplier URL
           this.ctlSourceURL.disable();
-          
+
           this.displayProgressSpinner = false;
         },
           error => {
@@ -491,14 +491,15 @@ export class ListingdbComponent implements OnInit {
     }
   }
   onEndListing() {
-    const dialogRef = this.dialog.open(ConfirmComponent, 
-      { disableClose: true ,
-      height: '200px',
-      width: '900px',
-      data: { 
-        titleMessage: "Are you sure you want to end the listing?" 
-      }
-    });
+    const dialogRef = this.dialog.open(ConfirmComponent,
+      {
+        disableClose: true,
+        height: '200px',
+        width: '900px',
+        data: {
+          titleMessage: "Are you sure you want to end the listing?"
+        }
+      });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'Yes') {
@@ -750,7 +751,7 @@ export class ListingdbComponent implements OnInit {
       listingTitle: [null, Validators.compose([Validators.maxLength(80)])],
       listingPrice: [null, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
-      }], 
+      }],
       profit: [null],
       listingQty: [1, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
@@ -797,14 +798,15 @@ export class ListingdbComponent implements OnInit {
   }
 
   onDelete() {
-    const dialogRef = this.dialog.open(ConfirmComponent, 
-      { disableClose: true ,
-      height: '200px',
-      width: '900px',
-      data: { 
-        titleMessage: "Are you sure you want to delete?" 
-      }
-    });
+    const dialogRef = this.dialog.open(ConfirmComponent,
+      {
+        disableClose: true,
+        height: '200px',
+        width: '900px',
+        data: {
+          titleMessage: "Are you sure you want to delete?"
+        }
+      });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'Yes') {
@@ -870,10 +872,9 @@ export class ListingdbComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-     
+
     });
   }
-
 
   /**
    * Need storeID for new listing.
@@ -891,5 +892,10 @@ export class ListingdbComponent implements OnInit {
           this.displayProgressSpinner = false;
         });
   }
-
+  deleteButtonDisable(): boolean {
+    if (!this.listing || (this.listing && this.listing.ID == 0) || (this.listing && this.listing.Listed))
+      return true;
+    else
+      return false;
+  }
 }
