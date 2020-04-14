@@ -139,7 +139,9 @@ export class RegisterComponent {
         return of(null);
     };
 
-
+    onRemoveUser() {
+        console.log('remove user');
+    }
     buildForm(): void {
         this.registerForm = this.fb.group({
             userName: [null, {
