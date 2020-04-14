@@ -84,17 +84,22 @@
                 <div>
                     <button mat-button mat-raised-button color="primary" type="submit">Submit</button>
                     <a [routerLink]="['/']" class="btn btn-link">Cancel</a>
-                    <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onRemoveUser()">Remove user</button>
+                    <button class="btn" mat-button mat-raised-button color="primary" type="button"
+                        (click)="onRemoveUser()">Remove user</button>
                 </div>
             </div>
         </div>
         <br />
         <div class="error">
-            {{errorMessage}} <!-- needed for message like 'passwords must be at least 6 chars' -->
+            {{errorMessage}}
+            <!-- needed for message like 'passwords must be at least 6 chars' -->
         </div>
+        <br />
+        <pre>
+            This software is sold "as-is".  Absolutely no warranties of any kind.  Use at your own risk.
+        </pre>
     </div>
 </form>
-<br />
 <!-- Form status: {{ registerForm.status }}<br />
 Pwd status: {{ registerForm.errors | json }}<br />
 Pwd has error: {{ registerForm.get('confirm').hasError('nomatch') }}<br /> 
