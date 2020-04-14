@@ -71,8 +71,6 @@ export class ListingdbComponent implements OnInit {
   deleteButtonVal: boolean = false;
   orderButtonVal: boolean = false;
 
-  // profitFromSeller = new DeriveProfit();
-  // profit = new DeriveProfit();
   rptNumber = 0;
   qtySold = 0;
   admin = false;
@@ -83,7 +81,6 @@ export class ListingdbComponent implements OnInit {
 
   notesButtonText: string = "Notes";
 
-  // storeButtonEnable = true; form might be valid but still want to disable these buttons
   listingButtonEnable = false;
 
   // status spinner variables
@@ -96,7 +93,6 @@ export class ListingdbComponent implements OnInit {
   listingForm: FormGroup;
   formatedPictureUrl: string;
   formatedOutput: string;
-  // imgSource: string | null;
   imgSourceArray: string[];
   orderForm: FormGroup;
 
@@ -231,7 +227,6 @@ export class ListingdbComponent implements OnInit {
               this.ctlListingTitle.disable();
               this.ctlSourceURL.disable();
               this.ctlListingPrice.disable();
-              // this.listingButtonEnable = false;
             }
           }
         }
@@ -458,7 +453,6 @@ export class ListingdbComponent implements OnInit {
           error => {
             this.displayProgressSpinner = false;
             this.errorMessage = error.errMsg;
-            // this.storeButtonEnable = true;
           });
     }
   }
