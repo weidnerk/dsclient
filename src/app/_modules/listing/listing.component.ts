@@ -13,7 +13,7 @@ import { ListingnoteComponent } from '../../listingnote/listingnote.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ListCheckService } from '../../_services/listingcheck.service';
 import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
-import { UserSettingsView, UserProfile } from 'src/app/_models/userprofile';
+import { UserProfile } from 'src/app/_models/userprofile';
 import { UserService } from 'src/app/_services';
 import { ConfirmComponent } from 'src/app/confirm/confirm.component';
 
@@ -57,7 +57,6 @@ export class ListingdbComponent implements OnInit {
   listingID: number;  // Listing.ID
   listing: Listing;
   walItem: SupplierItem | null = null;
-  userSettingsView: UserSettingsView;
   userProfile: UserProfile;
 
   // used for testing fetch of variations
@@ -386,7 +385,7 @@ export class ListingdbComponent implements OnInit {
       this.listing.ID = 0;
     }
     if (this.listing && this.walItem) {
-      this.listing.StoreID = this.userSettingsView.storeID;
+      this.listing.StoreID = this.userProfile.selectedStore;
 
       this.listing.SupplierItem = this.walItem;
       if (this.listing.SupplierID > 0) {
@@ -881,17 +880,7 @@ export class ListingdbComponent implements OnInit {
     });
   }
 
-  // getUserSettings() {
-  //   this._userService.UserSettingsViewGet()
-  //     .subscribe(userSettings => {
-  //       this.userSettingsView = userSettings;
-  //     },
-  //       error => {
-  //         if (error.errorStatus !== 404) {
-  //           this.errorMessage = JSON.stringify(error);
-  //         }
-  //       });
-  // }
+
   /**
    * Need storeID for new listing.
    */
@@ -900,8 +889,6 @@ export class ListingdbComponent implements OnInit {
       .subscribe(profile => {
         this.userProfile = profile;
         this.selectedStore = profile.selectedStore;
-        this.getStores();
-        this.loadData();
       },
         error => {
           if (error.errorStatus !== 404) {
