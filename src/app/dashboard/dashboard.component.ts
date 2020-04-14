@@ -39,7 +39,9 @@ export class DashboardComponent implements OnInit {
     this.loading = true;
     this.getDashboard();
     this.getErrorCount();
-    this.getLastError();
+    if (this._orderHistoryService.isAdmin()) {
+      this.getLastError();
+    }
   }
 
   getDashboard() {
