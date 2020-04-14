@@ -85,8 +85,7 @@ export class UserService {
                 }
             )
     }
-
-    UserProfileSave(profile: UserSettings) {
+    UserProfileSave(profile: UserProfile) {
 
         let url = environment.API_ENDPOINT + "api/Account/userprofilesave";
         const userJson = localStorage.getItem('currentUser');
@@ -115,12 +114,12 @@ export class UserService {
      * 
      * @param appID if appID is null, we are loading user's setting
      */
-    UserProfileGet(appID: string): Observable<UserProfile> {
+    UserProfileGet(): Observable<UserProfile> {
 
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
-            let url = environment.API_ENDPOINT + "api/Account/userprofileget?userName=" + currentUser.userName + "&appID=" + ((appID) ? appID : "");
+            let url = environment.API_ENDPOINT + "api/Account/userprofileget?userName=" + currentUser.userName;
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',

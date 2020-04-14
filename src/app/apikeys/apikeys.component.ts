@@ -136,13 +136,13 @@ export class ApikeysComponent implements OnInit {
     // p.AppID = appID;
     // console.log(appID);
 
-    this._userService.UserProfileSave(p)
-      .subscribe(x => {
-        this.route.navigate(['/']);
-      },
-        error => {
-          this.errorMessage = JSON.stringify(error);
-        });
+    // this._userService.UserProfileSave(p)
+    //   .subscribe(x => {
+    //     this.route.navigate(['/']);
+    //   },
+    //     error => {
+    //       this.errorMessage = JSON.stringify(error);
+    //     });
 
   }
   onApiHelp() {

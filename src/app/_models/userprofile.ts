@@ -2,6 +2,7 @@ export class UserProfile {
     userID: string;
     firstname: string;
     lastname: string;
+    selectedStore: number;
 }
 
 // a little different from actual UserProfile in AccountController since need to pass userName so we can look up id

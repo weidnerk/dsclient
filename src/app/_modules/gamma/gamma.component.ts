@@ -14,7 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { OrderHistoryService } from '../../_services/orderhistory.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../_services';
-import { UserStoreView, UserSettings, UserSettingsView } from '../../_models/userprofile';
+import { UserStoreView, UserSettingsView, UserProfile } from '../../_models/userprofile';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MatOption } from '@angular/material/core';
@@ -41,6 +41,7 @@ export class GammaComponent {
   userStores: UserStoreView[];
   selectedStore: number;
   userSettingsView: UserSettingsView;
+  userProfile: UserProfile;
   unlisted = true;
   listed = false;
 
@@ -84,7 +85,7 @@ export class GammaComponent {
    */
   ngAfterViewInit() {
     this.displayProgressSpinner = true;
-    this.getUserSettings();
+    this.getUserProfile();
   }
   getStores() {
     this._userService.getUserStores()
@@ -95,11 +96,26 @@ export class GammaComponent {
           this.errorMessage = error;
         });
   }
-  getUserSettings() {
-    this._userService.UserSettingsViewGet()
-      .subscribe(userSettings => {
-        this.userSettingsView = userSettings;
-        this.selectedStore = userSettings.storeID;
+  // getUserSettings() {
+  //   this._userService.UserSettingsViewGet()
+  //     .subscribe(userSettings => {
+  //       this.userSettingsView = userSettings;
+  //       this.selectedStore = userSettings.storeID;
+  //       this.getStores();
+  //       this.loadData();
+  //     },
+  //       error => {
+  //         if (error.errorStatus !== 404) {
+  //           this.errorMessage = JSON.stringify(error);
+  //         }
+  //         this.displayProgressSpinner = false;
+  //       });
+  // }
+  getUserProfile() {
+    this._userService.UserProfileGet()
+      .subscribe(profile => {
+        this.userProfile = profile;
+        this.selectedStore = profile.selectedStore;
         this.getStores();
         this.loadData();
       },
@@ -180,10 +196,19 @@ export class GammaComponent {
     console.log('add item');
     this.route.navigate(['/listingdetaildb/0']);
   }
-  userSettingsSave() {
-    let settings = new UserSettings();
-    settings.storeID = this.selectedStore;
-    this._userService.userSettingsSave(settings, ["StoreID"])
+  // userSettingsSave() {
+  //   let settings = new UserSettings();
+  //   settings.storeID = this.selectedStore;
+  //   this._userService.userSettingsSave(settings, ["StoreID"])
+  //     .subscribe(si => {
+  //     },
+  //       error => {
+  //         this.errorMessage = error.errMsg;
+  //       });
+  // }
+  userProfileSave() {
+    this.userProfile.selectedStore = this.selectedStore;
+    this._userService.UserProfileSave(this.userProfile)
       .subscribe(si => {
       },
         error => {
@@ -197,7 +222,7 @@ export class GammaComponent {
     };
     this.selectedStore = selectedData.value;
     this.displayProgressSpinner = true;
-    this.userSettingsSave();
+    this.userProfileSave();
     this.loadData();
   }
 }

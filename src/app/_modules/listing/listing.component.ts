@@ -13,7 +13,7 @@ import { ListingnoteComponent } from '../../listingnote/listingnote.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ListCheckService } from '../../_services/listingcheck.service';
 import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
-import { UserSettingsView } from 'src/app/_models/userprofile';
+import { UserSettingsView, UserProfile } from 'src/app/_models/userprofile';
 import { UserService } from 'src/app/_services';
 import { ConfirmComponent } from 'src/app/confirm/confirm.component';
 
@@ -58,6 +58,7 @@ export class ListingdbComponent implements OnInit {
   listing: Listing;
   walItem: SupplierItem | null = null;
   userSettingsView: UserSettingsView;
+  userProfile: UserProfile;
 
   // used for testing fetch of variations
   variationItem: SupplierItem;
@@ -128,7 +129,7 @@ export class ListingdbComponent implements OnInit {
     this.admin = this._orderHistoryService.isAdmin();
     this.buildForm();
     this.buildOrderForm();
-    this.getUserSettings();
+    this.getUserProfile();
 
     this.listingForm.controls['variation'].disable();
     this.listingForm.controls['variationDescription'].disable();
@@ -496,6 +497,25 @@ export class ListingdbComponent implements OnInit {
           });
     }
   }
+  onEndListing() {
+    const dialogRef = this.dialog.open(ConfirmComponent, 
+      { disableClose: true ,
+      height: '200px',
+      width: '900px',
+      data: { 
+        titleMessage: "Are you sure you want to end the listing?" 
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'Yes') {
+        this.endListing();
+      }
+      if (result === 'No') {
+        // console.log('No');
+      }
+    });
+  }
   endListing() {
     if (this.listing) {
       this.displayProgressSpinner = true;
@@ -788,7 +808,9 @@ export class ListingdbComponent implements OnInit {
       { disableClose: true ,
       height: '200px',
       width: '900px',
-      data: { listing: this.listing }
+      data: { 
+        titleMessage: "Are you sure you want to delete?" 
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -859,18 +881,34 @@ export class ListingdbComponent implements OnInit {
     });
   }
 
+  // getUserSettings() {
+  //   this._userService.UserSettingsViewGet()
+  //     .subscribe(userSettings => {
+  //       this.userSettingsView = userSettings;
+  //     },
+  //       error => {
+  //         if (error.errorStatus !== 404) {
+  //           this.errorMessage = JSON.stringify(error);
+  //         }
+  //       });
+  // }
   /**
    * Need storeID for new listing.
    */
-  getUserSettings() {
-    this._userService.UserSettingsViewGet()
-      .subscribe(userSettings => {
-        this.userSettingsView = userSettings;
+  getUserProfile() {
+    this._userService.UserProfileGet()
+      .subscribe(profile => {
+        this.userProfile = profile;
+        this.selectedStore = profile.selectedStore;
+        this.getStores();
+        this.loadData();
       },
         error => {
           if (error.errorStatus !== 404) {
             this.errorMessage = JSON.stringify(error);
           }
+          this.displayProgressSpinner = false;
         });
   }
+
 }

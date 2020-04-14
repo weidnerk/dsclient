@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OrderHistoryService } from '../_services/orderhistory.service';
+import { UserService } from '../_services';
+import { UserSettingsView } from '../_models/userprofile';
 
 @Component({
   selector: 'app-usersettings',
@@ -10,13 +12,18 @@ import { OrderHistoryService } from '../_services/orderhistory.service';
 export class UsersettingsComponent implements OnInit {
 
   form: FormGroup;
+  userSettingsView: UserSettingsView;
+  errorMessage: string | null;
+
   get ctlPctProfit() { return this.form.controls['pctProfit']; }
   
   constructor(private fb: FormBuilder,
-    private _orderHistoryService: OrderHistoryService) { }
+    private _orderHistoryService: OrderHistoryService,
+    private _userService: UserService) { }
 
   ngOnInit(): void {
     this.buildForm();
+    this.getUserSettings();
   }
 
   buildForm(): void {
@@ -28,5 +35,17 @@ export class UsersettingsComponent implements OnInit {
   }
   onSubmit() {
     console.log(this.ctlPctProfit.value);
+  }
+  getUserSettings() {
+    this._userService.UserSettingsViewGet()
+      .subscribe(userSettings => {
+        this.userSettingsView = userSettings;
+      
+      },
+        error => {
+          if (error.errorStatus !== 404) {
+            this.errorMessage = JSON.stringify(error);
+          }
+        });
   }
 }
