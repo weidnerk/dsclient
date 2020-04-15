@@ -19,6 +19,12 @@ export class UsersettingsComponent implements OnInit {
   userStores: UserStoreView[];
   selectedStore: number;
 
+  // status spinner variables
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 50;
+  displayProgressSpinner = false;
+
   get ctlPctProfit() { return this.form.controls['pctProfit']; }
   
   constructor(private fb: FormBuilder,
@@ -31,13 +37,7 @@ export class UsersettingsComponent implements OnInit {
     this.getStores();
   }
 
-  buildForm(): void {
-    this.form = this.fb.group({
-      pctProfit: [null, {
-        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
-      }]
-    })
-  }
+ 
   onSubmit() {
     console.log(this.ctlPctProfit.value);
   }
@@ -58,15 +58,17 @@ export class UsersettingsComponent implements OnInit {
         });
   }
   userSettingsSave() {
+    this.displayProgressSpinner = true;
     let settings = new UserSettings();
     settings.pctProfit = this.ctlPctProfit.value;
     settings.storeID = this.selectedStore;
-    this._userService.userSettingsSave(settings, ["pctProfit"])
+    this._userService.userSettingsSave(settings, ["PctProfit"])
       .subscribe(si => {
-        // this.isProcessing = false;
+        this.displayProgressSpinner = false;
       },
         error => {
           this.errorMessage = error.errMsg;
+          this.displayProgressSpinner = false;
         });
   }
   storeSelected(event: MatSelectChange) {
@@ -83,5 +85,12 @@ export class UsersettingsComponent implements OnInit {
         error => {
           this.errorMessage = error;
         });
+  }
+  buildForm(): void {
+    this.form = this.fb.group({
+      pctProfit: [null, {
+        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
+      }]
+    })
   }
 }

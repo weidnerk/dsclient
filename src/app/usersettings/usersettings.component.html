@@ -18,6 +18,9 @@
                 </mat-form-field>
             </div>
         </div>
-        <button class="btn" mat-button mat-raised-button color="primary" type="submit">Save</button>
+        <button [disabled]="!selectedStore" class="btn" mat-button mat-raised-button color="primary" type="button" (click)="userSettingsSave()">Save</button>
     </form>
 </div>
+<app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
+  [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
+</app-progress-spinner>
