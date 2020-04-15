@@ -24,7 +24,9 @@
       &nbsp;<button color="primary" type="button" (click)="addItem()" mat-raised-button>Add Item</button>
     </div>
   </div>
-
+  <div class="error">
+    <span [innerHTML]="errorMessage"></span>
+  </div>
   <mat-table #table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="Source">

@@ -46,7 +46,6 @@ export class RegisterComponent {
     emailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$';
 
     model: User = <User>{};
-    //model: any = {};
     loading = false;
     errorMessage: string | null;   // needed for message like 'passwords must be at least 6 chars'
     registerForm: FormGroup;
@@ -126,7 +125,6 @@ export class RegisterComponent {
     };
 
     validateUsername(c: AbstractControl): Observable<ValidationErrors | null> {
-
         if (c.value != undefined) {
             return this.userService.usernameTaken(c.value).pipe(
                 map(res => {

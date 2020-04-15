@@ -11,6 +11,7 @@ import { AuthGuard } from './_guards/index';
 import { Dashboardv2Component } from './dashboard-v2/dashboard.component';
 import { UsersettingsComponent } from './usersettings/usersettings.component';
 import { DefaultComponent } from './layouts/default/default.component';
+import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 
 const routes: Routes = [
     {
@@ -56,7 +57,13 @@ const routes: Routes = [
             component: UsersettingsComponent,
             canActivate: [AuthGuard]
         },
-        { path: 'scanseller', component: TimesSoldComponent, canActivate: [AuthGuard] }
+        { path: 'scanseller', 
+            component: TimesSoldComponent, 
+            canActivate: [AuthGuard] 
+        },
+        { path: 'forgotpassword', 
+            component: ForgotpasswordComponent
+        }
     ]
     },
     { path: 'login', component: LoginComponent },

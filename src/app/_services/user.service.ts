@@ -60,7 +60,6 @@ export class UserService {
     }
 
     ChangePassword(reset: ChangePasswordBindingModel) {
-
         let url = environment.API_ENDPOINT + "api/Account/changepassword";
         let body = JSON.stringify(reset);
         const userJson = localStorage.getItem('currentUser');
@@ -86,7 +85,6 @@ export class UserService {
             )
     }
     UserProfileSave(profile: UserProfile) {
-
         let url = environment.API_ENDPOINT + "api/Account/userprofilesave";
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
@@ -115,7 +113,6 @@ export class UserService {
      * @param appID if appID is null, we are loading user's setting
      */
     UserProfileGet(): Observable<UserProfile> {
-
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
@@ -214,7 +211,6 @@ export class UserService {
     }
 
     TradingAPIUsage(): Observable<number> {
-
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
@@ -241,7 +237,6 @@ export class UserService {
     }
 
     TokenStatus(): Observable<TokenStatusTypeCustom> {
-
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
@@ -268,7 +263,6 @@ export class UserService {
     }
 
     SetRandomPassword(emailAddress: string) {
-
         let url = this.getSetRandomPwdUrl;
         let forgotPwd = new ForgotPasswordViewModel();
         forgotPwd.EmailAddress = emailAddress;
@@ -281,7 +275,6 @@ export class UserService {
     }
 
     register(user: User) {
-
         let url = environment.API_ENDPOINT + "api/Account/Register";
         let body = JSON.stringify(user);
         //let body = JSON.stringify({ "Email": user.userName, "Password": user.password, "ConfirmPassword": user.password });
@@ -366,17 +359,6 @@ export class UserService {
             });
     };
 
-    // private jwt() {
-    //     // create authorization header with jwt token
-    //     const userJson = localStorage.getItem('currentUser');
-    //     if (userJson) {
-    //         let currentUser = JSON.parse(userJson);
-    //         if (currentUser && currentUser.token) {
-    //             let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-    //             return new RequestOptions({ headers: headers });
-    //         }
-    //     }
-    // }
 
     emailTaken(email: string): Observable<boolean> {
         let url = this.getEmailExistsUrl + "?email=" + email;

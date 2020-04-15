@@ -1,4 +1,12 @@
 <div class="container">
+    <mat-form-field>
+        <mat-label>Stores</mat-label>
+        <mat-select [(ngModel)]="selectedStore" (selectionChange)="storeSelected($event)">
+            <mat-option *ngFor="let m of userStores" [value]="m.storeID">
+                {{ m.storeName }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field><br /><br />
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="row">
             <div class="col-2">

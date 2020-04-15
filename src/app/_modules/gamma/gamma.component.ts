@@ -96,21 +96,7 @@ export class GammaComponent {
           this.errorMessage = error;
         });
   }
-  // getUserSettings() {
-  //   this._userService.UserSettingsViewGet()
-  //     .subscribe(userSettings => {
-  //       this.userSettingsView = userSettings;
-  //       this.selectedStore = userSettings.storeID;
-  //       this.getStores();
-  //       this.loadData();
-  //     },
-  //       error => {
-  //         if (error.errorStatus !== 404) {
-  //           this.errorMessage = JSON.stringify(error);
-  //         }
-  //         this.displayProgressSpinner = false;
-  //       });
-  // }
+  
   getUserProfile() {
     this._userService.UserProfileGet()
       .subscribe(profile => {
