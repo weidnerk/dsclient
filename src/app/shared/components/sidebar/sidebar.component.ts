@@ -14,6 +14,7 @@ export class SidebarComponent implements OnInit {
   isAdmin = false;
   userSettingsView: UserSettingsView;
   errorMessage: string | null;
+  isConfigured = false;
 
   constructor(private _userService: UserService,
     private _orderHistory: OrderHistoryService,
@@ -29,6 +30,7 @@ export class SidebarComponent implements OnInit {
     this._userService.UserSettingsViewGet()
       .subscribe(userSettings => {
         this.userSettingsView = userSettings;
+        this.isConfigured = true;
         // this.showProgress = false;
       },
         error => {

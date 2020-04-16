@@ -745,11 +745,13 @@ export class OrderHistoryService {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
             errDetail = `Backend returned code ${error.status}`;
-            if (error.error.Message) {
-                errMsg = error.error.Message;
-            }
-            else if (error.error) {
-                errMsg = error.error;
+            if (error.error) {
+                if (error.error.Message) {
+                    errMsg = error.error.Message;
+                }
+                else {
+                    errMsg = error.error;
+                }
             }
             else {
                 errMsg = error.statusText;

@@ -12,7 +12,7 @@
     <h2 matSubheader>Pages</h2>
 
     <a mat-list-item routerLinkActive="list-item-active" routerLink="/">Dashboard</a>
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="/gamma">Listings</a>
+    <a [disabled]="!isConfigured" mat-list-item routerLinkActive="list-item-active" routerLink="/gamma">Listings</a>
     <!-- <a mat-list-item routerLinkActive="list-item-active" routerLink="/research">Research</a>
     <a mat-list-item routerLinkActive="list-item-active" routerLink="/scanhistory">Scan History</a> -->
 

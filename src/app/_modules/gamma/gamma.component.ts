@@ -93,7 +93,7 @@ export class GammaComponent {
         this.userStores = x;
       },
         error => {
-          this.errorMessage = error;
+          this.errorMessage = error.errMsg;
         });
   }
   

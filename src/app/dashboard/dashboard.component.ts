@@ -33,6 +33,7 @@ export class DashboardComponent implements OnInit {
   logErrorCount: number;
   logStatus: string | null;
   lastErr = "";
+  isConfigured = false;
 
   constructor(private _orderHistoryService: OrderHistoryService,
     private router: Router) { }
@@ -52,14 +53,15 @@ export class DashboardComponent implements OnInit {
       .subscribe(si => {
         this.dashboard = si;
         this.loading = false;
+        this.isConfigured = true;
       },
         error => {
           this.errorMessage = error.errMsg;
           this.loading = false;
-          if (error.errorStatus !== 404) {
-            this.errorMessage = JSON.stringify(error);
-            this.router.navigate(['/login']);
-          }
+          // if (error.errorStatus !== 404) {
+          //   this.errorMessage = JSON.stringify(error);
+          //   this.router.navigate(['/login']);
+          // }
         });
   }
   getErrorCount() {
