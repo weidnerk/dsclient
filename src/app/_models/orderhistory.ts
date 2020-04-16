@@ -252,6 +252,7 @@ export class SupplierItem {
     IsFreightShipping: boolean;
     Warning: string[];
     Updated: Date;
+    SourceID: number;
 }
 export class SalesOrder {
     ID: number;

@@ -18,6 +18,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderHistoryService } from '../_services/orderhistory.service';
 import { Dashboard } from '../_models/orderhistory';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,7 +34,8 @@ export class DashboardComponent implements OnInit {
   logStatus: string | null;
   lastErr = "";
 
-  constructor(private _orderHistoryService: OrderHistoryService) { }
+  constructor(private _orderHistoryService: OrderHistoryService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.loading = true;
@@ -54,6 +56,10 @@ export class DashboardComponent implements OnInit {
         error => {
           this.errorMessage = error.errMsg;
           this.loading = false;
+          if (error.errorStatus !== 404) {
+            this.errorMessage = JSON.stringify(error);
+            this.router.navigate(['/login']);
+          }
         });
   }
   getErrorCount() {

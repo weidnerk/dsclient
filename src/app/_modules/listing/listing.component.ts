@@ -624,7 +624,8 @@ export class ListingdbComponent implements OnInit {
           Updated: wi.Updated,
           VariationName: wi.VariationName,
           VariationPicURL: wi.VariationPicURL,
-          usItemId: wi.usItemId
+          usItemId: wi.usItemId,
+          SourceID: wi.SourceID
         }
 
         this.walItem = supp;
