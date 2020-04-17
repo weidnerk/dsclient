@@ -42,6 +42,7 @@ export class UsersettingsComponent implements OnInit {
     console.log(this.ctlPctProfit.value);
   }
   getUserSettings() {
+    // shouldn't this be 'get use settings for some store selection?'
     this._userService.UserSettingsViewGet()
       .subscribe(userSettings => {
         this.userSettingsView = userSettings;

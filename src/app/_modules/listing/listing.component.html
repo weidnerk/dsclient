@@ -251,13 +251,13 @@
 
             <button class="btn" mat-button mat-raised-button color="primary" type="submit" (click)="listButtonVal=true"
               [disabled]="!listingForm.valid || !walItem || formIsDirty() || !listingButtonEnable">List</button>
-            <button [hidden]="!admin" class="btn" mat-button mat-raised-button color="primary" type="submit"
+            <button class="btn" mat-button mat-raised-button color="primary" type="submit"
               [disabled]="deleteButtonDisable()" (click)="deleteButtonVal=true">Delete</button>
 
-            <button [hidden]="!admin" class="btn" mat-button mat-raised-button color="primary"
+            <button class="btn" mat-button mat-raised-button color="primary"
               (click)="refreshItemSpecifics()" [disabled]="!storeButtonEnable || !listingForm.valid || !walItem">Refresh
               Item Specifics</button>
-            <ng-container *ngIf="admin">
+            <ng-container>
               <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onEndListing()"
                 [disabled]="!(listing && listing.ListedItemID)">End Listing</button>
 

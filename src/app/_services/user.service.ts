@@ -160,6 +160,31 @@ export class UserService {
                 }
             )
     }
+    UserSettingsViewGetByStore(storeID: number): Observable<UserSettingsView> {
+
+        const userJson = localStorage.getItem('currentUser');
+        if (userJson) {
+            let currentUser = JSON.parse(userJson);
+            let url = environment.API_ENDPOINT + "api/Account/usersettingsviewget?userName=" + currentUser.userName
+            + "&storeID=" + storeID;
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.access_token
+                })
+            };
+            return this.http.get<UserSettingsView>(url, httpOptions).pipe(
+                //.do(data => console.log('All: ' + JSON.stringify(data)))
+                catchError(this.handleError)
+            );
+        }
+        else
+            return observableThrowError(
+                {
+                    errMsg: "Could not obtain current user record"
+                }
+            )
+    }
 
     GetAppIds(): Observable<AppIDSelect[]> {
         const userJson = localStorage.getItem('currentUser');

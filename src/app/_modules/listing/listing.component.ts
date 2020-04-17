@@ -408,7 +408,8 @@ export class ListingdbComponent implements OnInit {
           "PictureURL",
           "ItemID",
           "SupplierItem.SupplierPrice",
-          "SupplierItem.ItemURL"])
+          "SupplierItem.ItemURL"
+        ])
         .subscribe(updatedListing => {
           this.listingID = updatedListing.ID;
 
@@ -456,9 +457,64 @@ export class ListingdbComponent implements OnInit {
           });
     }
   }
+
   /**
-   * Can't list if form is ditry - must Save first.
+   * Post to eBay
    */
+  createListing() {
+    this.displayProgressSpinner = true;
+
+    this._orderHistoryService.listingCreate(this.listingID)
+      .subscribe(si => {
+        this.displayProgressSpinner = false;
+        this.listingButtonEnable = false;
+
+        this.statusMessage = this.delimitedToHTML(si);
+        this.showMessage();
+      },
+        error => {
+          this.errorMessage = this.delimitedToHTML(error.errMsg);
+          this.displayProgressSpinner = false;
+          this.listingButtonEnable = false;
+        });
+  }
+  onEndListing() {
+    const dialogRef = this.dialog.open(ConfirmComponent,
+      {
+        disableClose: true,
+        height: '200px',
+        width: '900px',
+        data: {
+          titleMessage: "Are you sure you want to end the listing?"
+        }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'Yes') {
+        this.endListing();
+      }
+      if (result === 'No') {
+        // console.log('No');
+      }
+    });
+  }
+  endListing() {
+    if (this.listing) {
+      this.displayProgressSpinner = true;
+      this._listCheckService.endListing(this.listing.ID)
+        .subscribe(si => {
+          this.statusMessage = si;
+          this.displayProgressSpinner = false;
+        },
+          error => {
+            this.errorMessage = error.errMsg;
+            this.displayProgressSpinner = false;
+          })
+    }
+  }
+  /**
+  * Can't list if form is ditry - must Save first.
+  */
   formIsDirty(): boolean {
     if (this.ctlListingQty.dirty) {
       return true;
@@ -489,59 +545,6 @@ export class ListingdbComponent implements OnInit {
             this.errorMessage = error.errMsg;
           });
     }
-  }
-  onEndListing() {
-    const dialogRef = this.dialog.open(ConfirmComponent,
-      {
-        disableClose: true,
-        height: '200px',
-        width: '900px',
-        data: {
-          titleMessage: "Are you sure you want to end the listing?"
-        }
-      });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'Yes') {
-        this.endListing();
-      }
-      if (result === 'No') {
-        // console.log('No');
-      }
-    });
-  }
-  endListing() {
-    if (this.listing) {
-      this.displayProgressSpinner = true;
-      this._listCheckService.endListing(this.listing.ListedItemID)
-        .subscribe(si => {
-          this.statusMessage = si;
-          this.displayProgressSpinner = false;
-        },
-          error => {
-            this.errorMessage = error.errMsg;
-            this.displayProgressSpinner = false;
-          })
-    }
-  }
-  /**
-   * Post to eBay
-   */
-  createListing() {
-    this.displayProgressSpinner = true;
-
-    this._orderHistoryService.listingCreate(this.listingID)
-      .subscribe(si => {
-        this.statusMessage = this.delimitedToHTML(si);
-        this.displayProgressSpinner = false;
-        this.listingButtonEnable = false;
-        this.showMessage();
-      },
-        error => {
-          this.errorMessage = this.delimitedToHTML(error.errMsg);
-          this.displayProgressSpinner = false;
-          this.listingButtonEnable = false;
-        });
   }
 
   createVariationListing() {
