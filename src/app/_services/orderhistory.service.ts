@@ -210,11 +210,11 @@ export class OrderHistoryService {
             )
     }
 
-    getDashboard(): Observable<Dashboard> {
+    getDashboard(storeID: number): Observable<Dashboard> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
-            let url = this.getDashboardUrl;
+            let url = this.getDashboardUrl + "?storeID=" + storeID;
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',

@@ -72,6 +72,7 @@ export class UsersettingsComponent implements OnInit {
         });
   }
   storeSelected(event: MatSelectChange) {
+    this.errorMessage = null;
     const selectedData = {
       text: (event.source.selected as MatOption).viewValue,
       value: event.source.value
@@ -95,7 +96,7 @@ export class UsersettingsComponent implements OnInit {
         this.policies = x;
       },
         error => {
-          this.errorMessage = error;
+          this.errorMessage = error.errMsg;
         });
   }
   buildForm(): void {

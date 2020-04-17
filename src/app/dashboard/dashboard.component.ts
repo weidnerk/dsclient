@@ -20,7 +20,7 @@ import { OrderHistoryService } from '../_services/orderhistory.service';
 import { Dashboard } from '../_models/orderhistory';
 import { Router } from '@angular/router';
 import { UserService } from '../_services';
-import { UserStoreView } from '../_models/userprofile';
+import { UserStoreView, UserProfile } from '../_models/userprofile';
 import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 
@@ -40,6 +40,13 @@ export class DashboardComponent implements OnInit {
   isConfigured = false;
   userStores: UserStoreView[];
   selectedStore: number;
+  userProfile: UserProfile;
+  
+  // status spinner variables
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 50;
+  displayProgressSpinner = false;
 
   constructor(private _orderHistoryService: OrderHistoryService,
     private _userService: UserService,
@@ -48,7 +55,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.getStores();
-    this.getDashboard();
+    this.getUserProfile();
     this.getErrorCount();
     if (this._orderHistoryService.isAdmin()) {
       this.getLastError();
@@ -57,15 +64,17 @@ export class DashboardComponent implements OnInit {
 
   getDashboard() {
     // pull values from seller's listing
-    this._orderHistoryService.getDashboard()
+    this._orderHistoryService.getDashboard(this.selectedStore)
       .subscribe(si => {
         this.dashboard = si;
         this.loading = false;
         this.isConfigured = true;
+        this.displayProgressSpinner = false;
       },
         error => {
           this.errorMessage = error.errMsg;
           this.loading = false;
+          this.displayProgressSpinner = false;
           // if (error.errorStatus !== 404) {
           //   this.errorMessage = JSON.stringify(error);
           //   this.router.navigate(['/login']);
@@ -113,6 +122,34 @@ export class DashboardComponent implements OnInit {
       value: event.source.value
     };
     this.selectedStore = selectedData.value;
-   
+    this.displayProgressSpinner = true;
+    this.userProfileSave();
+    this.getDashboard();
+  }
+  getUserProfile() {
+    this._userService.UserProfileGet()
+      .subscribe(profile => {
+        this.userProfile = profile;
+        this.selectedStore = profile.selectedStore;
+        this.getDashboard();
+        // this.selectedStore = profile.selectedStore;
+        // this.getStores();
+        // this.loadData();
+      },
+        error => {
+          if (error.errorStatus !== 404) {
+            this.errorMessage = JSON.stringify(error);
+          }
+          this.loading = false;
+        });
+  }
+  userProfileSave() {
+    this.userProfile.selectedStore = this.selectedStore;
+    this._userService.UserProfileSave(this.userProfile)
+      .subscribe(si => {
+      },
+        error => {
+          this.errorMessage = error.errMsg;
+        });
   }
 }
