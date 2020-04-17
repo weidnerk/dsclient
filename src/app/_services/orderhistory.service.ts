@@ -728,18 +728,18 @@ export class OrderHistoryService {
                 }
             )
     }
-    getBusinessPolicies(): Observable<string> {
+    getBusinessPolicies(storeID: number): Observable<string[]> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
-            let url = this.getBusinessPoliciesUrl;
+            let url = this.getBusinessPoliciesUrl + "?storeID=" + storeID;
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + currentUser.access_token
                 })
             };
-            return this.http.get<string>(url, httpOptions).pipe(
+            return this.http.get<string[]>(url, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }

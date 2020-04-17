@@ -1,26 +1,46 @@
 <div class="container">
-    <mat-form-field>
-        <mat-label>Stores</mat-label>
-        <mat-select [(ngModel)]="selectedStore" (selectionChange)="storeSelected($event)">
-            <mat-option *ngFor="let m of userStores" [value]="m.storeID">
-                {{ m.storeName }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field><br /><br />
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="row">
-            <div class="col-2">
-                <label class="lbl">pct profit:</label>
-            </div>
-            <div class="col-10">
-                <mat-form-field appearance="outline" class="outlinepadding">
-                    <input matInput formControlName="pctProfit" maxlength="40" placeholder="pct profit">
-                </mat-form-field>
-            </div>
+    <div class="row">
+        <div class="col-3">
+            <mat-form-field>
+                <mat-label>Stores</mat-label>
+                <mat-select [(ngModel)]="selectedStore" (selectionChange)="storeSelected($event)">
+                    <mat-option *ngFor="let m of userStores" [value]="m.storeID">
+                        {{ m.storeName }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
-        <button [disabled]="!selectedStore" class="btn" mat-button mat-raised-button color="primary" type="button" (click)="userSettingsSave()">Save</button>
-    </form>
+        <div class="col-3">
+            <mat-form-field>
+                <mat-label>Policies</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let m of policies">
+                        {{ m }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-10">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-2">
+                        <label class="lbl">pct profit:</label>
+                    </div>
+                    <div class="col-10">
+                        <mat-form-field appearance="outline" class="outlinepadding">
+                            <input matInput formControlName="pctProfit" maxlength="40" placeholder="pct profit">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <button [disabled]="!selectedStore" class="btn" mat-button mat-raised-button color="primary"
+                    type="button" (click)="userSettingsSave()">Save</button>
+            </form>
+        </div>
+    </div>
 </div>
 <app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
-  [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
+    [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
 </app-progress-spinner>

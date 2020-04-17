@@ -1,5 +1,13 @@
 <span class="error">{{errorMessage}}</span>
 <ng-container *ngIf="isConfigured">
+    <mat-form-field>
+        <mat-label>Stores</mat-label>
+        <mat-select [(ngModel)]="selectedStore" (selectionChange)="storeSelected($event)">
+            <mat-option *ngFor="let m of userStores" [value]="m.storeID">
+                {{ m.storeName }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field><br /><br />
     <mat-card>
         <!-- <div class="container-fluid"> -->
         <div class="row">
@@ -79,6 +87,7 @@
         <li>Auto order</li>
         <li>Course</li>
         <li>Create LLC</li>
+        <li>Remit quarterly sales tax</li>
 
     </ul>
 </mat-card>

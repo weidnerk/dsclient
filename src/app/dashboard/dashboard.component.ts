@@ -19,6 +19,10 @@ import { Component, OnInit } from '@angular/core';
 import { OrderHistoryService } from '../_services/orderhistory.service';
 import { Dashboard } from '../_models/orderhistory';
 import { Router } from '@angular/router';
+import { UserService } from '../_services';
+import { UserStoreView } from '../_models/userprofile';
+import { MatSelectChange } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,12 +38,16 @@ export class DashboardComponent implements OnInit {
   logStatus: string | null;
   lastErr = "";
   isConfigured = false;
+  userStores: UserStoreView[];
+  selectedStore: number;
 
   constructor(private _orderHistoryService: OrderHistoryService,
+    private _userService: UserService,
     private router: Router) { }
 
   ngOnInit(): void {
     this.loading = true;
+    this.getStores();
     this.getDashboard();
     this.getErrorCount();
     if (this._orderHistoryService.isAdmin()) {
@@ -89,5 +97,22 @@ export class DashboardComponent implements OnInit {
         error => {
           this.errorMessage = error.errMsg;
         });
+  }
+  getStores() {
+    this._userService.getUserStores()
+      .subscribe(x => {
+        this.userStores = x;
+      },
+        error => {
+          this.errorMessage = error;
+        });
+  }
+  storeSelected(event: MatSelectChange) {
+    const selectedData = {
+      text: (event.source.selected as MatOption).viewValue,
+      value: event.source.value
+    };
+    this.selectedStore = selectedData.value;
+   
   }
 }

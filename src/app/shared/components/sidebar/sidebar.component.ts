@@ -15,6 +15,7 @@ export class SidebarComponent implements OnInit {
   userSettingsView: UserSettingsView;
   errorMessage: string | null;
   isConfigured = false;
+  loading = true;
 
   constructor(private _userService: UserService,
     private _orderHistory: OrderHistoryService,
@@ -31,14 +32,14 @@ export class SidebarComponent implements OnInit {
       .subscribe(userSettings => {
         this.userSettingsView = userSettings;
         this.isConfigured = true;
-        // this.showProgress = false;
+        this.loading = false;
       },
         error => {
           if (error.errorStatus !== 404) {
             this.errorMessage = JSON.stringify(error);
             this.router.navigate(['/login']);
           }
-          // this.showProgress = false;
+          this.loading = false;
         });
   }
 }

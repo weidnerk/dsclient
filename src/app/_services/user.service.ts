@@ -165,7 +165,7 @@ export class UserService {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
-            let url = environment.API_ENDPOINT + "api/Account/usersettingsviewget?userName=" + currentUser.userName
+            let url = environment.API_ENDPOINT + "api/Account/usersettingsviewgetbystore?userName=" + currentUser.userName
             + "&storeID=" + storeID;
             const httpOptions = {
                 headers: new HttpHeaders({

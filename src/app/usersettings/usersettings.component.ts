@@ -18,6 +18,7 @@ export class UsersettingsComponent implements OnInit {
   errorMessage: string | null;
   userStores: UserStoreView[];
   selectedStore: number;
+  policies: string[];
 
   // status spinner variables
   color = 'primary';
@@ -33,10 +34,8 @@ export class UsersettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
-    // this.getUserSettings();
     this.getStores();
   }
-
  
   onSubmit() {
     console.log(this.ctlPctProfit.value);
@@ -91,8 +90,9 @@ export class UsersettingsComponent implements OnInit {
         });
   }
   getBusinessPolicies() {
-    this._orderHistoryService.getBusinessPolicies()
+    this._orderHistoryService.getBusinessPolicies(this.selectedStore)
       .subscribe(x => {
+        this.policies = x;
       },
         error => {
           this.errorMessage = error;
