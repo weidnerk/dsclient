@@ -33,7 +33,7 @@ export class UsersettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
-    this.getUserSettings();
+    // this.getUserSettings();
     this.getStores();
   }
 
@@ -43,7 +43,7 @@ export class UsersettingsComponent implements OnInit {
   }
   getUserSettings() {
     // shouldn't this be 'get use settings for some store selection?'
-    this._userService.UserSettingsViewGet()
+    this._userService.UserSettingsViewGetByStore(this.selectedStore)
       .subscribe(userSettings => {
         this.userSettingsView = userSettings;
         console.log('storeID: ' + userSettings.storeID);
@@ -77,11 +77,22 @@ export class UsersettingsComponent implements OnInit {
       text: (event.source.selected as MatOption).viewValue,
       value: event.source.value
     };
+    this.selectedStore = selectedData.value;
+    this.getUserSettings();
+    this.getBusinessPolicies();
   }
   getStores() {
     this._userService.getUserStores()
       .subscribe(x => {
         this.userStores = x;
+      },
+        error => {
+          this.errorMessage = error;
+        });
+  }
+  getBusinessPolicies() {
+    this._orderHistoryService.getBusinessPolicies()
+      .subscribe(x => {
       },
         error => {
           this.errorMessage = error;

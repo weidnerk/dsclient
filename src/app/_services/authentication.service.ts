@@ -40,10 +40,40 @@ export class AuthenticationService {
         );
     }
 
-    public handleError(error: HttpErrorResponse) {
-        return observableThrowError(error);
-    }
-
+    // public handleError(error: HttpErrorResponse) {
+    //     return observableThrowError(error);
+    // }
+    private handleError(error: HttpErrorResponse) {
+        let errMsg: string | null = null;
+        let errDetail: string | null = null;
+        if (error.error) {
+            if (error.error instanceof ErrorEvent) {
+                // A client-side or network error occurred. Handle it accordingly.
+                errMsg = error.error.message;
+            }
+        }
+        if (errMsg == null) {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            errDetail = `Backend returned code ${error.status}`;
+            if (error.error) {
+                if (error.error.Message) {
+                    errMsg = error.error.Message;
+                }
+                else {
+                    errMsg = error.error;
+                }
+            }
+            else {
+                errMsg = error.statusText;
+            }
+        }
+        return observableThrowError(
+            {
+                "errMsg": errMsg,
+                "errStatus": error.status
+            });
+    };
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');

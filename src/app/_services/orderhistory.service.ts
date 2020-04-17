@@ -45,6 +45,7 @@ export class OrderHistoryService {
     private storeSalesOrderUrl: string = environment.API_ENDPOINT + 'salesorderupdate';
     private refreshItemSpecificsUrl: string = environment.API_ENDPOINT + 'refreshitemspecifics';
     private getSupplierItemUrl: string = environment.API_ENDPOINT + 'getsupplieritem';
+    private getBusinessPoliciesUrl: string = environment.API_ENDPOINT + 'getbusinesspolicies';
 
     constructor(private http: HttpClient) { }
 
@@ -727,7 +728,28 @@ export class OrderHistoryService {
                 }
             )
     }
-
+    getBusinessPolicies(): Observable<string> {
+        const userJson = localStorage.getItem('currentUser');
+        if (userJson) {
+            let currentUser = JSON.parse(userJson);
+            let url = this.getBusinessPoliciesUrl;
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.access_token
+                })
+            };
+            return this.http.get<string>(url, httpOptions).pipe(
+                catchError(this.handleError)
+            );
+        }
+        else
+            return observableThrowError(
+                {
+                    errMsg: "could not obtain current user record"
+                }
+            )
+    }
     /**
      * Use this as model.
      * @param error 

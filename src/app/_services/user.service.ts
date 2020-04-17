@@ -26,7 +26,7 @@ export class UserService {
     private deleteAPIKeyUrl: string = environment.API_ENDPOINT + 'api/Account/deleteapikey';
     private getUserStoresUrl: string = environment.API_ENDPOINT + 'getuserstores';
     private saveUserSettingsUrl: string = environment.API_ENDPOINT + 'usersettingssave';
-
+ 
     constructor(private http: HttpClient) { }
 
     SendMsg() {
@@ -383,7 +383,6 @@ export class UserService {
                 "errorStatus": error.status
             });
     };
-
 
     emailTaken(email: string): Observable<boolean> {
         let url = this.getEmailExistsUrl + "?email=" + email;
