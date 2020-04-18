@@ -6,7 +6,7 @@ import { map, catchError } from 'rxjs/operators';
 import { UserService } from '../_services/index';
 import { User } from '../_models/index';
 
-const USERNAME_REGEX = /^[a-zA-Z.]+$/;
+const USERNAME_REGEX = /^[0-9a-zA-Z.]+$/;   // alpha-numeric and a period
 const FIRSTNAME_REGEX = /^[a-zA-Z]+$/;
 const LASTNAME_REGEX = /^[a-zA-Z ']+$/;
 

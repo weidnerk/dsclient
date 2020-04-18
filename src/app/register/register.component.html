@@ -49,7 +49,7 @@
                         <mat-error *ngIf="emailAddress.hasError('emailTaken')">
                             Email address is taken
                         </mat-error>
-                        <mat-error *ngIf="emailAddress.hasError('email') && !emailAddress.hasError('required')">
+                        <mat-error *ngIf="emailAddress.hasError('pattern') && !emailAddress.hasError('required')">
                             Please enter a valid email address
                         </mat-error>
                         <mat-error *ngIf="emailAddress.hasError('required')">
