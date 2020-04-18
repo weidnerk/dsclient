@@ -25,6 +25,7 @@ export class SidebarComponent implements OnInit {
     this.getUserSettings();
     
     this.isAdmin = this._orderHistory.isAdmin();
+    this.isAdmin = true;  // for now, enbale this for testing
   }
 
   getUserSettings() {

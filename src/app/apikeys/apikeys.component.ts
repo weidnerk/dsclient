@@ -16,7 +16,7 @@ import { MatSelectChange } from '@angular/material/select';
 export class ApikeysComponent implements OnInit {
   apikeysForm: FormGroup;
   errorMessage: string;
-  loading: boolean = true;
+  loading: boolean = false;
   tradingAPIUsage: number = 0;
   //tokenStatus: TokenStatusType = <TokenStatusType>{};
   tokenStatus = new TokenStatusTypeCustom();
@@ -34,10 +34,7 @@ export class ApikeysComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
-    this.getUserSettings();
-    // this.getAppIds();
     this.getTradingAPIUsage();
-    // this.getTokenStatus();
     this.getStores();
   }
 
@@ -75,7 +72,7 @@ export class ApikeysComponent implements OnInit {
    * fill API keys
    */
   getUserSettings() {
-    this._userService.UserSettingsViewGet()
+    this._userService.UserSettingsViewGetByStore(this.selectedStore)
       .subscribe(userSettings => {
         this.apikeysForm.patchValue({
           appidkey: userSettings.appID,
@@ -90,21 +87,6 @@ export class ApikeysComponent implements OnInit {
           if (error.errorStatus !== 404) {
             this.errorMessage = JSON.stringify(error);
           }
-          this.loading = false;
-        });
-  }
-
-  /**
-   * Fill selection drop down
-   */
-  getAppIds() {
-    this._userService.GetAppIds()
-      .subscribe(profile => {
-        this.apiKeys = profile;
-        this.loading = false;
-      },
-        error => {
-          this.errorMessage = JSON.stringify(error);
           this.loading = false;
         });
   }
@@ -132,30 +114,9 @@ export class ApikeysComponent implements OnInit {
     p.certID = frm.certidkey;
     p.token = frm.apitoken;
 
-    // let appID=frm.apikeyselect;
-    // p.AppID = appID;
-    // console.log(appID);
-
-    // this._userService.UserProfileSave(p)
-    //   .subscribe(x => {
-    //     this.route.navigate(['/']);
-    //   },
-    //     error => {
-    //       this.errorMessage = JSON.stringify(error);
-    //     });
-
   }
   onApiHelp() {
     this.apiHelp = true;
-  }
-
-  keySelected(event: MatSelectChange) {
-    const selectedData = {
-      text: (event.source.selected as MatOption).viewValue,
-      value: event.source.value
-    };
-    console.log(selectedData.value);
-    this.getUserSettings();
   }
 
   onDelete() {
@@ -179,6 +140,13 @@ export class ApikeysComponent implements OnInit {
       this._userService.getUserStores()
         .subscribe(x => {
           this.userStores = x;
+          if (x.length === 1) {
+            this.selectedStore = x[0].storeID;
+            this.apikeysForm.patchValue({
+              selectedStore: this.selectedStore
+            });
+            this.getUserSettings();
+          }
         },
           error => {
             this.errorMessage = error;
@@ -190,5 +158,6 @@ export class ApikeysComponent implements OnInit {
         value: event.source.value
       };
       this.selectedStore = selectedData.value;
+      this.getUserSettings();
     }
 }
