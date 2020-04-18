@@ -152,4 +152,8 @@ export class DashboardComponent implements OnInit {
           this.errorMessage = error.errMsg;
         });
   }
+  onStoreScan() {
+    console.log('store scan');
+    
+  }
 }
