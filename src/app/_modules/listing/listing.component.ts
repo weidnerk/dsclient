@@ -319,7 +319,7 @@ export class ListingdbComponent implements OnInit {
           this.listButtonVal = false;
           this.validationMessage = this.isValid();
           if (!this.validationMessage) {
-            this.createListing();
+            this.onCreateListing();
           }
           else {
             this.validationMessage = this.validationMessage + ' - record not listed';
@@ -457,7 +457,26 @@ export class ListingdbComponent implements OnInit {
           });
     }
   }
+  onCreateListing() {
+    const dialogRef = this.dialog.open(ConfirmComponent,
+      {
+        disableClose: true,
+        height: '200px',
+        width: '900px',
+        data: {
+          titleMessage: "Please confirm supplier item matches seller's item."
+        }
+      });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'Yes') {
+        this.createListing();
+      }
+      if (result === 'No') {
+        // console.log('No');
+      }
+    });
+  }
   /**
    * Post to eBay
    */
