@@ -48,7 +48,8 @@ export class UsersettingsComponent implements OnInit {
         console.log('storeID: ' + userSettings.storeID);
         console.log('pctProfit: ' + userSettings.pctProfit);
         this.form.patchValue({
-          pctProfit: userSettings.pctProfit
+          pctProfit: userSettings.pctProfit,
+          handlingTime: userSettings.handlingTime
         });
       },
         error => {
@@ -102,6 +103,9 @@ export class UsersettingsComponent implements OnInit {
   buildForm(): void {
     this.form = this.fb.group({
       pctProfit: [null, {
+        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
+      }],
+      handlingTime: [null, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }]
     })

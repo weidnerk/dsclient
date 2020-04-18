@@ -22,17 +22,27 @@
             </mat-form-field>
         </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
         <div class="col-10">
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <div class="row">
                     <div class="col-2">
-                        <label class="lbl">pct profit:</label>
+                        <label class="lbl">Percent profit:</label>
                     </div>
                     <div class="col-10">
                         <mat-form-field appearance="outline" class="outlinepadding">
                             <input matInput formControlName="pctProfit" maxlength="40" placeholder="pct profit">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <label class="lbl">Handling Time:</label>
+                    </div>
+                    <div class="col-10">
+                        <mat-form-field appearance="outline" class="outlinepadding">
+                            <input matInput formControlName="handlingTime" maxlength="40" placeholder="handling time">
                         </mat-form-field>
                     </div>
                 </div>
