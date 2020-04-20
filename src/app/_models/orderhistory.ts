@@ -309,7 +309,7 @@ export class ListingItemSpecific
 export class ListingLog {
     id: number;
     listingID: number;
-    msgID: number;
     note: string;
     created: Date;
+    message: string;
 }

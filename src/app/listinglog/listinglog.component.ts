@@ -103,7 +103,7 @@ export class ListinglogComponent {
   }
   generateHeaders() {
     this.displayedColumns.push("created");
-    this.displayedColumns.push("msgID");
+    this.displayedColumns.push("message");
     this.displayedColumns.push("note");
   }
 }
