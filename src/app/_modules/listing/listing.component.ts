@@ -460,33 +460,15 @@ export class ListingdbComponent implements OnInit {
   }
   onCreateListing() {
     if (!this.listing.Listed) {     // new listing
+      let imgURL = this.listing.SellerListing?.PictureURL;
       const dialogRef = this.dialog.open(ConfirmComponent,
         {
           disableClose: true,
-          height: '200px',
+          height: '500px',
           width: '900px',
           data: {
-            titleMessage: "Please confirm supplier item matches seller's item."
-          }
-        });
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result === 'Yes') {
-          this.createListing();
-        }
-        if (result === 'No') {
-          // console.log('No');
-        }
-      });
-    }
-    if (this.listing.Warning) {
-      const dialogRef = this.dialog.open(ConfirmComponent,
-        {
-          disableClose: true,
-          height: '200px',
-          width: '900px',
-          data: {
-            titleMessage: "Please confirm you are overriding warnings."
+            titleMessage: "Please confirm supplier item matches seller's item.",
+            imgURL: imgURL
           }
         });
 
@@ -500,7 +482,29 @@ export class ListingdbComponent implements OnInit {
       });
     }
     else {
-      this.createListing();
+      if (this.listing.Warning) {
+        const dialogRef = this.dialog.open(ConfirmComponent,
+          {
+            disableClose: true,
+            height: '200px',
+            width: '900px',
+            data: {
+              titleMessage: "Please confirm you are overriding warnings."
+            }
+          });
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result === 'Yes') {
+            this.createListing();
+          }
+          if (result === 'No') {
+            // console.log('No');
+          }
+        });
+      }
+      else {
+        this.createListing();
+      }
     }
   }
   /**

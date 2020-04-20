@@ -9,9 +9,12 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dial
 export class ConfirmComponent implements OnInit {
 
   titleMessage: string;
+  imgURL: string;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ConfirmComponent>) {
       this.titleMessage = data.titleMessage;
+      this.imgURL = data.imgURL;
   }
 
   ngOnInit(): void {

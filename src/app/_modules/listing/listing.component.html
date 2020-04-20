@@ -259,7 +259,7 @@
               Item Specifics</button>
             <ng-container>
               <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onEndListing()"
-                [disabled]="!(listing && listing.ListedItemID)">End Listing</button>
+                [disabled]="!(listing && listing.ListedItemID && !listing.Ended)">End Listing</button>
 
             </ng-container>
             <span *ngIf="storing">

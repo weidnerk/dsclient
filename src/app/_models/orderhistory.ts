@@ -131,6 +131,7 @@ export class Listing {
     ItemSpecifics: ListingItemSpecific[];
     eBaySellerURL: string;
     SellerListing: SellerListing | null;
+    Ended: Date;
 }
 export class ListingView extends Listing {
     Seller: string;
