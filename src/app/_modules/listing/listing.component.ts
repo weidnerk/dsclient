@@ -458,7 +458,7 @@ export class ListingdbComponent implements OnInit {
     }
   }
   onCreateListing() {
-    if (this.listing.ID == 0) {
+    if (!this.listing.Listed) {
       const dialogRef = this.dialog.open(ConfirmComponent,
         {
           disableClose: true,
@@ -492,6 +492,12 @@ export class ListingdbComponent implements OnInit {
       .subscribe(si => {
         this.displayProgressSpinner = false;
         this.listingButtonEnable = false;
+
+        // Say new listing gets stored, ask for confirmation and listed.
+        // User makes quick change and relists - don't need matching product confirm again.
+        // Use 'listed' field to determine this but createlisting sends back a response, not the listing,
+        // so just set to current date time.
+        this.listing.Listed = new Date();
 
         this.statusMessage = this.delimitedToHTML(si);
         this.showMessage();
