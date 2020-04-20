@@ -32,7 +32,6 @@ export class GammaComponent {
   @ViewChild('filter', { static: true }) filter: ElementRef;
 
   toListingCount: number;
-  // isProcessing: boolean;
   errorMessage: string | null;
   statusMessage: string | null; // show storeToListing result
   dataSource: MatTableDataSource<ListingView> = new MatTableDataSource();
@@ -55,7 +54,6 @@ export class GammaComponent {
     public _service: OrderHistoryService,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
-    private _orderHistoryService: OrderHistoryService,
     private _userService: UserService) {
 
     this.displayProgressSpinner = true;
@@ -182,16 +180,7 @@ export class GammaComponent {
     console.log('add item');
     this.route.navigate(['/listingdetaildb/0']);
   }
-  // userSettingsSave() {
-  //   let settings = new UserSettings();
-  //   settings.storeID = this.selectedStore;
-  //   this._userService.userSettingsSave(settings, ["StoreID"])
-  //     .subscribe(si => {
-  //     },
-  //       error => {
-  //         this.errorMessage = error.errMsg;
-  //       });
-  // }
+ 
   userProfileSave() {
     this.userProfile.selectedStore = this.selectedStore;
     this._userService.UserProfileSave(this.userProfile)

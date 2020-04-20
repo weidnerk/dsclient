@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <div class="row">
+        <mat-table #table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="created">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.created | date:'M/d/yyyy h:mm a'}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="msgID">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Msg ID</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.msgID}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="note">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Note</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.note}}</mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;">
+            </mat-row>
+
+        </mat-table>
+        <mat-paginator [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
+</div>
+<app-progress-spinner [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
+    [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
+</app-progress-spinner>

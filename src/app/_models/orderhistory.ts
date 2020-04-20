@@ -305,5 +305,11 @@ export class ListingItemSpecific
     listingID: number;
     itemName: string;
     itemValue: string;
-    // listing: Listing;
+}
+export class ListingLog {
+    id: number;
+    listingID: number;
+    msgID: number;
+    note: string;
+    created: Date;
 }

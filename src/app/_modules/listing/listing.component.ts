@@ -6,7 +6,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderHistoryService } from '../../_services/orderhistory.service';
-import { Listing, DeriveProfit, TimesSold, ListingNoteView, SellerListing, SupplierItem, SalesOrder, PriceProfit } from '../../_models/orderhistory';
+import { Listing, DeriveProfit, TimesSold, ListingNoteView, SellerListing, SupplierItem, SalesOrder, PriceProfit, ListingLog } from '../../_models/orderhistory';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ParamService } from '../../_services/param.service';
 import { ListingnoteComponent } from '../../listingnote/listingnote.component';
@@ -78,7 +78,7 @@ export class ListingdbComponent implements OnInit {
   supplierPicsMsg: string | null;
   ebayURL: string;
   priceProfit: PriceProfit;
-
+  log: ListingLog[];
   notesButtonText: string = "Notes";
 
   listingButtonEnable = false;
@@ -920,5 +920,23 @@ export class ListingdbComponent implements OnInit {
       return true;
     else
       return false;
+  }
+
+  /**
+   * no, make new component for log
+   */
+  onGetListingLog() {
+
+    this._orderHistoryService.getListingLog(this.listing.ID)
+    .subscribe(li => {
+      if (li) {
+       this.log = li;
+      }
+      this.displayProgressSpinner = false;
+    },
+      error => {
+        this.displayProgressSpinner = false;
+        this.errorMessage = error.errMsg;
+      });
   }
 }

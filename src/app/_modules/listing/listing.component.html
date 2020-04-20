@@ -136,7 +136,7 @@
                 <a target="_blank" href='{{ctlSourceURL.value}}'>&nbsp;GO</a>
               </label>
               &nbsp;<button class="loadwalmart" color="primary" type="button" (click)="getWmItem()" mat-raised-button
-              [disabled]="!ctlSourceURL.value">Load Walmart</button>&nbsp;
+                [disabled]="!ctlSourceURL.value">Load Walmart</button>&nbsp;
             </div>
           </div>
 
@@ -207,7 +207,7 @@
                   style="padding-top: 15px;">
               </span>
             </div>
-        </div>
+          </div>
 
           <div class="row">
             <div class="col-2">
@@ -254,8 +254,8 @@
             <button class="btn" mat-button mat-raised-button color="primary" type="submit"
               [disabled]="deleteButtonDisable()" (click)="deleteButtonVal=true">Delete</button>
 
-            <button class="btn" mat-button mat-raised-button color="primary"
-              (click)="refreshItemSpecifics()" [disabled]="!storeButtonEnable || !listingForm.valid || !walItem">Refresh
+            <button class="btn" mat-button mat-raised-button color="primary" (click)="refreshItemSpecifics()"
+              [disabled]="!storeButtonEnable || !listingForm.valid || !walItem">Refresh
               Item Specifics</button>
             <ng-container>
               <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onEndListing()"
@@ -421,7 +421,16 @@
         </ng-container>
       </ng-container>
     </mat-tab>
-
+    <mat-tab label="Log">
+      <br />
+      <div>
+        <button class="loadwalmart" color="primary" type="button" (click)="onGetListingLog()" mat-raised-button>Get
+          listing log</button>
+        <div *ngIf="log">
+          <app-listinglog [listingID]="listingID"></app-listinglog>
+        </div>
+      </div>
+    </mat-tab>
   </mat-tab-group>
 </div>
 <app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"

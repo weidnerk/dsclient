@@ -78,6 +78,10 @@
                             <mat-icon>error</mat-icon>&nbsp;
                             Passwords do not match
                         </mat-error>
+                        <mat-error *ngIf="confirm.hasError('required')">
+                            <mat-icon>error</mat-icon>&nbsp;
+                            Confirm password required
+                        </mat-error>
                     </mat-form-field>
                 </div>
                 <br />

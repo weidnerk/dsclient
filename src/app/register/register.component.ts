@@ -70,8 +70,9 @@ export class RegisterComponent {
     }
 
     register() {
+        console.log(this.registerForm.valid);
         this.errorMessage = null;
-        if (this.registerForm.invalid) {
+        if (!this.registerForm.valid) {
             return;
         }
         this.loading = true;
@@ -154,11 +155,14 @@ export class RegisterComponent {
                 updateOn: 'submit'
             }],
             confirm: [null, {
-                validators: [passwordMatcher],
+                validators: [Validators.required, passwordMatcher],
                 updateOn: 'submit'
             }],
             firstName: [null, {
-                validators: [Validators.required, Validators.minLength(2), Validators.maxLength(30), Validators.pattern(FIRSTNAME_REGEX)],
+                validators: [Validators.required, 
+                    Validators.minLength(2), 
+                    Validators.maxLength(30), 
+                    Validators.pattern(FIRSTNAME_REGEX)],
                 updateOn: 'submit'
             }],
             lastName: [null, {

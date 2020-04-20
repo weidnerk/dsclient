@@ -26,9 +26,11 @@ import { AppOverlayModule } from '../../overlay/overlay.module';
 import { ProgressSpinnerModule } from '../../progress-spinner/progress-spinner.module';
 import { ListingRoutingModule } from './listing-routes.module';
 import { MatCardModule } from '@angular/material/card';
+import { ListinglogComponent } from 'src/app/listinglog/listinglog.component';
 
 @NgModule({
-  declarations: [ListingdbComponent],
+  declarations: [ListingdbComponent,
+  ListinglogComponent],
   imports: [
     CommonModule,
     ListingRoutingModule,
