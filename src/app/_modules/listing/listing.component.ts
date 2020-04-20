@@ -459,8 +459,10 @@ export class ListingdbComponent implements OnInit {
     }
   }
   onCreateListing() {
-    if (!this.listing.Listed) {     // new listing
-      let imgURL = this.listing.SellerListing?.PictureURL;
+
+    // seller's image is only available when first saving record.
+    let sellerImgURL = this.listing.SellerListing?.PictureURL;
+    if (!this.listing.Listed && sellerImgURL) {     // new listing
       const dialogRef = this.dialog.open(ConfirmComponent,
         {
           disableClose: true,
@@ -468,7 +470,7 @@ export class ListingdbComponent implements OnInit {
           width: '900px',
           data: {
             titleMessage: "Please confirm supplier item matches seller's item.",
-            imgURL: imgURL
+            imgURL: sellerImgURL
           }
         });
 
