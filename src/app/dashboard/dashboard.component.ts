@@ -17,7 +17,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { OrderHistoryService } from '../_services/orderhistory.service';
-import { Dashboard } from '../_models/orderhistory';
+import { Dashboard, StoreAnalysis } from '../_models/orderhistory';
 import { Router } from '@angular/router';
 import { UserService } from '../_services';
 import { UserStoreView, UserProfile } from '../_models/userprofile';
@@ -32,6 +32,7 @@ import { MatOption } from '@angular/material/core';
 export class DashboardComponent implements OnInit {
 
   dashboard = new Dashboard();
+  storeAnalysis = new StoreAnalysis();
   errorMessage: string;
   loading = false;
   logErrorCount: number;
@@ -75,10 +76,21 @@ export class DashboardComponent implements OnInit {
           this.errorMessage = error.errMsg;
           this.loading = false;
           this.displayProgressSpinner = false;
-          // if (error.errorStatus !== 404) {
-          //   this.errorMessage = JSON.stringify(error);
-          //   this.router.navigate(['/login']);
-          // }
+         
+        });
+  }
+  getStoreAnalysis() {
+    // pull values from seller's listing
+    this._orderHistoryService.getStoreAnalysis(this.selectedStore)
+      .subscribe(si => {
+      
+        this.displayProgressSpinner = false;
+      },
+        error => {
+          this.errorMessage = error.errMsg;
+          this.loading = false;
+          this.displayProgressSpinner = false;
+         
         });
   }
   getErrorCount() {
@@ -154,6 +166,7 @@ export class DashboardComponent implements OnInit {
   }
   onStoreScan() {
     console.log('store scan');
-    
+    this.displayProgressSpinner = true;
+    this.getStoreAnalysis();
   }
 }

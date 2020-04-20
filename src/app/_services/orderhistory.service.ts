@@ -9,7 +9,7 @@ import { HttpClient, HttpRequest, HttpEventType, HttpEvent, HttpErrorResponse, H
 
 import { catchError } from 'rxjs/internal/operators';
 
-import { ModelView, Listing, SearchReport, SourceCategory, SellerProfile, Dashboard, ListingNote, ListingNoteView, ListingView, OrderHistory, SellerListing, SupplierItem, UpdateToListing, SalesOrder, PriceProfit, ListingLog, eBayBusinessPolicies } from '../_models/orderhistory';
+import { ModelView, Listing, SearchReport, SourceCategory, SellerProfile, Dashboard, ListingNote, ListingNoteView, ListingView, OrderHistory, SellerListing, SupplierItem, UpdateToListing, SalesOrder, PriceProfit, ListingLog, eBayBusinessPolicies, StoreAnalysis } from '../_models/orderhistory';
 import { WalmartSearchProdIDResponse } from '../_models/walitem';
 import { environment } from '../../environments/environment';
 import { AbstractControl } from '@angular/forms';
@@ -47,6 +47,7 @@ export class OrderHistoryService {
     private getSupplierItemUrl: string = environment.API_ENDPOINT + 'getsupplieritem';
     private getBusinessPoliciesUrl: string = environment.API_ENDPOINT + 'getbusinesspolicies';
     private getListingLogUrl: string = environment.API_ENDPOINT + 'getlistinglog';
+    private getStoreAnalysisUrl: string = environment.API_ENDPOINT + 'storeanalysis';
 
     constructor(private http: HttpClient) { }
 
@@ -223,6 +224,28 @@ export class OrderHistoryService {
                 })
             };
             return this.http.get<Dashboard>(url, httpOptions).pipe(
+                catchError(this.handleError)
+            );
+        }
+        else
+            return observableThrowError(
+                {
+                    errMsg: "could not obtain current user record"
+                }
+            )
+    }
+    getStoreAnalysis(storeID: number): Observable<StoreAnalysis> {
+        const userJson = localStorage.getItem('currentUser');
+        if (userJson) {
+            let currentUser = JSON.parse(userJson);
+            let url = this.getStoreAnalysisUrl + "?storeID=" + storeID;
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.access_token
+                })
+            };
+            return this.http.get<StoreAnalysis>(url, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }

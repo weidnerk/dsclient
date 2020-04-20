@@ -354,9 +354,9 @@ export class ListingdbComponent implements OnInit {
       if (!this.ctlDescription.value) {
         return 'Validation: description';
       }
-      if (!this.ctlListingQty.value) {
-        return 'Validation: listing qty';
-      }
+      // if (!this.ctlListingQty.value) {
+      //   return 'Validation: listing qty';
+      // }
       if (!this.listing.PictureURL) {
         return 'Validation: could not fetch supplier pictures';
       }
@@ -428,21 +428,21 @@ export class ListingdbComponent implements OnInit {
           }
           this.statusMessage = 'Record stored.';
           if (this.walItem?.CanList.length == 0) {
-            // this.listingButtonEnable = true;
           }
-          // this.storeButtonEnable = true;
           if (this.listing) {
             this.listing.Created = new Date();  // enable Add Note button
           }
           // Not ready yet for VA to list variations.
           if (this.walItem?.IsVariation && !this.admin) {
-            // this.listingButtonEnable = false;
+
           }
           this.ctlListingQty.markAsPristine();
           this.ctlListingTitle.markAsPristine();
           this.ctlDescription.markAsPristine();
           this.ctlListingPrice.markAsPristine();
-          if (this.walItem?.CanList.length === 0) {
+
+          // if validated on server and user clicked the 'Calculate Price' button
+          if (this.walItem?.CanList.length === 0 && this.priceProfit) {
             this.listingButtonEnable = true;
           }
 
@@ -458,24 +458,29 @@ export class ListingdbComponent implements OnInit {
     }
   }
   onCreateListing() {
-    const dialogRef = this.dialog.open(ConfirmComponent,
-      {
-        disableClose: true,
-        height: '200px',
-        width: '900px',
-        data: {
-          titleMessage: "Please confirm supplier item matches seller's item."
+    if (this.listing.ID == 0) {
+      const dialogRef = this.dialog.open(ConfirmComponent,
+        {
+          disableClose: true,
+          height: '200px',
+          width: '900px',
+          data: {
+            titleMessage: "Please confirm supplier item matches seller's item."
+          }
+        });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result === 'Yes') {
+          this.createListing();
+        }
+        if (result === 'No') {
+          // console.log('No');
         }
       });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'Yes') {
-        this.createListing();
-      }
-      if (result === 'No') {
-        // console.log('No');
-      }
-    });
+    }
+    else {
+      this.createListing();
+    }
   }
   /**
    * Post to eBay
@@ -928,15 +933,15 @@ export class ListingdbComponent implements OnInit {
   onGetListingLog() {
 
     this._orderHistoryService.getListingLog(this.listing.ID)
-    .subscribe(li => {
-      if (li) {
-       this.log = li;
-      }
-      this.displayProgressSpinner = false;
-    },
-      error => {
+      .subscribe(li => {
+        if (li) {
+          this.log = li;
+        }
         this.displayProgressSpinner = false;
-        this.errorMessage = error.errMsg;
-      });
+      },
+        error => {
+          this.displayProgressSpinner = false;
+          this.errorMessage = error.errMsg;
+        });
   }
 }
