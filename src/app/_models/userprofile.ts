@@ -30,6 +30,7 @@ export class UserSettings {
     storeID: number;
     pctProfit: number;
     handlingTime: number;
+    payPalEmail: string;
 }
 
 export class UserSettingsView extends UserSettings {

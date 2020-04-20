@@ -313,3 +313,8 @@ export class ListingLog {
     created: Date;
     message: string;
 }
+export class eBayBusinessPolicies {
+    shippingPolicies: string[];
+    paymentPolicies: string[];
+    returnPolicies: string[];
+}

@@ -11,11 +11,11 @@
                 </mat-select>
             </mat-form-field>
         </div>
-        <div class="col-3">
+        <div *ngIf="eBayBusinessPolicies" class="col-3">
             <mat-form-field>
-                <mat-label>Policies</mat-label>
+                <mat-label>Shipping policies</mat-label>
                 <mat-select>
-                    <mat-option *ngFor="let m of policies">
+                    <mat-option *ngFor="let m of eBayBusinessPolicies.shippingPolicies">
                         {{ m }}
                     </mat-option>
                 </mat-select>

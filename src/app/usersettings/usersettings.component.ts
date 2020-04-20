@@ -5,6 +5,7 @@ import { UserService } from '../_services';
 import { UserSettingsView, UserSettings, UserStoreView } from '../_models/userprofile';
 import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
+import { eBayBusinessPolicies } from '../_models/orderhistory';
 
 @Component({
   selector: 'app-usersettings',
@@ -18,7 +19,7 @@ export class UsersettingsComponent implements OnInit {
   errorMessage: string | null;
   userStores: UserStoreView[];
   selectedStore: number;
-  policies: string[];
+  eBayBusinessPolicies: eBayBusinessPolicies;
 
   // status spinner variables
   color = 'primary';
@@ -94,7 +95,7 @@ export class UsersettingsComponent implements OnInit {
   getBusinessPolicies() {
     this._orderHistoryService.getBusinessPolicies(this.selectedStore)
       .subscribe(x => {
-        this.policies = x;
+        this.eBayBusinessPolicies = x;
       },
         error => {
           this.errorMessage = error.errMsg;

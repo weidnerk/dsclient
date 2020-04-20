@@ -9,7 +9,7 @@ import { HttpClient, HttpRequest, HttpEventType, HttpEvent, HttpErrorResponse, H
 
 import { catchError } from 'rxjs/internal/operators';
 
-import { ModelView, Listing, SearchReport, SourceCategory, SellerProfile, Dashboard, ListingNote, ListingNoteView, ListingView, OrderHistory, SellerListing, SupplierItem, UpdateToListing, SalesOrder, PriceProfit, ListingLog } from '../_models/orderhistory';
+import { ModelView, Listing, SearchReport, SourceCategory, SellerProfile, Dashboard, ListingNote, ListingNoteView, ListingView, OrderHistory, SellerListing, SupplierItem, UpdateToListing, SalesOrder, PriceProfit, ListingLog, eBayBusinessPolicies } from '../_models/orderhistory';
 import { WalmartSearchProdIDResponse } from '../_models/walitem';
 import { environment } from '../../environments/environment';
 import { AbstractControl } from '@angular/forms';
@@ -729,7 +729,7 @@ export class OrderHistoryService {
                 }
             )
     }
-    getBusinessPolicies(storeID: number): Observable<string[]> {
+    getBusinessPolicies(storeID: number): Observable<eBayBusinessPolicies> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
@@ -740,7 +740,7 @@ export class OrderHistoryService {
                     'Authorization': 'Bearer ' + currentUser.access_token
                 })
             };
-            return this.http.get<string[]>(url, httpOptions).pipe(
+            return this.http.get<eBayBusinessPolicies>(url, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }
