@@ -345,9 +345,10 @@ export class ListingdbComponent implements OnInit {
       if (this.listing.ListingPrice < 1) {
         return 'Validation: price cannot be < 1.00';
       }
-      if (this.ctlCheckDescription.value !== true) {
-        return 'Validation: description';
-      }
+      // 04.20.2020 now user is asked to override warnings when listing.
+      // if (this.ctlCheckDescription.value !== true) {
+      //   return 'Validation: description';
+      // }
       if (!this.ctlListingTitle.value) {
         return 'Validation: listing title';
       }
@@ -458,7 +459,7 @@ export class ListingdbComponent implements OnInit {
     }
   }
   onCreateListing() {
-    if (!this.listing.Listed) {
+    if (!this.listing.Listed) {     // new listing
       const dialogRef = this.dialog.open(ConfirmComponent,
         {
           disableClose: true,
@@ -466,6 +467,26 @@ export class ListingdbComponent implements OnInit {
           width: '900px',
           data: {
             titleMessage: "Please confirm supplier item matches seller's item."
+          }
+        });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result === 'Yes') {
+          this.createListing();
+        }
+        if (result === 'No') {
+          // console.log('No');
+        }
+      });
+    }
+    if (this.listing.Warning) {
+      const dialogRef = this.dialog.open(ConfirmComponent,
+        {
+          disableClose: true,
+          height: '200px',
+          width: '900px',
+          data: {
+            titleMessage: "Please confirm you are overriding warnings."
           }
         });
 
@@ -522,6 +543,7 @@ export class ListingdbComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'Yes') {
         this.endListing();
+        this.router.navigate(['/gamma']);
       }
       if (result === 'No') {
         // console.log('No');
