@@ -486,7 +486,7 @@ export class ListingdbComponent implements OnInit {
       });
     }
     else {
-      if (this.listing.Warning) {
+      if (this.listing.Warning.length > 0) {
         const dialogRef = this.dialog.open(ConfirmComponent,
           {
             disableClose: true,
@@ -839,9 +839,7 @@ export class ListingdbComponent implements OnInit {
       checkSellerMultiPack: [null],
       checkItemSpecificsCorrect: [null],
       sellerItemID: [null, Validators.compose([Validators.required])],
-      pctProfit: [null, {
-        validators: [Validators.required]
-      }]
+      pctProfit: [null]
     })
   }
   buildOrderForm(): void {
