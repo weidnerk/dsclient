@@ -139,16 +139,28 @@
                 [disabled]="!ctlSourceURL.value">Load Walmart</button>&nbsp;
             </div>
           </div>
-
-          <!-- <div class="row">
-          <div class="col-2">
-            <label class="lbl">Title:</label>
+          <div class="row">
+            <div class="col-10">
+              <div *ngIf="eBayBusinessPolicies" class="col-3">
+                <mat-form-field>
+                  <mat-label>Shipping policies</mat-label>
+                  <mat-select>
+                    <mat-option *ngFor="let m of eBayBusinessPolicies.shippingPolicies">
+                      {{ m }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
           </div>
-          <div *ngIf="listing && listing.SellerListing" class="col-10">
-            {{listing.SellerListing.Title}}
+          <div class="row">
+            <div class="col-8">
+              <mat-form-field appearance="outline" class="outlinepadding">
+                <mat-label>% Profit</mat-label>
+                <input matInput formControlName="pctProfit" maxlength="40" placeholder="% Profit">
+              </mat-form-field>
+            </div>
           </div>
-        </div> -->
-
           <div class="row">
             <div class="col-10">
               <mat-form-field appearance="outline" class="outlinepadding title">
@@ -163,10 +175,6 @@
           </div>
           <div class="row">
             <div class="col-8">
-              <!-- why is this needed is supplier price is on the supplier card? -->
-              <!-- <span *ngIf="listing && listing.SupplierItem" class="relative rounded">
-                Supplier Price: {{listing.SupplierItem.SupplierPrice | currency}}
-              </span>&nbsp; -->
               <mat-form-field appearance="outline" class="outlinepadding">
                 <mat-label>Listing Price</mat-label>
                 <input matInput formControlName="listingPrice" maxlength="40" placeholder="listing price">
@@ -259,7 +267,8 @@
               Item Specifics</button>
             <ng-container>
               <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onEndListing()"
-                [disabled]="!(listing && listing.ListedItemID && !listing.Ended)">End Listing</button>
+                [disabled]="!(listing && listing.ListedItemID && !listing.Ended)">End
+                Listing</button>
 
             </ng-container>
             <span *ngIf="storing">

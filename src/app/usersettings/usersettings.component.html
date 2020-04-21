@@ -27,6 +27,10 @@
         <div class="col-10">
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <div class="row">
+                    <mat-checkbox>Store Subscription
+                    </mat-checkbox> 
+                </div>
+                <div class="row">
                     <div class="col-2">
                         <label class="lbl">Percent profit:</label>
                     </div>
@@ -43,6 +47,16 @@
                     <div class="col-10">
                         <mat-form-field appearance="outline" class="outlinepadding">
                             <input matInput formControlName="handlingTime" maxlength="40" placeholder="handling time">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <label class="lbl">Max Listings:</label>
+                    </div>
+                    <div class="col-10">
+                        <mat-form-field appearance="outline" class="outlinepadding">
+                            <input matInput formControlName="maxListings" maxlength="40" placeholder="max listings">
                         </mat-form-field>
                     </div>
                 </div>

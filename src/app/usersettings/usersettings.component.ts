@@ -103,10 +103,14 @@ export class UsersettingsComponent implements OnInit {
   }
   buildForm(): void {
     this.form = this.fb.group({
+      isStoreSubscription: [null],
       pctProfit: [null, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }],
       handlingTime: [null, {
+        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
+      }],
+      maxListings: [null, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }]
     })

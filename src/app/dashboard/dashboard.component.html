@@ -42,9 +42,9 @@
             <div class="col-3">
                 db is missing items:
             </div>
-            <!-- <div *ngIf="dashboard.dbIsMissingItems" class="col-3">
-            {{dashboard.dbIsMissingItems.Length}}
-        </div> -->
+            <div *ngIf="storeAnalysis" class="col-3">
+                {{storeAnalysis.dbIsMissingItems.length}}
+            </div>
         </div>
         <div class="row">
             <div class="col-3">
@@ -63,7 +63,8 @@
             </div>
         </div>
         <br />
-        <button (click)="onStoreScan()" class="btn" mat-button mat-raised-button color="primary" type="button">Store Scan</button>
+        <button (click)="onStoreScan()" class="btn" mat-button mat-raised-button color="primary" type="button">Store
+            Scan</button>
 
     </mat-card>
 </ng-container>

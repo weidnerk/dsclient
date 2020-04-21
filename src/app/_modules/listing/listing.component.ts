@@ -6,7 +6,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderHistoryService } from '../../_services/orderhistory.service';
-import { Listing, DeriveProfit, TimesSold, ListingNoteView, SellerListing, SupplierItem, SalesOrder, PriceProfit, ListingLog } from '../../_models/orderhistory';
+import { Listing, DeriveProfit, TimesSold, ListingNoteView, SellerListing, SupplierItem, SalesOrder, PriceProfit, ListingLog, eBayBusinessPolicies } from '../../_models/orderhistory';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ParamService } from '../../_services/param.service';
 import { ListingnoteComponent } from '../../listingnote/listingnote.component';
@@ -88,7 +88,8 @@ export class ListingdbComponent implements OnInit {
   mode = 'indeterminate';
   value = 50;
   displayProgressSpinner = false;
-
+  eBayBusinessPolicies: eBayBusinessPolicies;
+  
   // form variables
   listingForm: FormGroup;
   formatedPictureUrl: string;
@@ -135,6 +136,7 @@ export class ListingdbComponent implements OnInit {
       this.listingID = params['listingID'];
       if (this.listingID > 0) {
         this.ctlSellerItemID.disable();
+       
         this.getData();
       }
       else {
@@ -836,7 +838,10 @@ export class ListingdbComponent implements OnInit {
       checkTitle: [null],
       checkSellerMultiPack: [null],
       checkItemSpecificsCorrect: [null],
-      sellerItemID: [null, Validators.compose([Validators.required])]
+      sellerItemID: [null, Validators.compose([Validators.required])],
+      pctProfit: [null, {
+        validators: [Validators.required]
+      }]
     })
   }
   buildOrderForm(): void {
@@ -946,6 +951,7 @@ export class ListingdbComponent implements OnInit {
       .subscribe(profile => {
         this.userProfile = profile;
         this.selectedStore = profile.selectedStore;
+        this.getBusinessPolicies();
       },
         error => {
           if (error.errorStatus !== 404) {
@@ -975,6 +981,15 @@ export class ListingdbComponent implements OnInit {
       },
         error => {
           this.displayProgressSpinner = false;
+          this.errorMessage = error.errMsg;
+        });
+  }
+  getBusinessPolicies() {
+    this._orderHistoryService.getBusinessPolicies(this.selectedStore)
+      .subscribe(x => {
+        this.eBayBusinessPolicies = x;
+      },
+        error => {
           this.errorMessage = error.errMsg;
         });
   }

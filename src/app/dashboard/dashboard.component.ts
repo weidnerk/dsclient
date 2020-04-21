@@ -32,7 +32,7 @@ import { MatOption } from '@angular/material/core';
 export class DashboardComponent implements OnInit {
 
   dashboard = new Dashboard();
-  storeAnalysis = new StoreAnalysis();
+  storeAnalysis: StoreAnalysis;
   errorMessage: string;
   loading = false;
   logErrorCount: number;
@@ -82,8 +82,9 @@ export class DashboardComponent implements OnInit {
   getStoreAnalysis() {
     // pull values from seller's listing
     this._orderHistoryService.getStoreAnalysis(this.selectedStore)
-      .subscribe(si => {
-      
+      .subscribe(sa => {
+        this.storeAnalysis = sa;
+      console.log('db is missing how many items: ' + this.storeAnalysis.dbIsMissingItems.length);
         this.displayProgressSpinner = false;
       },
         error => {
