@@ -499,7 +499,7 @@ export class ListingdbComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
           if (result === 'Yes') {
-            // this.createListing();
+            this.createListing();
             this.listingLogRevise();
           }
           if (result === 'No') {
