@@ -478,7 +478,6 @@ export class ListingdbComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result === 'Yes') {
           this.createListing();
-          this.listingLogRevise();
         }
         if (result === 'No') {
           // console.log('No');
@@ -500,7 +499,6 @@ export class ListingdbComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           if (result === 'Yes') {
             this.createListing();
-            this.listingLogRevise();
           }
           if (result === 'No') {
             // console.log('No');
@@ -509,22 +507,10 @@ export class ListingdbComponent implements OnInit {
       }
       else {
         this.createListing();
-        this.listingLogRevise();
       }
     }
   }
-  listingLogRevise() {
-    let log = new ListingLog();
-    log.listingID = this.listing.ID;
-    log.msgID = 800;
-    log.note = 'revised listing by ' + this.userProfile.userID;
-    this._orderHistoryService.listingLogAdd(log)
-      .subscribe(si => {
-      },
-        error => {
-          this.errorMessage = error.errMsg;
-        });
-  }
+  
   /**
    * Post to eBay
    */
