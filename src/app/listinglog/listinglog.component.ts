@@ -11,7 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router, ActivatedRoute } from '@angular/router';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { ListingLog } from '../_models/orderhistory';
+import { ListingLogView } from '../_models/orderhistory';
 import { OrderHistoryService } from '../_services/orderhistory.service';
 
 @Component({
@@ -30,7 +30,7 @@ export class ListinglogComponent {
   toListingCount: number;
   errorMessage: string | null;
   statusMessage: string | null; // show storeToListing result
-  dataSource: MatTableDataSource<ListingLog> = new MatTableDataSource();
+  dataSource: MatTableDataSource<ListingLogView> = new MatTableDataSource();
   logErrorCount: number;
   logStatus: string;
   selectedStore: number;

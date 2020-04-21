@@ -9,10 +9,11 @@ import { HttpClient, HttpRequest, HttpEventType, HttpEvent, HttpErrorResponse, H
 
 import { catchError } from 'rxjs/internal/operators';
 
-import { ModelView, Listing, SearchReport, SourceCategory, SellerProfile, Dashboard, ListingNote, ListingNoteView, ListingView, OrderHistory, SellerListing, SupplierItem, UpdateToListing, SalesOrder, PriceProfit, ListingLog, eBayBusinessPolicies, StoreAnalysis } from '../_models/orderhistory';
+import { ModelView, Listing, SearchReport, SourceCategory, SellerProfile, Dashboard, ListingNote, ListingNoteView, ListingView, OrderHistory, SellerListing, SupplierItem, UpdateToListing, SalesOrder, PriceProfit, ListingLogView, eBayBusinessPolicies, StoreAnalysis, ListingLog } from '../_models/orderhistory';
 import { WalmartSearchProdIDResponse } from '../_models/walitem';
 import { environment } from '../../environments/environment';
 import { AbstractControl } from '@angular/forms';
+import { ListinglogComponent } from '../listinglog/listinglog.component';
 
 @Injectable()
 export class OrderHistoryService {
@@ -48,6 +49,7 @@ export class OrderHistoryService {
     private getBusinessPoliciesUrl: string = environment.API_ENDPOINT + 'getbusinesspolicies';
     private getListingLogUrl: string = environment.API_ENDPOINT + 'getlistinglog';
     private getStoreAnalysisUrl: string = environment.API_ENDPOINT + 'storeanalysis';
+    private storeListingLogUrl: string = environment.API_ENDPOINT + 'listinglogadd';
 
     constructor(private http: HttpClient) { }
 
@@ -774,7 +776,7 @@ export class OrderHistoryService {
                 }
             )
     }
-    getListingLog(listingID: number): Observable<ListingLog[]> {
+    getListingLog(listingID: number): Observable<ListingLogView[]> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
@@ -785,9 +787,7 @@ export class OrderHistoryService {
                     'Authorization': 'Bearer ' + currentUser.access_token
                 })
             };
-            //let _options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }).set('Authorization', currentUser.access_token) };
-            return this.http.get<ListingLog[]>(url, httpOptions).pipe(
-                //.do(data => console.log('All: ' + JSON.stringify(data)))
+            return this.http.get<ListingLogView[]>(url, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }
@@ -798,7 +798,30 @@ export class OrderHistoryService {
                 }
             )
     }
-
+    listingLogAdd(log: ListingLog) {
+        const userJson = localStorage.getItem('currentUser');
+        if (userJson) {
+            let currentUser = JSON.parse(userJson);
+            
+            let url = this.storeListingLogUrl;
+            console.log(url);
+            let body = JSON.stringify(log);
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.access_token
+                })
+            };
+            return this.http.post(url, body, httpOptions).pipe(
+                catchError(this.handleError)
+            );
+        }
+        return observableThrowError(
+            {
+                errMsg: "could not obtain current user record"
+            }
+        )
+    }
     /**
      * Use this as model.
      * @param error 

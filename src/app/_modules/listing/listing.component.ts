@@ -6,7 +6,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderHistoryService } from '../../_services/orderhistory.service';
-import { Listing, DeriveProfit, TimesSold, ListingNoteView, SellerListing, SupplierItem, SalesOrder, PriceProfit, ListingLog, eBayBusinessPolicies } from '../../_models/orderhistory';
+import { Listing, DeriveProfit, TimesSold, ListingNoteView, SellerListing, SupplierItem, SalesOrder, PriceProfit, ListingLogView, eBayBusinessPolicies, ListingLog } from '../../_models/orderhistory';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ParamService } from '../../_services/param.service';
 import { ListingnoteComponent } from '../../listingnote/listingnote.component';
@@ -78,7 +78,7 @@ export class ListingdbComponent implements OnInit {
   supplierPicsMsg: string | null;
   ebayURL: string;
   priceProfit: PriceProfit;
-  log: ListingLog[];
+  log: ListingLogView[];
   notesButtonText: string = "Notes";
 
   listingButtonEnable = false;
@@ -89,7 +89,7 @@ export class ListingdbComponent implements OnInit {
   value = 50;
   displayProgressSpinner = false;
   eBayBusinessPolicies: eBayBusinessPolicies;
-  
+
   // form variables
   listingForm: FormGroup;
   formatedPictureUrl: string;
@@ -136,7 +136,7 @@ export class ListingdbComponent implements OnInit {
       this.listingID = params['listingID'];
       if (this.listingID > 0) {
         this.ctlSellerItemID.disable();
-       
+
         this.getData();
       }
       else {
@@ -461,7 +461,6 @@ export class ListingdbComponent implements OnInit {
     }
   }
   onCreateListing() {
-
     // seller's image is only available when first saving record.
     let sellerImgURL = this.listing.SellerListing?.PictureURL;
     if (!this.listing.Listed && sellerImgURL) {     // new listing
@@ -479,6 +478,7 @@ export class ListingdbComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result === 'Yes') {
           this.createListing();
+          this.listingLogRevise();
         }
         if (result === 'No') {
           // console.log('No');
@@ -499,7 +499,8 @@ export class ListingdbComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
           if (result === 'Yes') {
-            this.createListing();
+            // this.createListing();
+            this.listingLogRevise();
           }
           if (result === 'No') {
             // console.log('No');
@@ -508,8 +509,21 @@ export class ListingdbComponent implements OnInit {
       }
       else {
         this.createListing();
+        this.listingLogRevise();
       }
     }
+  }
+  listingLogRevise() {
+    let log = new ListingLog();
+    log.listingID = this.listing.ID;
+    log.msgID = 800;
+    log.note = 'revised listing by ' + this.userProfile.userID;
+    this._orderHistoryService.listingLogAdd(log)
+      .subscribe(si => {
+      },
+        error => {
+          this.errorMessage = error.errMsg;
+        });
   }
   /**
    * Post to eBay

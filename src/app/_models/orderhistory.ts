@@ -307,12 +307,19 @@ export class ListingItemSpecific
     itemName: string;
     itemValue: string;
 }
-export class ListingLog {
+export class ListingLogView {
     id: number;
     listingID: number;
     note: string;
     created: Date;
     message: string;
+}
+export class ListingLog {
+    id: number;
+    listingID: number;
+    note: string;
+    created: Date;
+    msgID: number;
 }
 export class eBayBusinessPolicies {
     shippingPolicies: string[];
