@@ -156,6 +156,20 @@
           </div>
 
           <div class="row">
+            <div class="col-10">
+              <div *ngIf="eBayBusinessPolicies" class="col-3">
+                <mat-form-field>
+                  <mat-label>Return policies</mat-label>
+                  <mat-select>
+                    <mat-option *ngFor="let m of eBayBusinessPolicies.shippingPolicies">
+                      {{ m }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-8">
               <mat-form-field appearance="outline" class="outlinepadding">
                 <mat-label>% Profit</mat-label>

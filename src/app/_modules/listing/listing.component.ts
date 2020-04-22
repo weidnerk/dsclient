@@ -94,7 +94,7 @@ export class ListingdbComponent implements OnInit {
   listingForm: FormGroup;
   formatedPictureUrl: string;
   formatedOutput: string;
-  imgSourceArray: string[];
+  imgSourceArray: string[] | null;
   orderForm: FormGroup;
 
   get ctlSourceURL(): AbstractControl { return this.listingForm.controls['sourceURL']; }
@@ -713,6 +713,8 @@ export class ListingdbComponent implements OnInit {
         }
       },
         error => {
+          this.imgSourceArray = null;
+          this.walItem = null;
           this.displayProgressSpinner = false;
           this.errorMessage = error.errMsg;
         });
