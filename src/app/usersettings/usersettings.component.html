@@ -21,6 +21,16 @@
                 </mat-select>
             </mat-form-field>
         </div>
+        <div *ngIf="eBayBusinessPolicies" class="col-3">
+            <mat-form-field>
+                <mat-label>Return policies</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let m of eBayBusinessPolicies.shippingPolicies">
+                        {{ m }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
     </div>
     <br />
     <div class="row">
@@ -47,6 +57,16 @@
                     <div class="col-10">
                         <mat-form-field appearance="outline" class="outlinepadding">
                             <input matInput formControlName="handlingTime" maxlength="40" placeholder="handling time">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <label class="lbl">Shipping Time:</label>
+                    </div>
+                    <div class="col-10">
+                        <mat-form-field appearance="outline" class="outlinepadding">
+                            <input matInput formControlName="shippingTime" maxlength="40" placeholder="shipping time">
                         </mat-form-field>
                     </div>
                 </div>

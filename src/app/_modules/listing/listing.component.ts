@@ -510,7 +510,7 @@ export class ListingdbComponent implements OnInit {
       }
     }
   }
-  
+
   /**
    * Post to eBay
    */
@@ -551,7 +551,9 @@ export class ListingdbComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'Yes') {
         this.endListing();
-        this.router.navigate(['/gamma']);
+        if (!this.errorMessage || this.errorMessage?.length === 0) {
+          this.router.navigate(['/gamma']);
+        }
       }
       if (result === 'No') {
         // console.log('No');

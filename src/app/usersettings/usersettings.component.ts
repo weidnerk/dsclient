@@ -87,6 +87,9 @@ export class UsersettingsComponent implements OnInit {
     this._userService.getUserStores()
       .subscribe(x => {
         this.userStores = x;
+        if (this.userStores.length === 1) {
+          this.selectedStore = this.userStores[0].storeID;
+        }
       },
         error => {
           this.errorMessage = error;
@@ -108,6 +111,9 @@ export class UsersettingsComponent implements OnInit {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }],
       handlingTime: [null, {
+        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
+      }],
+      shippingTime: [null, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }],
       maxListings: [null, {
