@@ -139,6 +139,7 @@
                 [disabled]="!ctlSourceURL.value">Load Walmart</button>&nbsp;
             </div>
           </div>
+
           <div class="row">
             <div class="col-10">
               <div *ngIf="eBayBusinessPolicies" class="col-3">
@@ -153,6 +154,7 @@
               </div>
             </div>
           </div>
+
           <div class="row">
             <div class="col-8">
               <mat-form-field appearance="outline" class="outlinepadding">
@@ -161,6 +163,7 @@
               </mat-form-field>
             </div>
           </div>
+
           <div class="row">
             <div class="col-10">
               <mat-form-field appearance="outline" class="outlinepadding title">
@@ -173,8 +176,9 @@
               </mat-form-field>
             </div>
           </div>
+
           <div class="row">
-            <div class="col-8">
+            <div class="col-3">
               <mat-form-field appearance="outline" class="outlinepadding">
                 <mat-label>Listing Price</mat-label>
                 <input matInput formControlName="listingPrice" maxlength="40" placeholder="listing price">
@@ -182,17 +186,22 @@
                   <mat-icon>error</mat-icon>&nbsp;ListingPrice is invalid
                 </mat-error>
               </mat-form-field>
-              <span class="col-2" *ngIf="priceProfit">
+            </div>
+            <div class="col-1">
+              <span *ngIf="priceProfit">
                 {{(priceProfit.proposePrice - priceProfit.breakEven) | currency}}</span>
-              <span>&nbsp;
-                <mat-form-field appearance="outline" class="outlinepadding">
-                  <mat-label>Listing Qty</mat-label>
-                  <input matInput formControlName="listingQty" maxlength="2" placeholder="listing qty">
-                  <mat-error *ngIf="ctlListingQty.invalid">
-                    <mat-icon>error</mat-icon>&nbsp;Listing Qty is invalid
-                  </mat-error>
-                </mat-form-field>
-              </span>
+            </div>
+            <div class="col-3">
+              <mat-form-field appearance="outline" class="outlinepadding">
+                <mat-label>Listing Qty</mat-label>
+                <input matInput formControlName="listingQty" maxlength="2" placeholder="listing qty">
+                <mat-error *ngIf="ctlListingQty.invalid">
+                  <mat-icon>error</mat-icon>&nbsp;Listing Qty is invalid
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-1">
+              <a target="_blank" href="https://pages.ebay.com/seller-center/listing-and-marketing/verified-rights-owner-program.html#m17-1-tb3">VERO</a>
             </div>
           </div>
 
@@ -253,7 +262,8 @@
                 src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
             </span>
             <button color="primary" type="button" (click)="calculateWMPrice()" mat-raised-button
-              [disabled]="!walItem">Calculate Price</button>
+              [disabled]="!walItem">Calculate
+              Price</button>
             <button class="btn" mat-button mat-raised-button color="primary" type="submit" (click)="storeButtonVal=true"
               [disabled]="!listingForm.valid || !walItem">Save</button>
 
