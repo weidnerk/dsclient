@@ -40,11 +40,13 @@ export class LoginComponent implements OnInit {
                   if (error.error.error_description) {
                     this.errorMessage = error.error.error_description;
                   }
-                  else
-                    this.errorMessage = <any>error;
+                  else {
+                    this.errorMessage = error.errMsg;
+                  }
                 }
-                else
-                  this.errorMessage = <any>error;
+                else {
+                  this.errorMessage = error.errMsg;
+                }
               });
         }
 }

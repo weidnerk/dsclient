@@ -97,7 +97,6 @@ export class UserService {
                 })
             };
             return this.http.post(url, body, httpOptions).pipe(
-                //.do(data => console.log('All: ' + JSON.stringify(data)))
                 catchError(this.handleError)
             );
         }
@@ -124,7 +123,6 @@ export class UserService {
                 })
             };
             return this.http.get<UserProfile>(url, httpOptions).pipe(
-                //.do(data => console.log('All: ' + JSON.stringify(data)))
                 catchError(this.handleError)
             );
         }
@@ -149,7 +147,6 @@ export class UserService {
                 })
             };
             return this.http.get<UserSettingsView>(url, httpOptions).pipe(
-                //.do(data => console.log('All: ' + JSON.stringify(data)))
                 catchError(this.handleError)
             );
         }
@@ -174,7 +171,6 @@ export class UserService {
                 })
             };
             return this.http.get<UserSettingsView>(url, httpOptions).pipe(
-                //.do(data => console.log('All: ' + JSON.stringify(data)))
                 catchError(this.handleError)
             );
         }
@@ -199,7 +195,6 @@ export class UserService {
             };
             //let _options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }).set('Authorization', currentUser.access_token) };
             return this.http.get<AppIDSelect[]>(url, httpOptions).pipe(
-                //.do(data => console.log('All: ' + JSON.stringify(data)))
                 catchError(this.handleError)
             );
         }
@@ -223,7 +218,6 @@ export class UserService {
             };
             //let _options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }).set('Authorization', currentUser.access_token) };
             return this.http.get<UserStoreView[]>(url, httpOptions).pipe(
-                //.do(data => console.log('All: ' + JSON.stringify(data)))
                 catchError(this.handleError)
             );
         }
@@ -248,7 +242,6 @@ export class UserService {
             };
             //let _options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }).set('Authorization', currentUser.access_token) };
             return this.http.get<number>(url, httpOptions).pipe(
-                //.do(data => console.log('All: ' + JSON.stringify(data)))
                 catchError(this.handleError)
             );
         }
@@ -274,7 +267,6 @@ export class UserService {
             };
             let _options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }).set('Authorization', currentUser.access_token) };
             return this.http.get<TokenStatusTypeCustom>(url, httpOptions).pipe(
-                //.do(data => console.log('All: ' + JSON.stringify(data)))
                 catchError(this.handleError)
             );
         }
@@ -294,7 +286,6 @@ export class UserService {
         let body = JSON.stringify(forgotPwd);
         let _options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
         return this.http.post(url, body, _options).pipe(
-            //.do(data => console.log('All: ' + JSON.stringify(data)))
             catchError(this.handleError)
         );
     }

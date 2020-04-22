@@ -160,4 +160,11 @@ export class ApikeysComponent implements OnInit {
       this.selectedStore = selectedData.value;
       this.getUserSettings();
     }
+
+    /**
+     * Just look at vwUserSettings to see how to save.
+     */
+    saveKeys() {
+
+    }
 }

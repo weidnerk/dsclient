@@ -60,6 +60,16 @@
                         </mat-form-field>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-2">
+                        <label class="lbl">Listing limit:</label>
+                    </div>
+                    <div class="col-10">
+                        <mat-form-field appearance="outline" class="outlinepadding">
+                            <input matInput formControlName="listingLimit" maxlength="40" placeholder="listing limit">
+                        </mat-form-field>
+                    </div>
+                </div>
                 <button [disabled]="!selectedStore" class="btn" mat-button mat-raised-button color="primary"
                     type="button" (click)="userSettingsSave()">Save</button>
             </form>

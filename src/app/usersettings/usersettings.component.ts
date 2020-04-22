@@ -112,6 +112,9 @@ export class UsersettingsComponent implements OnInit {
       }],
       maxListings: [null, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
+      }],
+      listingLimit: [null, {
+        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }]
     })
   }

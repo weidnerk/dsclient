@@ -1,6 +1,4 @@
-<div>
-    {{titleMessage}}
-</div>
+<div [innerHTML]='titleMessage'></div>
 <br/>
 <div *ngIf="imgURL">
     <img [src]="imgURL" height="200" width="200">

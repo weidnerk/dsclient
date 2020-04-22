@@ -869,7 +869,7 @@ export class ListingdbComponent implements OnInit {
         height: '200px',
         width: '900px',
         data: {
-          titleMessage: "Are you sure you want to delete?"
+          titleMessage: "<b>Are you sure you want to delete?</b>"
         }
       });
 
