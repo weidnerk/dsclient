@@ -20,6 +20,7 @@ export class UsersettingsComponent implements OnInit {
   userStores: UserStoreView[];
   selectedStore: number;
   eBayBusinessPolicies: eBayBusinessPolicies;
+  storeChanged = 0;
 
   // status spinner variables
   color = 'primary';
@@ -52,12 +53,18 @@ export class UsersettingsComponent implements OnInit {
           pctProfit: userSettings.pctProfit,
           handlingTime: userSettings.handlingTime
         });
+        if (--this.storeChanged === 0) {
+          this.displayProgressSpinner = false;
+        }
       },
         error => {
           if (error.errorStatus !== 404) {
             this.errorMessage = JSON.stringify(error);
           }
-        });
+          if (--this.storeChanged === 0) {
+            this.displayProgressSpinner = false;
+          }
+          });
   }
   userSettingsSave() {
     this.displayProgressSpinner = true;
@@ -80,6 +87,8 @@ export class UsersettingsComponent implements OnInit {
       value: event.source.value
     };
     this.selectedStore = selectedData.value;
+    this.displayProgressSpinner = true;
+    this.storeChanged = 2;
     this.getUserSettings();
     this.getBusinessPolicies();
   }
@@ -99,9 +108,15 @@ export class UsersettingsComponent implements OnInit {
     this._orderHistoryService.getBusinessPolicies(this.selectedStore)
       .subscribe(x => {
         this.eBayBusinessPolicies = x;
+        if (--this.storeChanged === 0) {
+          this.displayProgressSpinner = false;
+        }
       },
         error => {
           this.errorMessage = error.errMsg;
+          if (--this.storeChanged === 0) {
+            this.displayProgressSpinner = false;
+          }  
         });
   }
   buildForm(): void {
