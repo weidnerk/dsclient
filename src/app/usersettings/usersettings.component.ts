@@ -72,7 +72,7 @@ export class UsersettingsComponent implements OnInit {
     let settings = new UserSettings();
     settings.pctProfit = this.ctlPctProfit.value;
     settings.storeID = this.selectedStore;
-    this._userService.userSettingsSave(settings, ["PctProfit", "ListingLimit"])
+    this._userService.userSettingsSave(settings, ["PctProfit"])
       .subscribe(si => {
         this.displayProgressSpinner = false;
       },
