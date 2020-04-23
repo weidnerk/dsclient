@@ -956,7 +956,9 @@ export class ListingdbComponent implements OnInit {
       .subscribe(profile => {
         this.userProfile = profile;
         this.selectedStore = profile.selectedStore;
-        this.getBusinessPolicies();
+
+        // 04.23.2020 hold off for now - overkill
+        //this.getBusinessPolicies();
       },
         error => {
           if (error.errorStatus !== 404) {

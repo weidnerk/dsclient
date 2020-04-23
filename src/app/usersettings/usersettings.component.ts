@@ -29,6 +29,7 @@ export class UsersettingsComponent implements OnInit {
   displayProgressSpinner = false;
 
   get ctlPctProfit() { return this.form.controls['pctProfit']; }
+  get ctlListingLimit() { return this.form.controls['listingLimit']; }
   
   constructor(private fb: FormBuilder,
     private _orderHistoryService: OrderHistoryService,
@@ -71,7 +72,7 @@ export class UsersettingsComponent implements OnInit {
     let settings = new UserSettings();
     settings.pctProfit = this.ctlPctProfit.value;
     settings.storeID = this.selectedStore;
-    this._userService.userSettingsSave(settings, ["PctProfit"])
+    this._userService.userSettingsSave(settings, ["PctProfit", "ListingLimit"])
       .subscribe(si => {
         this.displayProgressSpinner = false;
       },
@@ -129,9 +130,6 @@ export class UsersettingsComponent implements OnInit {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }],
       shippingTime: [null, {
-        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
-      }],
-      maxListings: [null, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }],
       listingLimit: [null, {
