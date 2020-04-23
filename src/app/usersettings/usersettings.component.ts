@@ -134,7 +134,8 @@ export class UsersettingsComponent implements OnInit {
       }],
       listingLimit: [null, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
-      }]
+      }],
+      payPalEmail: [null]
     })
   }
 }

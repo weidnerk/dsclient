@@ -540,6 +540,9 @@ export class ListingdbComponent implements OnInit {
           this.listingButtonEnable = false;
         });
   }
+  onOverrideEndListing() {
+    
+  }
   onEndListing() {
     const dialogRef = this.dialog.open(ConfirmComponent,
       {

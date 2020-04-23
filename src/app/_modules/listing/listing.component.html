@@ -186,7 +186,8 @@
               </mat-form-field>
             </div>
             <div class="col-1">
-              <a target="_blank" href="https://pages.ebay.com/seller-center/listing-and-marketing/verified-rights-owner-program.html#m17-1-tb3">VERO</a>
+              <a target="_blank"
+                href="https://pages.ebay.com/seller-center/listing-and-marketing/verified-rights-owner-program.html#m17-1-tb3">VERO</a>
             </div>
           </div>
 
@@ -264,6 +265,11 @@
               <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onEndListing()"
                 [disabled]="!(listing && listing.ListedItemID && !listing.Ended)">End
                 Listing</button>
+            </ng-container>
+            <ng-container>
+              <button class="btn" mat-button mat-raised-button color="primary" type="button"
+                (click)="onOverrideEndListing()" [disabled]="!(listing && listing.ListedItemID && !listing.Ended)"
+                matTooltip="Item was ended on eBay but exists in database.">Override End Listing</button>
             </ng-container>
             <span *ngIf="storing">
               <img
