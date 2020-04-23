@@ -20,7 +20,7 @@ export class ApikeysComponent implements OnInit {
   tradingAPIUsage: number = 0;
   //tokenStatus: TokenStatusType = <TokenStatusType>{};
   tokenStatus = new TokenStatusTypeCustom();
-  tradingAPIUsageLoading: boolean = true;
+  tradingAPIUsageLoading: boolean = false;
   tokenStatusLoading: boolean = true;
   apiHelp: boolean = false;
   apiKeys: AppIDSelect[];
@@ -34,7 +34,6 @@ export class ApikeysComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
-    this.getTradingAPIUsage();
     this.getStores();
   }
 
