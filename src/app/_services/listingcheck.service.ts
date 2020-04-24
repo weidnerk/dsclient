@@ -138,7 +138,18 @@ export class ListCheckService {
 
             // specifically added for case when can't connect to API
             if (error.message) {
-                errMsg = error.message;
+                // might have both error.message and error.error.Message populated
+                if (error.error) {
+                    if (error.error.Message) {
+                        errMsg = error.message + ";" + error.error.Message;
+                    }
+                    else {
+                        errMsg = error.message;
+                    }
+                }
+                else {
+                    errMsg = error.message;
+                }
             }
             else {
                 if (error.error) {
@@ -159,5 +170,5 @@ export class ListCheckService {
                 "errMsg": errMsg,
                 "errStatus": error.status
             });
-    };
+    }
 }

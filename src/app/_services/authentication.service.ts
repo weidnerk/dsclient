@@ -59,7 +59,18 @@ export class AuthenticationService {
 
             // specifically added for case when can't connect to API
             if (error.message) {
-                errMsg = error.message;
+                // might have both error.message and error.error.Message populated
+                if (error.error) {
+                    if (error.error.Message) {
+                        errMsg = error.message + ";" + error.error.Message;
+                    }
+                    else {
+                        errMsg = error.message;
+                    }
+                }
+                else {
+                    errMsg = error.message;
+                }
             }
             else {
                 if (error.error) {
@@ -80,7 +91,7 @@ export class AuthenticationService {
                 "errMsg": errMsg,
                 "errStatus": error.status
             });
-    };
+    }
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
