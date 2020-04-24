@@ -964,9 +964,10 @@ export class ListingdbComponent implements OnInit {
         //this.getBusinessPolicies();
       },
         error => {
-          if (error.errorStatus !== 404) {
-            this.errorMessage = JSON.stringify(error);
-          }
+          // if (error.errorStatus !== 404) {
+          //   this.errorMessage = JSON.stringify(error);
+          // }
+          this.errorMessage = error.errMsg;
           this.displayProgressSpinner = false;
         });
   }

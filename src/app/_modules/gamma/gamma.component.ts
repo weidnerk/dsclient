@@ -104,9 +104,10 @@ export class GammaComponent {
         this.loadData();
       },
         error => {
-          if (error.errorStatus !== 404) {
-            this.errorMessage = JSON.stringify(error);
-          }
+          // if (error.errorStatus !== 404) {
+          //   this.errorMessage = JSON.stringify(error);
+          // }
+          this.errorMessage = error.errMsg;
           this.displayProgressSpinner = false;
         });
   }
@@ -123,7 +124,6 @@ export class GammaComponent {
           this.displayProgressSpinner = false;
           this.errorMessage = error.errMsg;
         });;
-
   }
 
   generateHeaders() {

@@ -26,7 +26,7 @@ export class UserService {
     private deleteAPIKeyUrl: string = environment.API_ENDPOINT + 'api/Account/deleteapikey';
     private getUserStoresUrl: string = environment.API_ENDPOINT + 'getuserstores';
     private saveUserSettingsUrl: string = environment.API_ENDPOINT + 'usersettingssave';
- 
+
     constructor(private http: HttpClient) { }
 
     SendMsg() {
@@ -163,7 +163,7 @@ export class UserService {
         if (userJson) {
             let currentUser = JSON.parse(userJson);
             let url = environment.API_ENDPOINT + "api/Account/usersettingsviewgetbystore?userName=" + currentUser.userName
-            + "&storeID=" + storeID;
+                + "&storeID=" + storeID;
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',
@@ -353,25 +353,39 @@ export class UserService {
     private handleError(error: HttpErrorResponse) {
         let errMsg: string | null = null;
         let errDetail: string | null = null;
-        if (error.error instanceof ErrorEvent) {
-            // A client-side or network error occurred. Handle it accordingly.
-            errMsg = error.error.message;
-        } else if (error.status === 404) {
-            // error object is null
-            errMsg = "Not found";
-        } else {
+        if (error.error) {
+            if (error.error instanceof ErrorEvent) {
+                // A client-side or network error occurred. Handle it accordingly.
+                errMsg = error.error.message;
+            }
+        }
+        if (errMsg == null) {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
-            errDetail = `Backend returned code ${error.status}, ` +
-                `body was: ${error.error.Message}`;
-            errMsg = error.error.Message;
+            errDetail = `Backend returned code ${error.status}`;
+
+            // specifically added for case when can't connect to API
+            if (error.message) {
+                errMsg = error.message;
+            }
+            else {
+                if (error.error) {
+                    if (error.error.Message) {
+                        errMsg = error.error.Message;
+                    }
+                    else {
+                        errMsg = error.error;
+                    }
+                }
+                else {
+                    errMsg = error.statusText;
+                }
+            }
         }
         return observableThrowError(
             {
                 "errMsg": errMsg,
-                "errDetail": errDetail,
-                "errObj": error,
-                "errorStatus": error.status
+                "errStatus": error.status
             });
     };
 

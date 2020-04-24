@@ -839,16 +839,23 @@ export class OrderHistoryService {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
             errDetail = `Backend returned code ${error.status}`;
-            if (error.error) {
-                if (error.error.Message) {
-                    errMsg = error.error.Message;
-                }
-                else {
-                    errMsg = error.error;
-                }
+
+            // specifically added for case when can't connect to API
+            if (error.message) {
+                errMsg = error.message;
             }
             else {
-                errMsg = error.statusText;
+                if (error.error) {
+                    if (error.error.Message) {
+                        errMsg = error.error.Message;
+                    }
+                    else {
+                        errMsg = error.error;
+                    }
+                }
+                else {
+                    errMsg = error.statusText;
+                }
             }
         }
         return observableThrowError(
