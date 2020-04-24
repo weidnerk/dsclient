@@ -34,6 +34,7 @@ export class UsersettingsComponent implements OnInit {
   get ctlShippingPolicy() { return this.form.controls['shippingPolicy']; }
   get ctlSelectedStore() { return this.form.controls['selectedStore']; }
   get ctlShippingProfile() { return this.form.controls['shippingProfile']; }  // like 'mw'
+  get ctlPayPalEmail() { return this.form.controls['payPalEmail']; }
 
   constructor(private fb: FormBuilder,
     private _orderHistoryService: OrderHistoryService,
@@ -57,7 +58,8 @@ export class UsersettingsComponent implements OnInit {
         this.form.patchValue({
           pctProfit: userSettings.pctProfit,
           handlingTime: userSettings.handlingTime,
-          shippingProfile: userSettings.shippingProfile
+          shippingProfile: userSettings.shippingProfile,
+          payPalEmail: userSettings.payPalEmail
         });
         this.getBusinessPolicies();
         if (--this.storeChanged === 0) {
@@ -79,7 +81,8 @@ export class UsersettingsComponent implements OnInit {
     let settings = new UserSettings();
     settings.pctProfit = this.ctlPctProfit.value;
     settings.storeID = this.selectedStore;
-    this._userService.userSettingsSave(settings, ["PctProfit"])
+    settings.payPalEmail = this.ctlPayPalEmail.value
+    this._userService.userSettingsSave(settings, ["PctProfit","PayPalEmail"])
       .subscribe(si => {
         this.displayProgressSpinner = false;
       },
