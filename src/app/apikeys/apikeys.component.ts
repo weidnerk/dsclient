@@ -18,10 +18,9 @@ export class ApikeysComponent implements OnInit {
   errorMessage: string;
   loading: boolean = false;
   tradingAPIUsage: number = 0;
-  //tokenStatus: TokenStatusType = <TokenStatusType>{};
   tokenStatus = new TokenStatusTypeCustom();
   tradingAPIUsageLoading: boolean = false;
-  tokenStatusLoading: boolean = true;
+  tokenStatusLoading: boolean = false;
   apiHelp: boolean = false;
   apiKeys: AppIDSelect[];
   apiHelpText: string = environment.HELP_TEXT;
@@ -36,8 +35,12 @@ export class ApikeysComponent implements OnInit {
     this.buildForm();
     this.getStores();
   }
-
+  onGetTokenStatus() {
+    console.log('onGetTokenStatus');
+    this.getTokenStatus();
+  }
   getTokenStatus() {
+    this.tokenStatusLoading = true;
     this._userService.TokenStatus()
       .subscribe(s => {
         this.tokenStatus = s;
@@ -119,51 +122,51 @@ export class ApikeysComponent implements OnInit {
   }
 
   onDelete() {
-  
-      // if deleting currently selected scan, then remove it from settings
-      // if (this.settings.rptNumber == rptNumber) {
-      //   this.settings.rptNumber = 0;
-      //   this.settings.lastScan = null;
-      //   this.settings.seller = null;
-      //   this.params.changeFilterSettings(this.settings);
-      // }
-      this._userService.deleteAPIKey(this.ctlAppID.value)
-        .subscribe(x => {
-          this.route.navigate(['/']);
-        },
-          error => {
-            this.errorMessage = <any>error;
-          });
-    }
-    getStores() {
-      this._userService.getUserStores()
-        .subscribe(x => {
-          this.userStores = x;
-          if (x.length === 1) {
-            this.selectedStore = x[0].storeID;
-            this.apikeysForm.patchValue({
-              selectedStore: this.selectedStore
-            });
-            this.getUserSettings();
-          }
-        },
-          error => {
-            this.errorMessage = error;
-          });
-    }
-    storeSelected(event: MatSelectChange) {
-      const selectedData = {
-        text: (event.source.selected as MatOption).viewValue,
-        value: event.source.value
-      };
-      this.selectedStore = selectedData.value;
-      this.getUserSettings();
-    }
 
-    /**
-     * Just look at vwUserSettings to see how to save.
-     */
-    saveKeys() {
+    // if deleting currently selected scan, then remove it from settings
+    // if (this.settings.rptNumber == rptNumber) {
+    //   this.settings.rptNumber = 0;
+    //   this.settings.lastScan = null;
+    //   this.settings.seller = null;
+    //   this.params.changeFilterSettings(this.settings);
+    // }
+    this._userService.deleteAPIKey(this.ctlAppID.value)
+      .subscribe(x => {
+        this.route.navigate(['/']);
+      },
+        error => {
+          this.errorMessage = <any>error;
+        });
+  }
+  getStores() {
+    this._userService.getUserStores()
+      .subscribe(x => {
+        this.userStores = x;
+        if (x.length === 1) {
+          this.selectedStore = x[0].storeID;
+          this.apikeysForm.patchValue({
+            selectedStore: this.selectedStore
+          });
+          this.getUserSettings();
+        }
+      },
+        error => {
+          this.errorMessage = error;
+        });
+  }
+  storeSelected(event: MatSelectChange) {
+    const selectedData = {
+      text: (event.source.selected as MatOption).viewValue,
+      value: event.source.value
+    };
+    this.selectedStore = selectedData.value;
+    this.getUserSettings();
+  }
 
-    }
+  /**
+   * Just look at vwUserSettings to see how to save.
+   */
+  saveKeys() {
+
+  }
 }
