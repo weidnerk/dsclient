@@ -59,9 +59,10 @@ export class UsersettingsComponent implements OnInit {
         }
       },
         error => {
-          if (error.errorStatus !== 404) {
-            this.errorMessage = JSON.stringify(error);
-          }
+          // if (error.errorStatus !== 404) {
+          //   this.errorMessage = JSON.stringify(error);
+          // }
+          this.errorMessage = error.errMsg;
           if (--this.storeChanged === 0) {
             this.displayProgressSpinner = false;
           }
@@ -99,6 +100,7 @@ export class UsersettingsComponent implements OnInit {
         this.userStores = x;
         if (this.userStores.length === 1) {
           this.selectedStore = this.userStores[0].storeID;
+          this.getBusinessPolicies();
         }
       },
         error => {
