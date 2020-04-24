@@ -21,6 +21,7 @@ export class UsersettingsComponent implements OnInit {
   selectedStore: number;
   eBayBusinessPolicies: eBayBusinessPolicies;
   storeChanged = 0;
+  policyHandlingTime: number;
 
   // status spinner variables
   color = 'primary';
@@ -30,7 +31,10 @@ export class UsersettingsComponent implements OnInit {
 
   get ctlPctProfit() { return this.form.controls['pctProfit']; }
   get ctlListingLimit() { return this.form.controls['listingLimit']; }
-  
+  get ctlShippingPolicy() { return this.form.controls['shippingPolicy']; }
+  get ctlSelectedStore() { return this.form.controls['selectedStore']; }
+  get ctlShippingProfile() { return this.form.controls['shippingProfile']; }  // like 'mw'
+
   constructor(private fb: FormBuilder,
     private _orderHistoryService: OrderHistoryService,
     private _userService: UserService) { }
@@ -39,7 +43,7 @@ export class UsersettingsComponent implements OnInit {
     this.buildForm();
     this.getStores();
   }
- 
+
   onSubmit() {
     console.log(this.ctlPctProfit.value);
   }
@@ -52,8 +56,10 @@ export class UsersettingsComponent implements OnInit {
         console.log('pctProfit: ' + userSettings.pctProfit);
         this.form.patchValue({
           pctProfit: userSettings.pctProfit,
-          handlingTime: userSettings.handlingTime
+          handlingTime: userSettings.handlingTime,
+          shippingProfile: userSettings.shippingProfile
         });
+        this.getBusinessPolicies();
         if (--this.storeChanged === 0) {
           this.displayProgressSpinner = false;
         }
@@ -66,7 +72,7 @@ export class UsersettingsComponent implements OnInit {
           if (--this.storeChanged === 0) {
             this.displayProgressSpinner = false;
           }
-          });
+        });
   }
   userSettingsSave() {
     this.displayProgressSpinner = true;
@@ -92,14 +98,16 @@ export class UsersettingsComponent implements OnInit {
     this.displayProgressSpinner = true;
     this.storeChanged = 2;
     this.getUserSettings();
-    this.getBusinessPolicies();
+
   }
+ 
   getStores() {
     this._userService.getUserStores()
       .subscribe(x => {
         this.userStores = x;
         if (this.userStores.length === 1) {
           this.selectedStore = this.userStores[0].storeID;
+          this.ctlSelectedStore.setValue(this.userStores[0].storeID);
           this.getBusinessPolicies();
         }
       },
@@ -107,10 +115,14 @@ export class UsersettingsComponent implements OnInit {
           this.errorMessage = error;
         });
   }
+  /**
+   * look up handling time 
+   */
   getBusinessPolicies() {
     this._orderHistoryService.getBusinessPolicies(this.selectedStore)
       .subscribe(x => {
         this.eBayBusinessPolicies = x;
+        this.getHandlingTime();
         if (--this.storeChanged === 0) {
           this.displayProgressSpinner = false;
         }
@@ -119,8 +131,15 @@ export class UsersettingsComponent implements OnInit {
           this.errorMessage = error.errMsg;
           if (--this.storeChanged === 0) {
             this.displayProgressSpinner = false;
-          }  
+          }
         });
+  }
+  getHandlingTime() {
+    for (let m of this.eBayBusinessPolicies.shippingPolicies) {
+      if (m.name == this.ctlShippingProfile.value) {
+        this.policyHandlingTime = m.handlingTime;
+      }
+    }
   }
   buildForm(): void {
     this.form = this.fb.group({
@@ -137,7 +156,10 @@ export class UsersettingsComponent implements OnInit {
       listingLimit: [null, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }],
-      payPalEmail: [null]
+      payPalEmail: [null],
+      shippingPolicy: [null],
+      selectedStore: [null],
+      shippingProfile: [null] // like 'mw'
     })
   }
 }

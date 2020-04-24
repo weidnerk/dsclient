@@ -1,50 +1,51 @@
 <div class="container">
     <p class="error">{{errorMessage}}</p>
-    <div class="row">
-        <div class="col-3">
-            <mat-form-field>
-                <mat-label>Stores</mat-label>
-                <mat-select [(ngModel)]="selectedStore" (selectionChange)="storeSelected($event)">
-                    <mat-option *ngFor="let m of userStores" [value]="m.storeID">
-                        {{ m.storeName }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-3">
+                <mat-form-field>
+                    <mat-label>Stores</mat-label>
+                    <mat-select formControlName="selectedStore" (selectionChange)="storeSelected($event)">
+                        <mat-option *ngFor="let m of userStores" [value]="m.storeID">
+                            {{ m.storeName }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="eBayBusinessPolicies" class="col-3">
+                <mat-form-field>
+                    <mat-label>Shipping policies</mat-label>
+                    <mat-select formControlName="shippingPolicy">
+                        <mat-option *ngFor="let m of eBayBusinessPolicies.shippingPolicies">
+                            {{ m.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="eBayBusinessPolicies" class="col-3">
+                <mat-form-field>
+                    <mat-label>Return policies</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let m of eBayBusinessPolicies.returnPolicies">
+                            {{ m }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
         </div>
-        <div *ngIf="eBayBusinessPolicies" class="col-3">
-            <mat-form-field>
-                <mat-label>Shipping policies</mat-label>
-                <mat-select>
-                    <mat-option *ngFor="let m of eBayBusinessPolicies.shippingPolicies">
-                        {{ m }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div *ngIf="eBayBusinessPolicies" class="col-3">
-            <mat-form-field>
-                <mat-label>Return policies</mat-label>
-                <mat-select>
-                    <mat-option *ngFor="let m of eBayBusinessPolicies.returnPolicies">
-                        {{ m }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-    </div>
-    <br />
-    <div class="row">
-        <div class="col-10">
-            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <br />
+        <div class="row">
+            <div class="col-10">
+
                 <div class="row">
                     <mat-checkbox>Store Subscription
-                    </mat-checkbox> 
+                    </mat-checkbox>
                 </div>
                 <div class="row">
                     <div class="col-2">
                         <label class="lbl">Percent profit:</label>
                     </div>
-                    <div class="col-10">
+                    <div class="col-5">
                         <mat-form-field appearance="outline" class="outlinepadding">
                             <input matInput formControlName="pctProfit" maxlength="40" placeholder="pct profit">
                         </mat-form-field>
@@ -54,17 +55,20 @@
                     <div class="col-2">
                         <label class="lbl">Handling Time:</label>
                     </div>
-                    <div class="col-10">
+                    <div class="col-5">
                         <mat-form-field appearance="outline" class="outlinepadding">
                             <input matInput formControlName="handlingTime" maxlength="40" placeholder="handling time">
                         </mat-form-field>
+                    </div>
+                    <div class="col-2" *ngIf="policyHandlingTime">
+                        {{policyHandlingTime}}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-2">
                         <label class="lbl">Shipping Time:</label>
                     </div>
-                    <div class="col-10">
+                    <div class="col-5">
                         <mat-form-field appearance="outline" class="outlinepadding">
                             <input matInput formControlName="shippingTime" maxlength="40" placeholder="shipping time">
                         </mat-form-field>
@@ -85,17 +89,29 @@
                     <div class="col-2">
                         <label class="lbl">PayPal email:</label>
                     </div>
-                    <div class="col-10">
+                    <div class="col-5">
                         <mat-form-field appearance="outline" class="outlinepadding">
                             <input matInput formControlName="payPalEmail" maxlength="40" placeholder="payPal Email">
                         </mat-form-field>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-2">
+                        <label class="lbl">Shipping profile:</label>
+                    </div>
+                    <div class="col-5">
+                        <mat-form-field appearance="outline" class="outlinepadding">
+                            <input matInput formControlName="shippingProfile" maxlength="40"
+                                placeholder="shipping profile">
+                        </mat-form-field>
+                    </div>
+                </div>
                 <button [disabled]="!selectedStore" class="btn" mat-button mat-raised-button color="primary"
                     type="button" (click)="userSettingsSave()">Save</button>
-            </form>
+
+            </div>
         </div>
-    </div>
+    </form>
 </div>
 <app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
     [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">

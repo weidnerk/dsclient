@@ -31,6 +31,7 @@ export class UserSettings {
     pctProfit: number;
     handlingTime: number;
     payPalEmail: string;
+    shippingProfile: string;
 }
 
 export class UserSettingsView extends UserSettings {

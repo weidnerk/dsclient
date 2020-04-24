@@ -323,7 +323,11 @@ export class ListingLog {
     msgID: number;
 }
 export class eBayBusinessPolicies {
-    shippingPolicies: string[];
+    shippingPolicies: ShippingPolicy[];
     paymentPolicies: string[];
     returnPolicies: string[];
+}
+export class ShippingPolicy {
+    name: string;
+    handlingTime: number;
 }
