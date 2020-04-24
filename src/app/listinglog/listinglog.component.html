@@ -13,6 +13,10 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Note</mat-header-cell>
                 <mat-cell *matCellDef="let row">{{row.note}}</mat-cell>
             </ng-container>
+            <ng-container matColumnDef="userName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.userName}}</mat-cell>
+            </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;">

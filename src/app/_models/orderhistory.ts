@@ -314,6 +314,7 @@ export class ListingLogView {
     note: string;
     created: Date;
     message: string;
+    userName: string;
 }
 export class ListingLog {
     id: number;

@@ -105,5 +105,6 @@ export class ListinglogComponent {
     this.displayedColumns.push("created");
     this.displayedColumns.push("message");
     this.displayedColumns.push("note");
+    this.displayedColumns.push("userName");
   }
 }
