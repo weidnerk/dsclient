@@ -1,4 +1,5 @@
-<span class="error">{{errorMessage}}</span>
+
+<span *ngIf="errorMessage" class="error">{{errorMessage}}</span>
 <ng-container *ngIf="isConfigured">
     <mat-form-field>
         <mat-label>Stores</mat-label>
@@ -44,6 +45,14 @@
             </div>
             <div *ngIf="storeAnalysis" class="col-3">
                 {{storeAnalysis.dbIsMissingItems.length}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                Qty mismatch:
+            </div>
+            <div *ngIf="storeAnalysis" class="col-3">
+                {{storeAnalysis.qtyMismatch.length}}
             </div>
         </div>
         <div class="row">

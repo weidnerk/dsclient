@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
 
   dashboard = new Dashboard();
   storeAnalysis: StoreAnalysis;
-  errorMessage: string;
+  errorMessage: string | null;
   loading = false;
   logErrorCount: number;
   logStatus: string | null;
@@ -126,7 +126,7 @@ export class DashboardComponent implements OnInit {
         this.userStores = x;
       },
         error => {
-          this.errorMessage = error;
+          this.errorMessage = error.errMsg;
         });
   }
   storeSelected(event: MatSelectChange) {
@@ -150,9 +150,7 @@ export class DashboardComponent implements OnInit {
         // this.loadData();
       },
         error => {
-          if (error.errorStatus !== 404) {
-            this.errorMessage = JSON.stringify(error);
-          }
+          this.errorMessage = error.errMsg;
           this.loading = false;
         });
   }

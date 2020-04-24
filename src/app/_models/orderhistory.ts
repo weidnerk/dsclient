@@ -156,6 +156,7 @@ export class Dashboard {
 }
 export class StoreAnalysis {
     dbIsMissingItems: string[];
+    qtyMismatch: string[];
 }
 
 // used to compare source and ebay images
