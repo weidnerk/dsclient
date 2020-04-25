@@ -11,7 +11,7 @@ import { ResetPasswordViewModel } from '../_models/ResetPasswordViewModel';
 import { ForgotPasswordViewModel } from '../_models/ResetPasswordViewModel';
 import { ChangePasswordBindingModel } from '../_models/ResetPasswordViewModel';
 // import { UserProfileVM } from '../_models/userprofile';
-import { UserProfile, TokenStatusTypeCustom, UserSettings, AppIDSelect, UserStoreView, UserSettingsView } from '../_models/userprofile';
+import { UserProfile, TokenStatusTypeCustom, UserSettings, AppIDSelect, UserStoreView, UserSettingsView, UserProfileKeys } from '../_models/userprofile';
 
 @Injectable()
 export class UserService {
@@ -26,6 +26,7 @@ export class UserService {
     private deleteAPIKeyUrl: string = environment.API_ENDPOINT + 'api/Account/deleteapikey';
     private getUserStoresUrl: string = environment.API_ENDPOINT + 'getuserstores';
     private saveUserSettingsUrl: string = environment.API_ENDPOINT + 'usersettingssave';
+    private saveeBayKeysUrl: string = environment.API_ENDPOINT + 'ebaykeysupdate';
 
     constructor(private http: HttpClient) { }
 
@@ -351,6 +352,34 @@ export class UserService {
         )
     }
 
+    /**
+     * What should be returned?
+     * @param keys 
+     * @param fieldNames 
+     */
+    eBayKeysSave(keys: UserProfileKeys, fieldNames: string[]): Observable<string> {
+        const userJson = localStorage.getItem('currentUser');
+        if (userJson) {
+            let currentUser = JSON.parse(userJson);
+            let url = this.saveeBayKeysUrl;
+            let dto = { "eBayKeys": keys, "FieldNames": fieldNames };
+            let body = JSON.stringify(dto);
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.access_token
+                })
+            };
+            return this.http.post<string>(url, body, httpOptions).pipe(
+                catchError(this.handleError)
+            );
+        }
+        return observableThrowError(
+            {
+                errMsg: "could not obtain current user record"
+            }
+        )
+    }
     private handleError(error: HttpErrorResponse) {
         let errMsg: string | null = null;
         let errDetail: string | null = null;

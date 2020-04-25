@@ -54,3 +54,9 @@ export class UserStoreView {
     storeID: number;
     storeName: string;
 }
+export class UserProfileKeys {
+    id: number;
+    appID: string;
+    certID: string;
+    devID: string
+}

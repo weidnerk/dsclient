@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { TokenStatusTypeCustom, AppIDSelect, UserSettings, UserSettingsView, UserStoreView } from '../_models/userprofile';
+import { TokenStatusTypeCustom, AppIDSelect, UserSettings, UserSettingsView, UserStoreView, UserProfileKeys } from '../_models/userprofile';
 import { UserService } from '../_services/index';
 import { Token } from '@angular/compiler';
 import { environment } from '../../environments/environment';
@@ -34,6 +34,8 @@ export class ApikeysComponent implements OnInit {
   constructor(private route: Router, private fb: FormBuilder, private _userService: UserService) { }
 
   get ctlAppID() { return this.apikeysForm.controls['appidkey']; }
+  get ctlDevID() { return this.apikeysForm.controls['devidkey']; }
+  get ctlCertID() { return this.apikeysForm.controls['certidkey']; }
 
   ngOnInit() {
     this.buildForm();
@@ -119,6 +121,7 @@ export class ApikeysComponent implements OnInit {
     p.certID = frm.certidkey;
     p.token = frm.apitoken;
 
+    this.saveKeys();
   }
   onApiHelp() {
     this.apiHelp = true;
@@ -174,6 +177,17 @@ export class ApikeysComponent implements OnInit {
    * Just look at vwUserSettings to see how to save.
    */
   saveKeys() {
-
+    let keys = new UserProfileKeys();
+    keys.appID = this.ctlAppID.value;
+    keys.certID = this.ctlCertID.value;
+    keys.devID = this.ctlDevID.value;
+    this._userService.eBayKeysSave(keys, ["AppID","CertID","DevID"])
+    .subscribe(s => {
+      this.displayProgressSpinner = false;
+    },
+      error => {
+        this.errorMessage = <any>error;
+        this.displayProgressSpinner = false;
+      });
   }
 }
