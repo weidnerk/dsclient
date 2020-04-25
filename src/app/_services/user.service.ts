@@ -254,11 +254,12 @@ export class UserService {
             )
     }
 
-    TokenStatus(): Observable<TokenStatusTypeCustom> {
+    TokenStatus(storeID: number): Observable<TokenStatusTypeCustom> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
-            let url = this.getTokenStatusTypeUrl + "?userName=" + currentUser.userName;
+            let url = this.getTokenStatusTypeUrl + "?userName=" + currentUser.userName
+                    + "&storeID=" + storeID;
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',

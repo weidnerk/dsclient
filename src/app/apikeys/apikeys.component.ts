@@ -45,7 +45,7 @@ export class ApikeysComponent implements OnInit {
   }
   getTokenStatus() {
     this.displayProgressSpinner = true;
-    this._userService.TokenStatus()
+    this._userService.TokenStatus(this.selectedStore)
       .subscribe(s => {
         this.tokenStatus = s;
 
@@ -163,6 +163,9 @@ export class ApikeysComponent implements OnInit {
       value: event.source.value
     };
     this.selectedStore = selectedData.value;
+    this.tokenStatus.ExpirationTime = "";
+    this.tokenStatus.Status = "";
+    this.tokenStatus.StatusStr = "";
     this.displayProgressSpinner = true;
     this.getUserSettings();
   }
