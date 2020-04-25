@@ -24,6 +24,7 @@ export class ApikeysComponent implements OnInit {
   apiHelpText: string = environment.HELP_TEXT;
   userStores: UserStoreView[];
   selectedStore: number;
+  userSettingsView: UserSettingsView;
 
   // status spinner variables
   color = 'primary';
@@ -82,6 +83,7 @@ export class ApikeysComponent implements OnInit {
   getUserSettings() {
     this._userService.UserSettingsViewGetByStore(this.selectedStore)
       .subscribe(userSettings => {
+        this.userSettingsView = userSettings;
         this.apikeysForm.patchValue({
           appidkey: userSettings.appID,
           certidkey: userSettings.certID,
@@ -115,12 +117,7 @@ export class ApikeysComponent implements OnInit {
   }
 
   onSubmit(frm) {
-    let p = new UserSettingsView();
-    p.appID = frm.appidkey;
-    p.devID = frm.devidkey;
-    p.certID = frm.certidkey;
-    p.token = frm.apitoken;
-
+  
     this.saveKeys();
   }
   onApiHelp() {
@@ -177,7 +174,9 @@ export class ApikeysComponent implements OnInit {
    * Just look at vwUserSettings to see how to save.
    */
   saveKeys() {
+    this.displayProgressSpinner = true;
     let keys = new UserProfileKeys();
+    keys.id = this.userSettingsView.ebayKeyID;
     keys.appID = this.ctlAppID.value;
     keys.certID = this.ctlCertID.value;
     keys.devID = this.ctlDevID.value;
