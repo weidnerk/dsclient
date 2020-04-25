@@ -466,6 +466,8 @@ export class ListingdbComponent implements OnInit {
     let tmsg = "Please confirm supplier item matches seller's item.<br/><br/>";
     tmsg += this.listing.PrimaryCategoryID + "<br/>";
     tmsg += this.listing.PrimaryCategoryName + "<br/><br/>";
+
+    // ...not greatest way to test for new listing...
     if (!this.listing.Listed && sellerImgURL) {     // new listing
       const dialogRef = this.dialog.open(ConfirmComponent,
         {
@@ -488,7 +490,7 @@ export class ListingdbComponent implements OnInit {
       });
     }
     else {
-      if (this.listing.Warning.length > 0) {
+      if (this.listing.Warning && this.listing.Warning.length > 0) {
         const dialogRef = this.dialog.open(ConfirmComponent,
           {
             disableClose: true,
@@ -541,7 +543,7 @@ export class ListingdbComponent implements OnInit {
         });
   }
   onOverrideEndListing() {
-    
+
   }
   onEndListing() {
     const dialogRef = this.dialog.open(ConfirmComponent,
@@ -977,7 +979,13 @@ export class ListingdbComponent implements OnInit {
     else
       return false;
   }
-
+  listButtonDisable(): boolean {
+    let formIsDirty = this.formIsDirty();
+    if (!this.listingForm.valid || !this.walItem || formIsDirty || !this.listingButtonEnable)
+      return true;
+    else
+      return false;
+  }
   /**
    * no, make new component for log
    */

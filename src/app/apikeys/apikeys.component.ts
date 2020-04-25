@@ -16,16 +16,20 @@ import { MatSelectChange } from '@angular/material/select';
 export class ApikeysComponent implements OnInit {
   apikeysForm: FormGroup;
   errorMessage: string;
-  loading: boolean = false;
+  
   tradingAPIUsage: number = 0;
   tokenStatus = new TokenStatusTypeCustom();
-  tradingAPIUsageLoading: boolean = false;
-  tokenStatusLoading: boolean = false;
   apiHelp: boolean = false;
   apiKeys: AppIDSelect[];
   apiHelpText: string = environment.HELP_TEXT;
   userStores: UserStoreView[];
   selectedStore: number;
+
+  // status spinner variables
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 50;
+  displayProgressSpinner: boolean = false;
 
   constructor(private route: Router, private fb: FormBuilder, private _userService: UserService) { }
 
@@ -40,7 +44,7 @@ export class ApikeysComponent implements OnInit {
     this.getTokenStatus();
   }
   getTokenStatus() {
-    this.tokenStatusLoading = true;
+    this.displayProgressSpinner = true;
     this._userService.TokenStatus()
       .subscribe(s => {
         this.tokenStatus = s;
@@ -50,11 +54,11 @@ export class ApikeysComponent implements OnInit {
           this.tokenStatus = new TokenStatusTypeCustom();
           this.tokenStatus.StatusStr = "Please check that all keys are valid.";
         }
-        this.tokenStatusLoading = false;
+        this.displayProgressSpinner = false;
       },
         error => {
           this.errorMessage = <any>error;
-          this.tokenStatusLoading = false;
+          this.displayProgressSpinner = false;
         });
   }
 
@@ -62,11 +66,11 @@ export class ApikeysComponent implements OnInit {
     this._userService.TradingAPIUsage()
       .subscribe(x => {
         this.tradingAPIUsage = x;
-        this.tradingAPIUsageLoading = false;
+        this.displayProgressSpinner = false;
       },
         error => {
           this.errorMessage = <any>error;
-          this.tradingAPIUsageLoading = false;
+          this.displayProgressSpinner = false;
         });
   }
 
@@ -83,18 +87,17 @@ export class ApikeysComponent implements OnInit {
           apitoken: userSettings.token,
           apikeyselect: userSettings.appID
         });
-        this.loading = false;
+        this.displayProgressSpinner = false;
       },
         error => {
           if (error.errorStatus !== 404) {
             this.errorMessage = JSON.stringify(error);
           }
-          this.loading = false;
+          this.displayProgressSpinner = false;
         });
   }
 
   buildForm(): void {
-
     this.apikeysForm = this.fb.group({
       appidkey: [null, Validators.required],
       devidkey: [null, Validators.required],
@@ -160,6 +163,7 @@ export class ApikeysComponent implements OnInit {
       value: event.source.value
     };
     this.selectedStore = selectedData.value;
+    this.displayProgressSpinner = true;
     this.getUserSettings();
   }
 

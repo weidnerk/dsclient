@@ -254,7 +254,7 @@
               [disabled]="!listingForm.valid || !walItem">Save</button>
 
             <button class="btn" mat-button mat-raised-button color="primary" type="submit" (click)="listButtonVal=true"
-              [disabled]="!listingForm.valid || !walItem || formIsDirty() || !listingButtonEnable">List</button>
+              [disabled]="listButtonDisable()">List</button>
             <button class="btn" mat-button mat-raised-button color="primary" type="submit"
               [disabled]="deleteButtonDisable()" (click)="deleteButtonVal=true">Delete</button>
 
