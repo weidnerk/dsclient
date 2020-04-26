@@ -39,15 +39,12 @@ import { MatPassToggleVisibilityComponent } from 'src/app/mat-pass-toggle-visibi
 import { RegisterComponent } from 'src/app/register/register.component';
 import { ChangepasswordComponent } from 'src/app/changepassword/changepassword.component';
 import { ForgotpasswordComponent } from 'src/app/forgotpassword/forgotpassword.component';
-import { ApikeysComponent } from 'src/app/apikeys/apikeys.component';
 import { PasswordresetComponent } from 'src/app/passwordreset/passwordreset.component';
 import { ScanhistoryComponent } from 'src/app/scanhistory/scanhistory.component';
 import { SellerprofileComponent } from 'src/app/sellerprofile/sellerprofile.component';
 import { ListingnoteComponent } from 'src/app/listingnote/listingnote.component';
 import { ResearchComponent } from 'src/app/research/cr.component';
 import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
-import { GammaModule } from 'src/app/_modules/gamma/gamma.module';
-import { ListingdbModule } from 'src/app/_modules/listing/listing.module';
 import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
 import { ConfirmComponent } from 'src/app/confirm/confirm.component';
 import { UsersettingsComponent } from 'src/app/usersettings/usersettings.component';
@@ -64,7 +61,6 @@ import { UsersettingsComponent } from 'src/app/usersettings/usersettings.compone
     RegisterComponent,
     ChangepasswordComponent,
     ForgotpasswordComponent,
-    ApikeysComponent,
     PasswordresetComponent,
     ScanhistoryComponent,
     SellerprofileComponent,
@@ -106,9 +102,7 @@ import { UsersettingsComponent } from 'src/app/usersettings/usersettings.compone
     SharedModule,
     MatTableModule,
     MatDividerModule,
-    MatSidenavModule,
-    GammaModule,
-    ListingdbModule
+    MatSidenavModule
   ],
   providers: [
     DashboardService

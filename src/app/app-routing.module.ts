@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { ApikeysComponent } from './apikeys/apikeys.component';
+import { ApikeysComponent } from './_modules/apikeys/apikeys.component';
 import { ScanhistoryComponent } from './scanhistory/scanhistory.component';
 import { ResearchComponent } from './research/cr.component';
 import { TimesSoldComponent } from './timessold/timessold.component';
@@ -49,7 +49,7 @@ const routes: Routes = [
         },
         {
             path: 'apikeys',
-            component: ApikeysComponent,
+            loadChildren: () => import('./_modules/apikeys/apikeys.module').then(m => m.ApikeysModule),
             canActivate: [AuthGuard]
         },
         {

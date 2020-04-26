@@ -4,8 +4,9 @@ import { AuthGuard } from '../../_guards/index';
 import { GammaComponent } from './gamma.component';
 
 const gammaRoutes: Routes = [
-    { path: '', component: GammaComponent, canActivate: [AuthGuard] },
-    { path: 'xxx', loadChildren: () => import('../listing/listing.module').then(m => m.ListingdbModule), canActivate: [AuthGuard] }
+    { path: '', component: GammaComponent, canActivate: [AuthGuard] }
+    // ,
+    // { path: 'xxx', loadChildren: () => import('../listing/listing.module').then(m => m.ListingdbModule), canActivate: [AuthGuard] }
 ];
 
 @NgModule({

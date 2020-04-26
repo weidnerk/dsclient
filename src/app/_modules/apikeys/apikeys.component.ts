@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { TokenStatusTypeCustom, AppIDSelect, UserSettings, UserSettingsView, UserStoreView, UserProfileKeys } from '../_models/userprofile';
-import { UserService } from '../_services/index';
-import { Token } from '@angular/compiler';
-import { environment } from '../../environments/environment';
+import { TokenStatusTypeCustom, AppIDSelect, UserSettings, UserSettingsView, UserStoreView, UserProfileKeys } from '../../_models/userprofile';
+import { UserService } from '../../_services/index';
+import { environment } from '../../../environments/environment';
 import { MatOption } from '@angular/material/core';
 import { MatSelectChange } from '@angular/material/select';
 
