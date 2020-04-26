@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { OrderHistoryService } from '../_services/orderhistory.service';
-import { UserService } from '../_services';
-import { UserSettingsView, UserSettings, UserStoreView } from '../_models/userprofile';
 import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import { eBayBusinessPolicies } from '../_models/orderhistory';
+import { UserSettingsView, UserStoreView, UserSettings } from 'src/app/_models/userprofile';
+import { eBayBusinessPolicies } from 'src/app/_models/orderhistory';
+import { OrderHistoryService } from 'src/app/_services/orderhistory.service';
+import { UserService } from 'src/app/_services';
 
 @Component({
   selector: 'app-usersettings',

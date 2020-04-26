@@ -9,7 +9,6 @@ import { ResearchComponent } from './research/cr.component';
 import { TimesSoldComponent } from './timessold/timessold.component';
 import { AuthGuard } from './_guards/index';
 import { Dashboardv2Component } from './dashboard-v2/dashboard.component';
-import { UsersettingsComponent } from './usersettings/usersettings.component';
 import { DefaultComponent } from './layouts/default/default.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 
@@ -54,7 +53,7 @@ const routes: Routes = [
         },
         {
             path: 'usersettings',
-            component: UsersettingsComponent,
+            loadChildren: () => import('./_modules/usersettings/usersettings.module').then(m => m.UsersettingsModule),
             canActivate: [AuthGuard]
         },
         { path: 'scanseller', 
