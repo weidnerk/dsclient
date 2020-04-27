@@ -18,6 +18,14 @@
                             <mat-icon>error</mat-icon>&nbsp;
                             Username required
                         </mat-error>
+                        <mat-error *ngIf="userName.hasError('minlength')">
+                            <mat-icon>error</mat-icon>&nbsp;
+                            Username min length
+                        </mat-error>
+                        <mat-error *ngIf="userName.hasError('maxlength')">
+                            <mat-icon>error</mat-icon>&nbsp;
+                            Username max length
+                        </mat-error>
                     </mat-form-field>
                 </div>
                 <div>
@@ -104,7 +112,9 @@
         </pre>
     </div>
 </form>
-<!-- Form status: {{ registerForm.status }}<br />
-Pwd status: {{ registerForm.errors | json }}<br />
-Pwd has error: {{ registerForm.get('confirm').hasError('nomatch') }}<br /> 
--->
+<app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
+    [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
+</app-progress-spinner>
+Form status: {{ registerForm.status }}<br />
+<!-- Pwd status: {{ registerForm.errors | json }}<br />
+Pwd has error: {{ registerForm.get('confirm').hasError('nomatch') }}<br />  -->

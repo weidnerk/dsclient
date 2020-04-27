@@ -246,6 +246,7 @@ export class SupplierItem {
     OutOfStock : boolean;
     ShippingNotAvailable: boolean; 
     Arrives: Date;
+    BusinessDaysArrives: number;
     IsVERO: boolean;
     VariationPicURL: string[];
     VariationName: string;

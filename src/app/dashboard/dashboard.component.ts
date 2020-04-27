@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
   userStores: UserStoreView[];
   selectedStore: number;
   userProfile: UserProfile;
-  
+
   // status spinner variables
   color = 'primary';
   mode = 'indeterminate';
@@ -76,7 +76,6 @@ export class DashboardComponent implements OnInit {
           this.errorMessage = error.errMsg;
           this.loading = false;
           this.displayProgressSpinner = false;
-         
         });
   }
   getStoreAnalysis() {
@@ -84,14 +83,14 @@ export class DashboardComponent implements OnInit {
     this._orderHistoryService.getStoreAnalysis(this.selectedStore)
       .subscribe(sa => {
         this.storeAnalysis = sa;
-      console.log('db is missing how many items: ' + this.storeAnalysis.dbIsMissingItems.length);
+        console.log('db is missing how many items: ' + this.storeAnalysis.dbIsMissingItems.length);
         this.displayProgressSpinner = false;
       },
         error => {
           this.errorMessage = error.errMsg;
           this.loading = false;
           this.displayProgressSpinner = false;
-         
+
         });
   }
   getErrorCount() {
@@ -143,11 +142,13 @@ export class DashboardComponent implements OnInit {
     this._userService.UserProfileGet()
       .subscribe(profile => {
         this.userProfile = profile;
-        this.selectedStore = profile.selectedStore;
-        this.getDashboard();
-        // this.selectedStore = profile.selectedStore;
-        // this.getStores();
-        // this.loadData();
+        if (profile.selectedStore) {
+          this.selectedStore = profile.selectedStore;
+          this.getDashboard();
+        }
+        else {
+          this.errorMessage = 'No stores configured.';
+        }
       },
         error => {
           this.errorMessage = error.errMsg;

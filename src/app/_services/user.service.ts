@@ -11,7 +11,7 @@ import { ResetPasswordViewModel } from '../_models/ResetPasswordViewModel';
 import { ForgotPasswordViewModel } from '../_models/ResetPasswordViewModel';
 import { ChangePasswordBindingModel } from '../_models/ResetPasswordViewModel';
 // import { UserProfileVM } from '../_models/userprofile';
-import { UserProfile, TokenStatusTypeCustom, UserSettings, AppIDSelect, UserStoreView, UserSettingsView, UserProfileKeys } from '../_models/userprofile';
+import { UserProfile, TokenStatusTypeCustom, UserSettings, AppIDSelect, UserStoreView, UserSettingsView, UserProfileKeys, UserProfileView } from '../_models/userprofile';
 
 @Injectable()
 export class UserService {
@@ -112,7 +112,7 @@ export class UserService {
      * 
      * @param appID if appID is null, we are loading user's setting
      */
-    UserProfileGet(): Observable<UserProfile> {
+    UserProfileGet(): Observable<UserProfileView> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
@@ -123,7 +123,7 @@ export class UserService {
                     'Authorization': 'Bearer ' + currentUser.access_token
                 })
             };
-            return this.http.get<UserProfile>(url, httpOptions).pipe(
+            return this.http.get<UserProfileView>(url, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }

@@ -13,7 +13,6 @@ import { ModelView, Listing, SearchReport, SourceCategory, SellerProfile, Dashbo
 import { WalmartSearchProdIDResponse } from '../_models/walitem';
 import { environment } from '../../environments/environment';
 import { AbstractControl } from '@angular/forms';
-import { ListinglogComponent } from '../listinglog/listinglog.component';
 
 @Injectable()
 export class OrderHistoryService {

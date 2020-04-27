@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit {
             },
             error => {
                 this.loading = false;
-                //this.alertService.error(error);
                 if (error.status === 400) {
                   //handle validation error
                   if (error.error.error_description) {

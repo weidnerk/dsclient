@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserSettingsView } from 'src/app/_models/userprofile';
+import { UserSettingsView, UserProfileView } from 'src/app/_models/userprofile';
 import { UserService } from 'src/app/_services';
 import { OrderHistoryService } from 'src/app/_services/orderhistory.service';
 import { Router } from '@angular/router';
@@ -12,10 +12,11 @@ import { Router } from '@angular/router';
 export class SidebarComponent implements OnInit {
 
   isAdmin = false;
-  userSettingsView: UserSettingsView;
+  profile: UserProfileView;
   errorMessage: string | null;
   isConfigured = false;
   loading = true;
+  errMessage: string;
 
   constructor(private _userService: UserService,
     private _orderHistory: OrderHistoryService,
@@ -29,17 +30,14 @@ export class SidebarComponent implements OnInit {
   }
 
   getUserSettings() {
-    this._userService.UserSettingsViewGet()
-      .subscribe(userSettings => {
-        this.userSettingsView = userSettings;
+    this._userService.UserProfileGet()
+      .subscribe(profile => {
+        this.profile = profile;
         this.isConfigured = true;
         this.loading = false;
       },
         error => {
-          if (error.errorStatus !== 404) {
-            this.errorMessage = JSON.stringify(error);
-            this.router.navigate(['/login']);
-          }
+          this.errorMessage = error.errMsg;
           this.loading = false;
         });
   }

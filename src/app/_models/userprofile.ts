@@ -4,6 +4,13 @@ export class UserProfile {
     lastname: string;
     selectedStore: number;
 }
+export class UserProfileView {
+    userID: string;
+    firstname: string;
+    lastname: string;
+    selectedStore: number;
+    username: string;
+}
 
 // a little different from actual UserProfile in AccountController since need to pass userName so we can look up id
 // export class UserProfileVM extends UserProfile {

@@ -46,9 +46,15 @@ export class RegisterComponent {
     emailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$';
 
     model: User = <User>{};
-    loading = false;
     errorMessage: string | null;   // needed for message like 'passwords must be at least 6 chars'
     registerForm: FormGroup;
+    loadinngCount = 0;
+
+    // status spinner variables
+    color = 'primary';
+    mode = 'indeterminate';
+    value = 50;
+    displayProgressSpinner = false;
 
     get userName() { return this.registerForm.controls['userName']; }
     get firstName() { return this.registerForm.controls['firstName']; }
@@ -70,17 +76,19 @@ export class RegisterComponent {
     }
 
     register() {
+        this.displayProgressSpinner = true;
         let r = this.findInvalidControls();
         for (let m of r) {
             console.log(m);
-         }
-         
+        }
+
         console.log(this.registerForm.valid);
         this.errorMessage = null;
-        if (!this.registerForm.valid) {
+        if (!this.formIsValid()) {
+            this.displayProgressSpinner = false;
             return;
         }
-        this.loading = true;
+
         this.model.Username = this.userName.value;
         this.model.Email = this.emailAddress.value;
         this.model.firstName = this.firstName.value;
@@ -91,30 +99,27 @@ export class RegisterComponent {
         this.userService.register(this.model)
             .subscribe(
                 data => {
-                    //this.alertService.success('Registration successful', true);
-                    this.router.navigate(['/login']);
+                    // (wait 1 sec before executing what's inside setTimeout)
+                    // seems that if you don't give this slight pause, wait symbol does not go away
+                    this.displayProgressSpinner = false;
+                    setTimeout(() => {
+                        this.router.navigate(['/login']);
+                    }, 500);
                 },
                 error => {
-                    //this.alertService.error(error);
-                    if (error.errObj.status === 400) {
-                        //handle validation error
-                        if (error.errObj.error.ModelState) {
-                            for (var key in error.errObj.error.ModelState) {
-                                if (error.errObj.error.ModelState.hasOwnProperty(key)) {
-                                    this.errorMessage = error.errObj.error.ModelState[key];
-                                }
-                            }
-                        }
-                        else
-                            this.errorMessage = error.errMsg;
-                    }
-                    else
-                        this.errorMessage = error.errMsg;
-
-                    this.loading = false;
+                    this.errorMessage = error.errMsg;
+                    this.displayProgressSpinner = false;
                 });
     }
-
+    formIsValid(): boolean {
+        if (this.userName.invalid) { return false; }
+        if (this.firstName.invalid) { return false; }
+        if (this.lastName.invalid) { return false; }
+        if (this.emailAddress.invalid) { return false; }
+        if (this.password.invalid) { return false; }
+        if (this.confirm.invalid) { return false; }
+        return true;
+    }
     // would eventually like to put this in a separate file under a _validators folder
     validateEmail(c: AbstractControl): Observable<ValidationErrors | null> {
 
@@ -147,6 +152,8 @@ export class RegisterComponent {
         console.log('remove user');
     }
     findInvalidControls() {
+        let r = this.userName.hasError('pattern');
+        console.log('user name hasError: ' + r);
         let invalid: string[];
         invalid = [];
         const controls = this.registerForm.controls;
@@ -175,10 +182,10 @@ export class RegisterComponent {
                 updateOn: 'submit'
             }],
             firstName: [null, {
-                validators: [Validators.required, 
-                    Validators.minLength(2), 
-                    Validators.maxLength(30), 
-                    Validators.pattern(FIRSTNAME_REGEX)],
+                validators: [Validators.required,
+                Validators.minLength(2),
+                Validators.maxLength(30),
+                Validators.pattern(FIRSTNAME_REGEX)],
                 updateOn: 'submit'
             }],
             lastName: [null, {

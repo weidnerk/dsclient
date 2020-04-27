@@ -13,7 +13,7 @@ import { ListingnoteComponent } from '../../listingnote/listingnote.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ListCheckService } from '../../_services/listingcheck.service';
 import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
-import { UserProfile } from 'src/app/_models/userprofile';
+import { UserProfile, UserSettingsView } from 'src/app/_models/userprofile';
 import { UserService } from 'src/app/_services';
 import { ConfirmComponent } from 'src/app/confirm/confirm.component';
 
@@ -58,7 +58,8 @@ export class ListingdbComponent implements OnInit {
   listing: Listing;
   walItem: SupplierItem | null = null;
   userProfile: UserProfile;
-
+  userSettingsView: UserSettingsView;
+  
   // used for testing fetch of variations
   variationItem: SupplierItem;
   sellerVariationItem: SellerListing;
@@ -102,6 +103,7 @@ export class ListingdbComponent implements OnInit {
   get ctlListingPrice() { return this.listingForm.controls['listingPrice']; }
   get ctlListingTitle() { return this.listingForm.controls['listingTitle']; }
   get ctlListingQty() { return this.listingForm.controls['listingQty']; }
+  get ctlPctProfit() { return this.listingForm.controls['pctProfit']; }
   get ctlNote() { return this.listingForm.controls['note']; }
   get ctlDescription() { return this.listingForm.controls['description']; }
   get ctlCheckDescription() { return this.listingForm.controls['checkDescription']; }
@@ -133,10 +135,9 @@ export class ListingdbComponent implements OnInit {
     // itemId is seller's listing id
     // passing rptNumber and qtySold to potentially record in Listing table.
     this.sub = this.route.params.subscribe(params => {
-      this.listingID = params['listingID'];
+      this.listingID = +params['listingID'];
       if (this.listingID > 0) {
         this.ctlSellerItemID.disable();
-
         this.getData();
       }
       else {
@@ -146,6 +147,7 @@ export class ListingdbComponent implements OnInit {
   }
 
   initForm() {
+// get pct profit default setting
 
   }
 
@@ -166,7 +168,8 @@ export class ListingdbComponent implements OnInit {
             variationDescription: li.VariationDescription,
             description: li.Description,
             sourceURL: li.SupplierItem.ItemURL,
-            sellerItemID: li.ItemID
+            sellerItemID: li.ItemID,
+            pctProfit: li.PctProfit
           })
 
           // this.imgSource = this.getFirstInList(this.imgSource);
@@ -397,6 +400,7 @@ export class ListingdbComponent implements OnInit {
       this.listing.ListingPrice = this.ctlListingPrice.value;
       this.listing.ListingTitle = this.ctlListingTitle.value;
       this.listing.Qty = this.ctlListingQty.value;
+      this.listing.PctProfit = this.ctlPctProfit.value;
       this.listing.Description = this.ctlDescription.value;
       this.listing.Profit = 0;
       this.listing.ProfitMargin = 0;
@@ -410,6 +414,7 @@ export class ListingdbComponent implements OnInit {
           "Description",
           "PictureURL",
           "ItemID",
+          "PctProfit",
           "SupplierItem.SupplierPrice",
           "SupplierItem.ItemURL"
         ])
@@ -674,6 +679,7 @@ export class ListingdbComponent implements OnInit {
         let supp: SupplierItem = {
           ItemURL: wi.ItemURL,
           Arrives: wi.Arrives,
+          BusinessDaysArrives: wi.BusinessDaysArrives,
           Warning: wi.Warning,
           CanList: wi.CanList,
           Description: wi.Description,
@@ -962,6 +968,10 @@ export class ListingdbComponent implements OnInit {
 
         // 04.23.2020 hold off for now - overkill
         //this.getBusinessPolicies();
+
+        if (this.listingID === 0) {
+          this.getUserSettings();
+        }
       },
         error => {
           // if (error.errorStatus !== 404) {
@@ -1005,6 +1015,19 @@ export class ListingdbComponent implements OnInit {
     this._orderHistoryService.getBusinessPolicies(this.selectedStore)
       .subscribe(x => {
         this.eBayBusinessPolicies = x;
+      },
+        error => {
+          this.errorMessage = error.errMsg;
+        });
+  }
+  getUserSettings() {
+    // shouldn't this be 'get use settings for some store selection?'
+    this._userService.UserSettingsViewGetByStore(this.userProfile.selectedStore)
+      .subscribe(userSettings => {
+        this.userSettingsView = userSettings;
+        this.listingForm.patchValue({
+          pctProfit: userSettings.pctProfit
+        });
       },
         error => {
           this.errorMessage = error.errMsg;
