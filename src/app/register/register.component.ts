@@ -70,6 +70,11 @@ export class RegisterComponent {
     }
 
     register() {
+        let r = this.findInvalidControls();
+        for (let m of r) {
+            console.log(m);
+         }
+         
         console.log(this.registerForm.valid);
         this.errorMessage = null;
         if (!this.registerForm.valid) {
@@ -140,6 +145,17 @@ export class RegisterComponent {
 
     onRemoveUser() {
         console.log('remove user');
+    }
+    findInvalidControls() {
+        let invalid: string[];
+        invalid = [];
+        const controls = this.registerForm.controls;
+        for (const name in controls) {
+            if (controls[name].invalid) {
+                invalid.push(name);
+            }
+        }
+        return invalid;
     }
     buildForm(): void {
         this.registerForm = this.fb.group({

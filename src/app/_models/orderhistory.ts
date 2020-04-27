@@ -132,6 +132,7 @@ export class Listing {
     eBaySellerURL: string;
     SellerListing: SellerListing | null;
     Ended: Date;
+    PctProfit: number;
 }
 export class ListingView extends Listing {
     Seller: string;

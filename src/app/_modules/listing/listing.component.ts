@@ -559,9 +559,6 @@ export class ListingdbComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'Yes') {
         this.endListing();
-        if (!this.errorMessage || this.errorMessage?.length === 0) {
-          this.router.navigate(['/gamma']);
-        }
       }
       if (result === 'No') {
         // console.log('No');
@@ -575,6 +572,7 @@ export class ListingdbComponent implements OnInit {
         .subscribe(si => {
           this.statusMessage = si;
           this.displayProgressSpinner = false;
+          this.router.navigate(['/gamma']);
         },
           error => {
             this.errorMessage = error.errMsg;
