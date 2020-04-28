@@ -7,6 +7,9 @@ import { eBayBusinessPolicies, StoreProfile } from 'src/app/_models/orderhistory
 import { OrderHistoryService } from 'src/app/_services/orderhistory.service';
 import { UserService } from 'src/app/_services';
 
+// https://stackoverflow.com/questions/16334765/regular-expression-for-not-allowing-spaces-in-the-input-field
+const STORENAME_REGEX = /^\S*$/; // a string consisting only of non-whitespaces
+
 @Component({
   selector: 'app-usersettings',
   templateUrl: './usersettings.component.html',

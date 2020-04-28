@@ -36,6 +36,7 @@ export class ApikeysComponent implements OnInit {
   get ctlAppID() { return this.apikeysForm.controls['appidkey']; }
   get ctlDevID() { return this.apikeysForm.controls['devidkey']; }
   get ctlCertID() { return this.apikeysForm.controls['certidkey']; }
+  get ctlAPIToken() { return this.apikeysForm.controls['apitoken']; }
 
   ngOnInit() {
     this.buildForm();
@@ -110,7 +111,14 @@ export class ApikeysComponent implements OnInit {
       apiEmail: [null]
     })
   }
-
+  formIsValid(): boolean {
+    if (this.ctlAppID.invalid) { return false; }
+    if (this.ctlDevID.invalid) { return false; }
+    if (this.ctlCertID.invalid) { return false; }
+    if (this.ctlAPIToken.invalid) { return false; }
+    if (!this.selectedStore) { return false;}
+    return true;
+}
   onCancel() {
     window.history.back();
   }
