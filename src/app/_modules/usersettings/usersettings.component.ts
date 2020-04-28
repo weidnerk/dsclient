@@ -22,6 +22,7 @@ export class UsersettingsComponent implements OnInit {
   eBayBusinessPolicies: eBayBusinessPolicies;
   storeChanged = 0;
   policyHandlingTime: number;
+  subscription: string;
 
   // status spinner variables
   color = 'primary';
@@ -63,6 +64,7 @@ export class UsersettingsComponent implements OnInit {
           payPalEmail: userSettings.payPalEmail
         });
         this.getBusinessPolicies();
+        this.getStore();
         if (--this.storeChanged === 0) {
           this.displayProgressSpinner = false;
         }
@@ -104,7 +106,15 @@ export class UsersettingsComponent implements OnInit {
     this.getUserSettings();
 
   }
- 
+  getStore() {
+    this._userService.getStore(this.selectedStore)
+      .subscribe(x => {
+        this.subscription = x;
+      },
+        error => {
+          this.errorMessage = error.errMsg;
+        });
+  }
   getStores() {
     this._userService.getUserStores()
       .subscribe(x => {
@@ -113,6 +123,7 @@ export class UsersettingsComponent implements OnInit {
           this.selectedStore = this.userStores[0].storeID;
           this.ctlSelectedStore.setValue(this.userStores[0].storeID);
           this.getBusinessPolicies();
+          this.getStore();
         }
       },
         error => {

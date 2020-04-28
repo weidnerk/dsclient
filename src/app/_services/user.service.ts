@@ -27,6 +27,7 @@ export class UserService {
     private getUserStoresUrl: string = environment.API_ENDPOINT + 'getuserstores';
     private saveUserSettingsUrl: string = environment.API_ENDPOINT + 'usersettingssave';
     private saveeBayKeysUrl: string = environment.API_ENDPOINT + 'ebaykeysupdate';
+    private getStoreUrl: string = environment.API_ENDPOINT + 'getstore';
 
     constructor(private http: HttpClient) { }
 
@@ -172,6 +173,30 @@ export class UserService {
                 })
             };
             return this.http.get<UserSettingsView>(url, httpOptions).pipe(
+                catchError(this.handleError)
+            );
+        }
+        else
+            return observableThrowError(
+                {
+                    errMsg: "Could not obtain current user record"
+                }
+            )
+    }
+    getStore(storeID: number): Observable<string> {
+
+        const userJson = localStorage.getItem('currentUser');
+        if (userJson) {
+            let currentUser = JSON.parse(userJson);
+            let url = this.getStoreUrl
+                + "?storeID=" + storeID;
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.access_token
+                })
+            };
+            return this.http.get<string>(url, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }
