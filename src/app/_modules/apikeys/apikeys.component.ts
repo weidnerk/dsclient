@@ -88,7 +88,8 @@ export class ApikeysComponent implements OnInit {
           certidkey: userSettings.certID,
           devidkey: userSettings.devID,
           apitoken: userSettings.token,
-          apikeyselect: userSettings.appID
+          apikeyselect: userSettings.appID,
+          apiEmail: userSettings.APIEmail
         });
         this.displayProgressSpinner = false;
       },
@@ -105,7 +106,8 @@ export class ApikeysComponent implements OnInit {
       certidkey: [null, Validators.required],
       apitoken: [null, Validators.required],
       apikeyselect: [null],
-      selectedStore: [null]
+      selectedStore: [null],
+      apiEmail: [null]
     })
   }
 

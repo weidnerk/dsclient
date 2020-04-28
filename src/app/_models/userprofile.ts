@@ -42,7 +42,6 @@ export class UserSettings {
 }
 
 export class UserSettingsView extends UserSettings {
-    //userID: string;
     appID: string;
     devID: string;
     certID: string;
@@ -51,6 +50,7 @@ export class UserSettingsView extends UserSettings {
     storeName: string;
     firstName: string;
     ebayKeyID: number;
+    APIEmail: string;
 }
 
 export class AppIDSelect {
