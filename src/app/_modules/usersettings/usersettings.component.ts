@@ -115,7 +115,7 @@ export class UsersettingsComponent implements OnInit {
         }
       },
         error => {
-          this.errorMessage = error;
+          this.errorMessage = error.errMsg;
         });
   }
   /**

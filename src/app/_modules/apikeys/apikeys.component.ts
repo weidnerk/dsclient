@@ -59,7 +59,7 @@ export class ApikeysComponent implements OnInit {
         this.displayProgressSpinner = false;
       },
         error => {
-          this.errorMessage = <any>error;
+          this.errorMessage = error.errMsg;
           this.displayProgressSpinner = false;
         });
   }
@@ -71,7 +71,7 @@ export class ApikeysComponent implements OnInit {
         this.displayProgressSpinner = false;
       },
         error => {
-          this.errorMessage = <any>error;
+          this.errorMessage = error.errMsg;
           this.displayProgressSpinner = false;
         });
   }
@@ -93,9 +93,7 @@ export class ApikeysComponent implements OnInit {
         this.displayProgressSpinner = false;
       },
         error => {
-          if (error.errorStatus !== 404) {
-            this.errorMessage = JSON.stringify(error);
-          }
+          this.errorMessage = error.errMsg;
           this.displayProgressSpinner = false;
         });
   }
@@ -137,7 +135,7 @@ export class ApikeysComponent implements OnInit {
         this.route.navigate(['/']);
       },
         error => {
-          this.errorMessage = <any>error;
+          this.errorMessage = error.errMsg;
         });
   }
   getStores() {
@@ -153,7 +151,7 @@ export class ApikeysComponent implements OnInit {
         }
       },
         error => {
-          this.errorMessage = error;
+          this.errorMessage = error.errMsg;
         });
   }
   storeSelected(event: MatSelectChange) {
@@ -184,7 +182,7 @@ export class ApikeysComponent implements OnInit {
       this.displayProgressSpinner = false;
     },
       error => {
-        this.errorMessage = <any>error;
+        this.errorMessage = error.errMsg;
         this.displayProgressSpinner = false;
       });
   }
