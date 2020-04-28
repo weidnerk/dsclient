@@ -99,6 +99,12 @@ export class GammaComponent {
     this._userService.UserProfileGet()
       .subscribe(profile => {
         this.userProfile = profile;
+        if (!profile.selectedStore) {
+          this.displayProgressSpinner = false;
+          setTimeout(() => {
+              this.route.navigate(['/']);
+          }, 500);
+        }
         this.selectedStore = profile.selectedStore;
         this.getStores();
         this.loadData();

@@ -14,7 +14,6 @@ export class SidebarComponent implements OnInit {
   isAdmin = false;
   profile: UserProfileView;
   errorMessage: string | null;
-  isConfigured = false;
   loading = true;
   errMessage: string;
 
@@ -23,17 +22,16 @@ export class SidebarComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.getUserSettings();
+    this.getUserProfile();
     
     this.isAdmin = this._orderHistory.isAdmin();
     this.isAdmin = true;  // for now, enbale this for testing
   }
 
-  getUserSettings() {
+  getUserProfile() {
     this._userService.UserProfileGet()
       .subscribe(profile => {
         this.profile = profile;
-        this.isConfigured = true;
         this.loading = false;
       },
         error => {
