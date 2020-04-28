@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { UserSettingsView, UserStoreView, UserSettings } from 'src/app/_models/userprofile';
-import { eBayBusinessPolicies } from 'src/app/_models/orderhistory';
+import { eBayBusinessPolicies, StoreProfile } from 'src/app/_models/orderhistory';
 import { OrderHistoryService } from 'src/app/_services/orderhistory.service';
 import { UserService } from 'src/app/_services';
 
@@ -35,6 +35,7 @@ export class UsersettingsComponent implements OnInit {
   get ctlSelectedStore() { return this.form.controls['selectedStore']; }
   get ctlShippingProfile() { return this.form.controls['shippingProfile']; }  // like 'mw'
   get ctlPayPalEmail() { return this.form.controls['payPalEmail']; }
+  get ctlStoreName() { return this.form.controls['storeName']; }
 
   constructor(private fb: FormBuilder,
     private _orderHistoryService: OrderHistoryService,
@@ -162,7 +163,21 @@ export class UsersettingsComponent implements OnInit {
       payPalEmail: [null],
       shippingPolicy: [null],
       selectedStore: [null],
-      shippingProfile: [null] // like 'mw'
+      shippingProfile: [null], // like 'mw'
+      storeName: [null]
     })
+  }
+  onSaveStore() {
+    this.displayProgressSpinner = true;
+    let storeProfile = new StoreProfile();
+    storeProfile.storeName = this.ctlStoreName.value;
+    this._orderHistoryService.storeProfileAdd(storeProfile)
+      .subscribe(x => {
+        this.displayProgressSpinner = false;
+      },
+        error => {
+          this.displayProgressSpinner = false;
+          this.errorMessage = error.errMsg;
+        });
   }
 }

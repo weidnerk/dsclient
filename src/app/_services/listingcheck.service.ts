@@ -138,32 +138,15 @@ export class ListCheckService {
 
             // specifically added for case when can't connect to API
             if (error.message) {
-                // might have both error.message and error.error.Message populated
-                if (error.error) {
-                    if (error.error.Message) {
-                        errMsg = error.message + ";" + error.error.Message;
-                    }
-                    else {
-                        errMsg = error.message;
-                    }
-                }
-                else {
-                    errMsg = error.message;
-                }
+                errMsg = ' ' + error.message;
             }
-            else {
-                if (error.error) {
-                    if (error.error.Message) {
-                        errMsg = error.error.Message;
-                    }
-                    else {
-                        errMsg = error.error;
-                    }
-                }
-                else {
-                    errMsg = error.statusText;
-                }
+            if (error.error) {
+                errMsg = ' ' + error.error;
             }
+            if (error.error && error.error.Message) {
+                errMsg = ' ' + error.error.Message;
+            }
+            errMsg += ' ' + errDetail;
         }
         return observableThrowError(
             {

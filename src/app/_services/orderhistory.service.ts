@@ -9,7 +9,7 @@ import { HttpClient, HttpRequest, HttpEventType, HttpEvent, HttpErrorResponse, H
 
 import { catchError } from 'rxjs/internal/operators';
 
-import { ModelView, Listing, SearchReport, SourceCategory, SellerProfile, Dashboard, ListingNote, ListingNoteView, ListingView, OrderHistory, SellerListing, SupplierItem, UpdateToListing, SalesOrder, PriceProfit, ListingLogView, eBayBusinessPolicies, StoreAnalysis, ListingLog } from '../_models/orderhistory';
+import { ModelView, Listing, SearchReport, SourceCategory, SellerProfile, Dashboard, ListingNote, ListingNoteView, ListingView, OrderHistory, SellerListing, SupplierItem, UpdateToListing, SalesOrder, PriceProfit, ListingLogView, eBayBusinessPolicies, StoreAnalysis, ListingLog, StoreProfile } from '../_models/orderhistory';
 import { WalmartSearchProdIDResponse } from '../_models/walitem';
 import { environment } from '../../environments/environment';
 import { AbstractControl } from '@angular/forms';
@@ -49,6 +49,7 @@ export class OrderHistoryService {
     private getListingLogUrl: string = environment.API_ENDPOINT + 'getlistinglog';
     private getStoreAnalysisUrl: string = environment.API_ENDPOINT + 'storeanalysis';
     private storeListingLogUrl: string = environment.API_ENDPOINT + 'listinglogadd';
+    private saveStoreProfileUrl: string = environment.API_ENDPOINT + 'storeprofileadd';
 
     constructor(private http: HttpClient) { }
 
@@ -801,7 +802,7 @@ export class OrderHistoryService {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
-            
+
             let url = this.storeListingLogUrl;
             console.log(url);
             let body = JSON.stringify(log);
@@ -826,6 +827,38 @@ export class OrderHistoryService {
      * @param error 
      */
     private handleError(error: HttpErrorResponse) {
+        let errMsg: string | null = null;
+        let errDetail: string | null = null;
+        if (error.error) {
+            if (error.error instanceof ErrorEvent) {
+                // A client-side or network error occurred. Handle it accordingly.
+                errMsg = error.error.message;
+            }
+        }
+        if (errMsg == null) {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            errDetail = `Backend returned code ${error.status}`;
+
+            // specifically added for case when can't connect to API
+            if (error.message) {
+                errMsg = ' ' + error.message;
+            }
+            if (error.error) {
+                errMsg = ' ' + error.error;
+            }
+            if (error.error && error.error.Message) {
+                errMsg = ' ' + error.error.Message;
+            }
+            errMsg += ' ' + errDetail;
+        }
+        return observableThrowError(
+            {
+                "errMsg": errMsg,
+                "errStatus": error.status
+            });
+    }
+    private handleError_orig(error: HttpErrorResponse) {
         let errMsg: string | null = null;
         let errDetail: string | null = null;
         if (error.error) {
@@ -901,5 +934,28 @@ export class OrderHistoryService {
             }
         }
     }
+    storeProfileAdd(profile: StoreProfile) {
+        const userJson = localStorage.getItem('currentUser');
+        if (userJson) {
+            let currentUser = JSON.parse(userJson);
 
+            let url = this.saveStoreProfileUrl;
+            console.log(url);
+            let body = JSON.stringify(profile);
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.access_token
+                })
+            };
+            return this.http.post(url, body, httpOptions).pipe(
+                catchError(this.handleError)
+            );
+        }
+        return observableThrowError(
+            {
+                errMsg: "could not obtain current user record"
+            }
+        )
+    }
 }

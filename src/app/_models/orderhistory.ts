@@ -334,3 +334,7 @@ export class ShippingPolicy {
     name: string;
     handlingTime: number;
 }
+export class StoreProfile {
+    id: number;
+    storeName: string;
+}

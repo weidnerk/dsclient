@@ -103,21 +103,33 @@ export class RenderingService {
     private handleError(error: HttpErrorResponse) {
         let errMsg: string | null = null;
         let errDetail: string | null = null;
-        if (error.error instanceof ErrorEvent) {
-            // A client-side or network error occurred. Handle it accordingly.
-            errMsg = error.error.message;
-        } else {
+        if (error.error) {
+            if (error.error instanceof ErrorEvent) {
+                // A client-side or network error occurred. Handle it accordingly.
+                errMsg = error.error.message;
+            }
+        }
+        if (errMsg == null) {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
-            errDetail = `Backend returned code ${error.status}, ` +
-                `body was: ${error.error.Message}`;
-            errMsg = error.error.Message;
+            errDetail = `Backend returned code ${error.status}`;
+
+            // specifically added for case when can't connect to API
+            if (error.message) {
+                errMsg = ' ' + error.message;
+            }
+            if (error.error) {
+                errMsg = ' ' + error.error;
+            }
+            if (error.error && error.error.Message) {
+                errMsg = ' ' + error.error.Message;
+            }
+            errMsg += ' ' + errDetail;
         }
         return observableThrowError(
             {
                 "errMsg": errMsg,
-                "errDetail": errDetail,
-                "errObj": error
+                "errStatus": error.status
             });
-    };
+    }
 }
