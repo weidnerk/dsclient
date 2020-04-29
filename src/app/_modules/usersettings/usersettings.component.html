@@ -33,7 +33,7 @@
                 </mat-form-field>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="row">
                 <div class="col-12">
                     <mat-form-field appearance="outline" class="outlinepadding">
@@ -43,90 +43,74 @@
                         color="primary" type="button" (click)="onSaveStore()">Add</button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <br />
+
         <div class="row">
-            <div class="col-10">
-
-                <div class="row">
-                    <div class="col-2">
-                        <mat-checkbox>Store Subscription
-                        </mat-checkbox>
-                    </div>
-                    <div class="col-2">
-                       {{subscription}}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <label class="lbl">Percent profit:</label>
-                    </div>
-                    <div class="col-5">
-                        <mat-form-field appearance="outline" class="outlinepadding">
-                            <input matInput formControlName="pctProfit" maxlength="40" placeholder="pct profit">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <label class="lbl">Handling Time:</label>
-                    </div>
-                    <div class="col-5">
-                        <mat-form-field appearance="outline" class="outlinepadding">
-                            <input matInput formControlName="handlingTime" maxlength="40" placeholder="handling time">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-2" *ngIf="policyHandlingTime">
-                        {{policyHandlingTime}}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <label class="lbl">Shipping Time:</label>
-                    </div>
-                    <div class="col-5">
-                        <mat-form-field appearance="outline" class="outlinepadding">
-                            <input matInput formControlName="shippingTime" maxlength="40" placeholder="shipping time">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <!-- do later 
-                    <div class="row">
-                    <div class="col-2">
-                        <label class="lbl">Listing limit:</label>
-                    </div>
-                    <div class="col-10">
-                        <mat-form-field appearance="outline" class="outlinepadding">
-                            <input matInput formControlName="listingLimit" maxlength="40" placeholder="listing limit">
-                        </mat-form-field>
-                    </div>
-                </div> -->
-                <div class="row">
-                    <div class="col-2">
-                        <label class="lbl">PayPal email:</label>
-                    </div>
-                    <div class="col-5">
-                        <mat-form-field appearance="outline" class="outlinepadding">
-                            <input matInput formControlName="payPalEmail" maxlength="40" placeholder="payPal Email">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <label class="lbl">Shipping profile:</label>
-                    </div>
-                    <div class="col-5">
-                        <mat-form-field appearance="outline" class="outlinepadding">
-                            <input matInput formControlName="shippingProfile" maxlength="40"
-                                placeholder="shipping profile">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <button [disabled]="!selectedStore" class="btn" mat-button mat-raised-button color="primary"
-                    type="button" (click)="userSettingsSave()">Save</button>
-
+            <div *ngIf="ebayStore" class="col-5">
+                {{ebayStore.subscription}}<br/><br/>
             </div>
         </div>
+        <div class="row">
+            <div class="col-5">
+                <mat-form-field appearance="outline" class="outlinepadding">
+                    <mat-label>% Profit</mat-label>
+                    <input matInput formControlName="pctProfit" maxlength="40" placeholder="pct profit">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5">
+                <mat-form-field appearance="outline" class="outlinepadding">
+                    <mat-label>Handling time</mat-label>
+                    <input matInput formControlName="handlingTime" maxlength="40" placeholder="handling time">
+                </mat-form-field>
+            </div>
+            <div class="col-2" *ngIf="policyHandlingTime">
+                {{policyHandlingTime}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5">
+                <mat-form-field appearance="outline" class="outlinepadding">
+                    <mat-label>% Profit</mat-label>
+                    <input matInput formControlName="shippingTime" maxlength="40" placeholder="shipping time">
+                    <mat-error *ngIf="ctlPctProfit.hasError('required')">
+                        <mat-icon>error</mat-icon>&nbsp;
+                        % profit required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- do later 
+                <div class="row">
+                <div class="col-2">
+                    <label class="lbl">Listing limit:</label>
+                </div>
+                <div class="col-10">
+                    <mat-form-field appearance="outline" class="outlinepadding">
+                        <input matInput formControlName="listingLimit" maxlength="40" placeholder="listing limit">
+                    </mat-form-field>
+                </div>
+            </div> -->
+        <div class="row">
+            <div class="col-5">
+                <mat-form-field appearance="outline" class="outlinepadding">
+                    <mat-label>PayPal email</mat-label>
+                    <input matInput formControlName="payPalEmail" maxlength="40" placeholder="payPal Email">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5">
+                <mat-form-field appearance="outline" class="outlinepadding">
+                    <mat-label>Shipping Profile</mat-label>
+                    <input matInput formControlName="shippingProfile" maxlength="40" placeholder="shipping profile">
+                </mat-form-field>
+            </div>
+        </div>
+        <button [disabled]="!selectedStore" class="btn" mat-button mat-raised-button color="primary"
+            type="submit">Save</button>
     </form>
 </div>
 <app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"

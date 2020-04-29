@@ -56,7 +56,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.getStores();
-    this.getUserProfile();
+    this.getUserProfile();  // to get selected store
+    
     this.getErrorCount();
     if (this._orderHistoryService.isAdmin()) {
       this.getLastError();
@@ -147,7 +148,7 @@ export class DashboardComponent implements OnInit {
           this.getDashboard();
         }
         else {
-          this.errorMessage = 'No stores configured.';
+          this.errorMessage = 'No settings configured.';
         }
       },
         error => {

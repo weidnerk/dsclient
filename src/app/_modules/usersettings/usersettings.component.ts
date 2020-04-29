@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { UserSettingsView, UserStoreView, UserSettings } from 'src/app/_models/userprofile';
-import { eBayBusinessPolicies, StoreProfile } from 'src/app/_models/orderhistory';
+import { eBayBusinessPolicies, StoreProfile, eBayStore } from 'src/app/_models/orderhistory';
 import { OrderHistoryService } from 'src/app/_services/orderhistory.service';
 import { UserService } from 'src/app/_services';
 
@@ -25,7 +25,7 @@ export class UsersettingsComponent implements OnInit {
   eBayBusinessPolicies: eBayBusinessPolicies;
   storeChanged = 0;
   policyHandlingTime: number;
-  subscription: string;
+  ebayStore: eBayStore;
 
   // status spinner variables
   color = 'primary';
@@ -88,7 +88,7 @@ export class UsersettingsComponent implements OnInit {
     settings.pctProfit = this.ctlPctProfit.value;
     settings.storeID = this.selectedStore;
     settings.payPalEmail = this.ctlPayPalEmail.value
-    this._userService.userSettingsSave(settings, ["PctProfit","PayPalEmail"])
+    this._userService.userSettingsSave(settings, ["PctProfit", "PayPalEmail"])
       .subscribe(si => {
         this.displayProgressSpinner = false;
       },
@@ -112,25 +112,39 @@ export class UsersettingsComponent implements OnInit {
   getStore() {
     this._userService.getStore(this.selectedStore)
       .subscribe(x => {
-        this.subscription = x;
+        this.ebayStore = x;
+        if (--this.storeChanged === 0) {
+          this.displayProgressSpinner = false;
+        }
       },
         error => {
           this.errorMessage = error.errMsg;
+          this.displayProgressSpinner = false;
         });
   }
   getStores() {
+    ++this.storeChanged;
+    this.displayProgressSpinner = true;
     this._userService.getUserStores()
       .subscribe(x => {
         this.userStores = x;
+
+        // user has just 1 store, so select it
         if (this.userStores.length === 1) {
           this.selectedStore = this.userStores[0].storeID;
           this.ctlSelectedStore.setValue(this.userStores[0].storeID);
           this.getBusinessPolicies();
           this.getStore();
         }
+        else {
+          if (--this.storeChanged === 0) {
+            this.displayProgressSpinner = false;
+          }
+        }
       },
         error => {
           this.errorMessage = error.errMsg;
+          this.displayProgressSpinner = false;
         });
   }
   /**
@@ -147,9 +161,7 @@ export class UsersettingsComponent implements OnInit {
       },
         error => {
           this.errorMessage = error.errMsg;
-          if (--this.storeChanged === 0) {
-            this.displayProgressSpinner = false;
-          }
+          this.displayProgressSpinner = false;
         });
   }
   getHandlingTime() {
@@ -161,26 +173,36 @@ export class UsersettingsComponent implements OnInit {
   }
   buildForm(): void {
     this.form = this.fb.group({
-      isStoreSubscription: [null],
       pctProfit: [null, {
-        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
+        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)],
+        updateOn: 'submit'
       }],
       handlingTime: [null, {
-        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
+        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)],
+        updateOn: 'submit'
       }],
       shippingTime: [null, {
-        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
+        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)],
+        updateOn: 'submit'
       }],
       listingLimit: [null, {
-        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
+        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)],
+        updateOn: 'submit'
       }],
-      payPalEmail: [null],
+      payPalEmail: [null, {
+        validators: [Validators.required],
+        updateOn: 'submit'
+      }],
       shippingPolicy: [null],
       selectedStore: [null],
-      shippingProfile: [null], // like 'mw'
-      storeName: [null]
+      shippingProfile: [null] // like 'mw'
     })
   }
+  formIsValid(): boolean {
+    if (this.ctlPctProfit.invalid) { return false; }
+    return true;
+  }
+  /*
   onSaveStore() {
     this.displayProgressSpinner = true;
     let storeProfile = new StoreProfile();
@@ -194,4 +216,5 @@ export class UsersettingsComponent implements OnInit {
           this.errorMessage = error.errMsg;
         });
   }
+  */
 }

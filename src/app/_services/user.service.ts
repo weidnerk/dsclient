@@ -12,6 +12,7 @@ import { ForgotPasswordViewModel } from '../_models/ResetPasswordViewModel';
 import { ChangePasswordBindingModel } from '../_models/ResetPasswordViewModel';
 // import { UserProfileVM } from '../_models/userprofile';
 import { UserProfile, TokenStatusTypeCustom, UserSettings, AppIDSelect, UserStoreView, UserSettingsView, UserProfileKeys, UserProfileView, UserProfileKeysView } from '../_models/userprofile';
+import { eBayStore } from '../_models/orderhistory';
 
 @Injectable()
 export class UserService {
@@ -207,7 +208,7 @@ export class UserService {
                 }
             )
     }
-    getStore(storeID: number): Observable<string> {
+    getStore(storeID: number): Observable<eBayStore> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
@@ -219,7 +220,7 @@ export class UserService {
                     'Authorization': 'Bearer ' + currentUser.access_token
                 })
             };
-            return this.http.get<string>(url, httpOptions).pipe(
+            return this.http.get<eBayStore>(url, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }

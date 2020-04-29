@@ -339,3 +339,7 @@ export class StoreProfile {
     storeName: string;
     eBayUserID: string;
 }
+export interface eBayStore {
+    storeName: string;
+    subscription: string;
+}
