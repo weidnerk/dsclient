@@ -11,7 +11,7 @@ import { ResetPasswordViewModel } from '../_models/ResetPasswordViewModel';
 import { ForgotPasswordViewModel } from '../_models/ResetPasswordViewModel';
 import { ChangePasswordBindingModel } from '../_models/ResetPasswordViewModel';
 // import { UserProfileVM } from '../_models/userprofile';
-import { UserProfile, TokenStatusTypeCustom, UserSettings, AppIDSelect, UserStoreView, UserSettingsView, UserProfileKeys, UserProfileView } from '../_models/userprofile';
+import { UserProfile, TokenStatusTypeCustom, UserSettings, AppIDSelect, UserStoreView, UserSettingsView, UserProfileKeys, UserProfileView, UserProfileKeysView } from '../_models/userprofile';
 
 @Injectable()
 export class UserService {
@@ -28,6 +28,7 @@ export class UserService {
     private saveUserSettingsUrl: string = environment.API_ENDPOINT + 'usersettingssave';
     private saveeBayKeysUrl: string = environment.API_ENDPOINT + 'ebaykeysupdate';
     private getStoreUrl: string = environment.API_ENDPOINT + 'getstore';
+    private getUserProfileKeysUrl: string = environment.API_ENDPOINT + 'getuserprofilekeys';
 
     constructor(private http: HttpClient) { }
 
@@ -183,8 +184,30 @@ export class UserService {
                 }
             )
     }
-    getStore(storeID: number): Observable<string> {
+    getAPIKeys(storeID: number): Observable<UserProfileKeysView> {
 
+        const userJson = localStorage.getItem('currentUser');
+        if (userJson) {
+            let currentUser = JSON.parse(userJson);
+            let url = this.getUserProfileKeysUrl + "?storeID=" + storeID; 
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.access_token
+                })
+            };
+            return this.http.get<UserProfileKeysView>(url, httpOptions).pipe(
+                catchError(this.handleError)
+            );
+        }
+        else
+            return observableThrowError(
+                {
+                    errMsg: "Could not obtain current user record"
+                }
+            )
+    }
+    getStore(storeID: number): Observable<string> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
@@ -382,12 +405,12 @@ export class UserService {
      * @param keys 
      * @param fieldNames 
      */
-    eBayKeysSave(keys: UserProfileKeys, fieldNames: string[]): Observable<string> {
+    eBayKeysSave(keys: UserProfileKeys, fieldNames: string[], token: string, storeID: number): Observable<string> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
             let url = this.saveeBayKeysUrl;
-            let dto = { "eBayKeys": keys, "FieldNames": fieldNames };
+            let dto = { "eBayKeys": keys, "FieldNames": fieldNames, "Token": token, "StoreID": storeID };
             let body = JSON.stringify(dto);
             const httpOptions = {
                 headers: new HttpHeaders({

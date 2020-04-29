@@ -68,4 +68,20 @@ export class UserProfileKeys {
     appID: string;
     certID: string;
     devID: string
+    APIEmail: string;
 }
+export class UserProfileKeysView {
+    userID: string;
+    storeID: number;
+    appID: string;
+    certID: string;
+    devID: string
+    APIEmail: string;
+    token: string;
+}
+// export class UserToken {
+//     token: string;
+//     storeID: number;
+//     keysID: number;
+//     userID: string;
+// }

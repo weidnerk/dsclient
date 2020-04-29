@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { TokenStatusTypeCustom, AppIDSelect, UserSettings, UserSettingsView, UserStoreView, UserProfileKeys } from '../../_models/userprofile';
+import { TokenStatusTypeCustom, AppIDSelect, UserSettings, UserSettingsView, UserStoreView, UserProfileKeys, UserProfileKeysView } from '../../_models/userprofile';
 import { UserService } from '../../_services/index';
 import { environment } from '../../../environments/environment';
 import { MatOption } from '@angular/material/core';
@@ -24,6 +24,7 @@ export class ApikeysComponent implements OnInit {
   userStores: UserStoreView[];
   selectedStore: number;
   userSettingsView: UserSettingsView;
+  userProfileKeysView: UserProfileKeysView;
 
   // status spinner variables
   color = 'primary';
@@ -37,6 +38,7 @@ export class ApikeysComponent implements OnInit {
   get ctlDevID() { return this.apikeysForm.controls['devidkey']; }
   get ctlCertID() { return this.apikeysForm.controls['certidkey']; }
   get ctlAPIToken() { return this.apikeysForm.controls['apitoken']; }
+  get ctlAPIEmail() { return this.apikeysForm.controls['APIEmail']; }
 
   ngOnInit() {
     this.buildForm();
@@ -77,20 +79,16 @@ export class ApikeysComponent implements OnInit {
         });
   }
 
-  /**
-   * fill API keys
-   */
-  getUserSettings() {
-    this._userService.UserSettingsViewGetByStore(this.selectedStore)
-      .subscribe(userSettings => {
-        this.userSettingsView = userSettings;
+  getAPIKeys() {
+    this._userService.getAPIKeys(this.selectedStore)
+      .subscribe(keys => {
+        this.userProfileKeysView = keys;
         this.apikeysForm.patchValue({
-          appidkey: userSettings.appID,
-          certidkey: userSettings.certID,
-          devidkey: userSettings.devID,
-          apitoken: userSettings.token,
-          apikeyselect: userSettings.appID,
-          apiEmail: userSettings.APIEmail
+          appidkey: keys.appID,
+          certidkey: keys.certID,
+          devidkey: keys.devID,
+          apitoken: keys.token,
+          APIEmail: keys.APIEmail
         });
         this.displayProgressSpinner = false;
       },
@@ -99,16 +97,14 @@ export class ApikeysComponent implements OnInit {
           this.displayProgressSpinner = false;
         });
   }
-
   buildForm(): void {
     this.apikeysForm = this.fb.group({
       appidkey: [null, Validators.required],
       devidkey: [null, Validators.required],
       certidkey: [null, Validators.required],
       apitoken: [null, Validators.required],
-      apikeyselect: [null],
       selectedStore: [null],
-      apiEmail: [null]
+      APIEmail: [null]
     })
   }
   formIsValid(): boolean {
@@ -116,14 +112,18 @@ export class ApikeysComponent implements OnInit {
     if (this.ctlDevID.invalid) { return false; }
     if (this.ctlCertID.invalid) { return false; }
     if (this.ctlAPIToken.invalid) { return false; }
-    if (!this.selectedStore) { return false;}
+    if (this.ctlAPIEmail.invalid) { return false; }
+
+    // user may be new and not have any stores set up yet
+    // if (!this.selectedStore) { return false;}
+
     return true;
 }
   onCancel() {
     window.history.back();
   }
 
-  onSubmit(frm) {
+  onSubmit() {
   
     this.saveKeys();
   }
@@ -157,7 +157,7 @@ export class ApikeysComponent implements OnInit {
           this.apikeysForm.patchValue({
             selectedStore: this.selectedStore
           });
-          this.getUserSettings();
+          this.getAPIKeys();
         }
       },
         error => {
@@ -174,7 +174,7 @@ export class ApikeysComponent implements OnInit {
     this.tokenStatus.Status = "";
     this.tokenStatus.StatusStr = "";
     this.displayProgressSpinner = true;
-    this.getUserSettings();
+    this.getAPIKeys();
   }
 
   /**
@@ -183,12 +183,24 @@ export class ApikeysComponent implements OnInit {
   saveKeys() {
     this.displayProgressSpinner = true;
     let keys = new UserProfileKeys();
-    keys.id = this.userSettingsView.ebayKeyID;
+    if (this.userSettingsView) {
+      keys.id = this.userSettingsView.ebayKeyID;
+    }
+    else {
+      // first time saving
+      keys.id = 0;
+      this.selectedStore = 0;
+    }
     keys.appID = this.ctlAppID.value;
     keys.certID = this.ctlCertID.value;
     keys.devID = this.ctlDevID.value;
-    this._userService.eBayKeysSave(keys, ["AppID","CertID","DevID"])
+    keys.APIEmail = this.ctlAPIEmail.value;
+    
+    this._userService.eBayKeysSave(keys, ["AppID","CertID","DevID","EmailAddress"], this.ctlAPIToken.value, this.selectedStore)
     .subscribe(s => {
+      if (this.selectedStore == 0) {
+        this.getStores()
+      }
       this.displayProgressSpinner = false;
     },
       error => {
