@@ -254,7 +254,7 @@ export class UserService {
                 }
             )
     }
-
+   
     TradingAPIUsage(): Observable<number> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {

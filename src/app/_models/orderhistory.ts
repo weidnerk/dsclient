@@ -337,4 +337,5 @@ export class ShippingPolicy {
 export class StoreProfile {
     id: number;
     storeName: string;
+    eBayUserID: string;
 }

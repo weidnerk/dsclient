@@ -61,6 +61,7 @@ export class UserStoreView {
     userID: string;
     storeID: number;
     storeName: string;
+    eBayUserID: string;
 }
 export class UserProfileKeys {
     id: number;

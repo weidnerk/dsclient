@@ -9,10 +9,10 @@
    
     <div>
       <mat-form-field>
-        <mat-label>Stores</mat-label>
+        <mat-label>Accounts</mat-label>
         <mat-select formControlName="selectedStore" (selectionChange)="storeSelected($event)">
           <mat-option *ngFor="let m of userStores" [value]="m.storeID">
-            {{ m.storeName }}
+            {{ m.eBayUserID }}
           </mat-option>
         </mat-select>
       </mat-form-field>&nbsp;
