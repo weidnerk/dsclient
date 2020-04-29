@@ -54,6 +54,8 @@ export class UsersettingsComponent implements OnInit {
     console.log(this.ctlPctProfit.value);
   }
   getUserSettings() {
+    this.displayProgressSpinner = true;
+
     // shouldn't this be 'get use settings for some store selection?'
     this._userService.UserSettingsViewGetByStore(this.selectedStore)
       .subscribe(userSettings => {
@@ -66,11 +68,9 @@ export class UsersettingsComponent implements OnInit {
           shippingProfile: userSettings.shippingProfile,
           payPalEmail: userSettings.payPalEmail
         });
+        this.storeChanged = 2;
         this.getBusinessPolicies();
         this.getStore();
-        if (--this.storeChanged === 0) {
-          this.displayProgressSpinner = false;
-        }
       },
         error => {
           // if (error.errorStatus !== 404) {
@@ -104,8 +104,6 @@ export class UsersettingsComponent implements OnInit {
       value: event.source.value
     };
     this.selectedStore = selectedData.value;
-    this.displayProgressSpinner = true;
-    this.storeChanged = 2;
     this.getUserSettings();
 
   }
@@ -119,7 +117,9 @@ export class UsersettingsComponent implements OnInit {
       },
         error => {
           this.errorMessage = error.errMsg;
-          this.displayProgressSpinner = false;
+          if (--this.storeChanged === 0) {
+            this.displayProgressSpinner = false;
+          }
         });
   }
   getStores() {
@@ -133,13 +133,12 @@ export class UsersettingsComponent implements OnInit {
         if (this.userStores.length === 1) {
           this.selectedStore = this.userStores[0].storeID;
           this.ctlSelectedStore.setValue(this.userStores[0].storeID);
+          this.storeChanged = 2;
           this.getBusinessPolicies();
           this.getStore();
         }
         else {
-          if (--this.storeChanged === 0) {
-            this.displayProgressSpinner = false;
-          }
+          this.displayProgressSpinner = false;
         }
       },
         error => {
@@ -161,7 +160,9 @@ export class UsersettingsComponent implements OnInit {
       },
         error => {
           this.errorMessage = error.errMsg;
-          this.displayProgressSpinner = false;
+          if (--this.storeChanged === 0) {
+            this.displayProgressSpinner = false;
+          }
         });
   }
   getHandlingTime() {
