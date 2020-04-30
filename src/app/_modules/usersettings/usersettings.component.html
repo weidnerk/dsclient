@@ -15,7 +15,7 @@
         </div>
         <div class="row">
             <div *ngIf="eBayBusinessPolicies" class="col-3">
-                <mat-form-field>
+                <mat-form-field style="width: 350px;">
                     <mat-label>Shipping policies</mat-label>
                     <mat-select formControlName="shippingPolicy" (selectionChange)="shippingPolicySelected($event)">
                         <mat-option *ngFor="let m of eBayBusinessPolicies.shippingPolicies" [value]="m">
@@ -25,29 +25,32 @@
                 </mat-form-field>
             </div>
         </div>
-        <ng-container *ngIf="shippingSelected">
-            <div class="row">
-                <div class="col-3">
-                    <label class="lbl">Handling time:</label>
+        <div *ngIf="shippingSelected">
+            <mat-card class="matcard">
+                <div class="row">
+                    <div class="col-5">
+                        <label class="lbl">Handling time:</label>
+                    </div>
+                    <div class="col-4">
+                        {{shippingSelected.handlingTime}}
+                    </div>
                 </div>
-                <div class="col-3">
-                    {{shippingSelected.handlingTime}}
+                <div class="row">
+                    <div class="col-5">
+                        <label class="lbl">Service:</label>
+                    </div>
+                    <div class="col-4">
+                        {{shippingSelected.shippingService}}
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <label class="lbl">Service:</label>
-                </div>
-                <div class="col-3">
-                    {{shippingSelected.shippingService}}
-                </div>
-            </div>
-        </ng-container>
-        <div class="row">
-            <div *ngIf="eBayBusinessPolicies" class="col-3">
-                <mat-form-field>
+            </mat-card>
+            <br/>
+        </div>
+        <div *ngIf="eBayBusinessPolicies" class="row">
+            <div class="col-3">
+                <mat-form-field style="width: 350px;">
                     <mat-label>Return policies</mat-label>
-                    <mat-select formControlName="returnPolicy"  (selectionChange)="returnPolicySelected($event)">
+                    <mat-select formControlName="returnPolicy" (selectionChange)="returnPolicySelected($event)">
                         <mat-option *ngFor="let m of eBayBusinessPolicies.returnPolicies" [value]="m">
                             {{ m.name }}
                         </mat-option>
@@ -55,20 +58,22 @@
                 </mat-form-field>
             </div>
         </div>
-        <ng-container *ngIf="returnSelected">
-            <div class="row">
-                <div class="col-3">
-                    <label class="lbl">shipping Cost Paid By Option:</label>
+        <div *ngIf="returnSelected">
+            <mat-card class="matcard">
+                <div class="row">
+                    <div class="col-5">
+                        <label class="lbl">Shipping Cost Paid By Option:</label>
+                    </div>
+                    <div class="col-4">
+                        {{returnSelected.shippingCostPaidByOption}}
+                    </div>
                 </div>
-                <div class="col-3">
-                    {{returnSelected.shippingCostPaidByOption}}
-                </div>
-            </div>
-          
-        </ng-container>
-        <div class="row">
-            <div *ngIf="eBayBusinessPolicies" class="col-3">
-                <mat-form-field>
+            </mat-card>
+            <br />
+        </div>
+        <div *ngIf="eBayBusinessPolicies" class="row">
+            <div class="col-3">
+                <mat-form-field style="width: 350px;">
                     <mat-label>Payment policies</mat-label>
                     <mat-select formControlName="paymentPolicy" (selectionChange)="paymentPolicySelected($event)">
                         <mat-option *ngFor="let m of eBayBusinessPolicies.paymentPolicies" [value]="m">
@@ -78,19 +83,17 @@
                 </mat-form-field>
             </div>
         </div>
-        <ng-container *ngIf="paymentSelected">
+        <mat-card class="matcard" *ngIf="paymentSelected">
             <div class="row">
-                <div class="col-3">
+                <div class="col-5">
                     <label class="lbl">PayPal email address:</label>
                 </div>
-                <div class="col-3">
+                <div class="col-4">
                     {{paymentSelected.paypalEmailAddress}}
                 </div>
             </div>
-          
-        </ng-container>
+        </mat-card>
         <br />
-
         <div class="row">
             <div *ngIf="ebayStore" class="col-5">
                 Subscription level: {{ebayStore.subscription}}<br /><br />

@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { AppOverlayModule } from '../../overlay/overlay.module';
 import { ProgressSpinnerModule } from '../../progress-spinner/progress-spinner.module';
 import { UsersettingsRoutingModule } from './usersettings-routes.module';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [UsersettingsComponent],
@@ -29,7 +30,8 @@ import { UsersettingsRoutingModule } from './usersettings-routes.module';
     MatCheckboxModule,
     AppOverlayModule,
     ProgressSpinnerModule,
-    UsersettingsRoutingModule
+    UsersettingsRoutingModule,
+    MatCardModule
   ]
 })
 export class UsersettingsModule { }
