@@ -327,13 +327,23 @@ export class ListingLog {
 }
 export class eBayBusinessPolicies {
     shippingPolicies: ShippingPolicy[];
-    paymentPolicies: string[];
-    returnPolicies: string[];
+    paymentPolicies: PaymentPolicy[];
+    returnPolicies: ReturnPolicy[];
 }
 export class ShippingPolicy {
     name: string;
     handlingTime: number;
+    shippingService: string;
 }
+export class PaymentPolicy {
+    name: string;
+    paypalEmailAddress: string;
+}
+export class ReturnPolicy {
+    name: string;
+    shippingCostPaidByOption: string;
+}
+
 export class StoreProfile {
     id: number;
     storeName: string;

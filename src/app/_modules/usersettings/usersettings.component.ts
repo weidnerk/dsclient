@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import { UserSettingsView, UserStoreView, UserSettings } from 'src/app/_models/userprofile';
-import { eBayBusinessPolicies, StoreProfile, eBayStore } from 'src/app/_models/orderhistory';
+import { UserSettingsView, UserStoreView, UserSettings, eBayUser } from 'src/app/_models/userprofile';
+import { eBayBusinessPolicies, StoreProfile, eBayStore, ShippingPolicy, PaymentPolicy, ReturnPolicy } from 'src/app/_models/orderhistory';
 import { OrderHistoryService } from 'src/app/_services/orderhistory.service';
 import { UserService } from 'src/app/_services';
 
@@ -17,15 +17,27 @@ const STORENAME_REGEX = /^\S*$/; // a string consisting only of non-whitespaces
 })
 export class UsersettingsComponent implements OnInit {
 
+  returnsPayee = [
+    { value: 'Buyer', viewValue: 'Buyer' },
+    { value: 'Seller', viewValue: 'Seller' }
+  ];
+  shippingType = [
+    { value: 'Standard', viewValue: 'Standard' },
+    { value: 'Economy', viewValue: 'Economy' }
+  ];
+
   form: FormGroup;
   userSettingsView: UserSettingsView;
   errorMessage: string | null;
   userStores: UserStoreView[];
   selectedStore: number;
   eBayBusinessPolicies: eBayBusinessPolicies;
+  eBayUser: eBayUser;
   storeChanged = 0;
-  policyHandlingTime: number;
   ebayStore: eBayStore;
+  shippingSelected: ShippingPolicy;
+  paymentSelected: PaymentPolicy;
+  returnSelected: ReturnPolicy;
 
   // status spinner variables
   color = 'primary';
@@ -35,9 +47,12 @@ export class UsersettingsComponent implements OnInit {
 
   get ctlPctProfit() { return this.form.controls['pctProfit']; }
   get ctlListingLimit() { return this.form.controls['listingLimit']; }
-  get ctlShippingPolicy() { return this.form.controls['shippingPolicy']; }
   get ctlSelectedStore() { return this.form.controls['selectedStore']; }
-  get ctlShippingProfile() { return this.form.controls['shippingProfile']; }  // like 'mw'
+
+  get ctlShippingPolicy() { return this.form.controls['shippingPolicy']; }  // like 'mw'
+  get ctlPaymentPolicy() { return this.form.controls['paymentPolicy']; }
+  get ctlReturnPolicy() { return this.form.controls['returnPolicy']; }
+
   get ctlPayPalEmail() { return this.form.controls['payPalEmail']; }
   get ctlStoreName() { return this.form.controls['storeName']; }
 
@@ -105,7 +120,34 @@ export class UsersettingsComponent implements OnInit {
     };
     this.selectedStore = selectedData.value;
     this.getUserSettings();
-
+    this.geteBayUser();
+  }
+  shippingPolicySelected(event: MatSelectChange) {
+    this.errorMessage = null;
+    const selectedData = {
+      text: (event.source.selected as MatOption).viewValue,
+      value: event.source.value
+    };
+    this.shippingSelected = selectedData.value;
+    this.getSelectedShippingPolicy();
+  }
+  paymentPolicySelected(event: MatSelectChange) {
+    this.errorMessage = null;
+    const selectedData = {
+      text: (event.source.selected as MatOption).viewValue,
+      value: event.source.value
+    };
+    this.paymentSelected = selectedData.value;
+    this.getSelectedPaymentPolicy();
+  }
+  returnPolicySelected(event: MatSelectChange) {
+    this.errorMessage = null;
+    const selectedData = {
+      text: (event.source.selected as MatOption).viewValue,
+      value: event.source.value
+    };
+    this.returnSelected = selectedData.value;
+    this.getSelectedReturnPolicy();
   }
   getStore() {
     this._userService.getStore(this.selectedStore)
@@ -133,9 +175,10 @@ export class UsersettingsComponent implements OnInit {
         if (this.userStores.length === 1) {
           this.selectedStore = this.userStores[0].storeID;
           this.ctlSelectedStore.setValue(this.userStores[0].storeID);
-          this.storeChanged = 2;
+          this.storeChanged = 3;
           this.getBusinessPolicies();
           this.getStore();
+          this.geteBayUser();
         }
         else {
           this.displayProgressSpinner = false;
@@ -153,7 +196,6 @@ export class UsersettingsComponent implements OnInit {
     this._orderHistoryService.getBusinessPolicies(this.selectedStore)
       .subscribe(x => {
         this.eBayBusinessPolicies = x;
-        this.getHandlingTime();
         if (--this.storeChanged === 0) {
           this.displayProgressSpinner = false;
         }
@@ -165,10 +207,46 @@ export class UsersettingsComponent implements OnInit {
           }
         });
   }
-  getHandlingTime() {
+  geteBayUser() {
+    this._userService.geteBayUser(this.selectedStore)
+      .subscribe(x => {
+        this.eBayUser = x;
+        if (--this.storeChanged === 0) {
+          this.displayProgressSpinner = false;
+        }
+      },
+        error => {
+          this.errorMessage = error.errMsg;
+          if (--this.storeChanged === 0) {
+            this.displayProgressSpinner = false;
+          }
+        });
+  }
+  // getHandlingTime() {
+  //   for (let m of this.eBayBusinessPolicies.shippingPolicies) {
+  //     if (m.name == this.ctlShippingProfile.value) {
+  //       this.policyHandlingTime = m.handlingTime;
+  //     }
+  //   }
+  // }
+  getSelectedShippingPolicy() {
     for (let m of this.eBayBusinessPolicies.shippingPolicies) {
-      if (m.name == this.ctlShippingProfile.value) {
-        this.policyHandlingTime = m.handlingTime;
+      if (m.name == this.ctlShippingPolicy.value.name) {
+        this.shippingSelected = m;
+      }
+    }
+  }
+  getSelectedPaymentPolicy() {
+    for (let m of this.eBayBusinessPolicies.paymentPolicies) {
+      if (m.name == this.ctlPaymentPolicy.value.name) {
+        this.paymentSelected = m;
+      }
+    }
+  }
+  getSelectedReturnPolicy() {
+    for (let m of this.eBayBusinessPolicies.returnPolicies) {
+      if (m.name == this.ctlReturnPolicy.value.name) {
+        this.returnSelected = m;
       }
     }
   }
@@ -196,7 +274,11 @@ export class UsersettingsComponent implements OnInit {
       }],
       shippingPolicy: [null],
       selectedStore: [null],
-      shippingProfile: [null] // like 'mw'
+      // shippingProfile: [null], // like 'mw'
+      returnsPayee: [null],
+      shippingType: [null],
+      paymentPolicy: [null],
+      returnPolicy: [null]
     })
   }
   formIsValid(): boolean {

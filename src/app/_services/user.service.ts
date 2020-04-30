@@ -11,7 +11,7 @@ import { ResetPasswordViewModel } from '../_models/ResetPasswordViewModel';
 import { ForgotPasswordViewModel } from '../_models/ResetPasswordViewModel';
 import { ChangePasswordBindingModel } from '../_models/ResetPasswordViewModel';
 // import { UserProfileVM } from '../_models/userprofile';
-import { UserProfile, TokenStatusTypeCustom, UserSettings, AppIDSelect, UserStoreView, UserSettingsView, UserProfileKeys, UserProfileView, UserProfileKeysView } from '../_models/userprofile';
+import { UserProfile, TokenStatusTypeCustom, UserSettings, AppIDSelect, UserStoreView, UserSettingsView, UserProfileKeys, UserProfileView, UserProfileKeysView, eBayUser } from '../_models/userprofile';
 import { eBayStore } from '../_models/orderhistory';
 
 @Injectable()
@@ -30,6 +30,7 @@ export class UserService {
     private saveeBayKeysUrl: string = environment.API_ENDPOINT + 'ebaykeysupdate';
     private getStoreUrl: string = environment.API_ENDPOINT + 'getstore';
     private getUserProfileKeysUrl: string = environment.API_ENDPOINT + 'getuserprofilekeys';
+    private geteBayUserUrl: string = environment.API_ENDPOINT + 'getebayuser';
 
     constructor(private http: HttpClient) { }
 
@@ -175,6 +176,29 @@ export class UserService {
                 })
             };
             return this.http.get<UserSettingsView>(url, httpOptions).pipe(
+                catchError(this.handleError)
+            );
+        }
+        else
+            return observableThrowError(
+                {
+                    errMsg: "Could not obtain current user record"
+                }
+            )
+    }
+    geteBayUser(storeID: number): Observable<eBayUser> {
+        const userJson = localStorage.getItem('currentUser');
+        if (userJson) {
+            let currentUser = JSON.parse(userJson);
+            let url = this.geteBayUserUrl
+                + "?storeID=" + storeID;
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.access_token
+                })
+            };
+            return this.http.get<eBayUser>(url, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }

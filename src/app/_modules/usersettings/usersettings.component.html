@@ -12,47 +12,92 @@
                     </mat-select>
                 </mat-form-field>
             </div>
+        </div>
+        <div class="row">
             <div *ngIf="eBayBusinessPolicies" class="col-3">
                 <mat-form-field>
                     <mat-label>Shipping policies</mat-label>
-                    <mat-select formControlName="shippingPolicy">
-                        <mat-option *ngFor="let m of eBayBusinessPolicies.shippingPolicies">
+                    <mat-select formControlName="shippingPolicy" (selectionChange)="shippingPolicySelected($event)">
+                        <mat-option *ngFor="let m of eBayBusinessPolicies.shippingPolicies" [value]="m">
                             {{ m.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
+        </div>
+        <ng-container *ngIf="shippingSelected">
+            <div class="row">
+                <div class="col-3">
+                    <label class="lbl">Handling time:</label>
+                </div>
+                <div class="col-3">
+                    {{shippingSelected.handlingTime}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="lbl">Service:</label>
+                </div>
+                <div class="col-3">
+                    {{shippingSelected.shippingService}}
+                </div>
+            </div>
+        </ng-container>
+        <div class="row">
             <div *ngIf="eBayBusinessPolicies" class="col-3">
                 <mat-form-field>
                     <mat-label>Return policies</mat-label>
-                    <mat-select>
-                        <mat-option *ngFor="let m of eBayBusinessPolicies.returnPolicies">
-                            {{ m }}
+                    <mat-select formControlName="returnPolicy"  (selectionChange)="returnPolicySelected($event)">
+                        <mat-option *ngFor="let m of eBayBusinessPolicies.returnPolicies" [value]="m">
+                            {{ m.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
         </div>
-        <!-- <div class="row">
+        <ng-container *ngIf="returnSelected">
             <div class="row">
-                <div class="col-12">
-                    <mat-form-field appearance="outline" class="outlinepadding">
-                        <input matInput formControlName="storeName" maxlength="40" placeholder="store name">
-                    </mat-form-field>
-                    &nbsp;<button [disabled]="!ctlStoreName.value" class="btn" mat-button mat-raised-button
-                        color="primary" type="button" (click)="onSaveStore()">Add</button>
+                <div class="col-3">
+                    <label class="lbl">shipping Cost Paid By Option:</label>
+                </div>
+                <div class="col-3">
+                    {{returnSelected.shippingCostPaidByOption}}
                 </div>
             </div>
-        </div> -->
+          
+        </ng-container>
+        <div class="row">
+            <div *ngIf="eBayBusinessPolicies" class="col-3">
+                <mat-form-field>
+                    <mat-label>Payment policies</mat-label>
+                    <mat-select formControlName="paymentPolicy" (selectionChange)="paymentPolicySelected($event)">
+                        <mat-option *ngFor="let m of eBayBusinessPolicies.paymentPolicies" [value]="m">
+                            {{ m.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <ng-container *ngIf="paymentSelected">
+            <div class="row">
+                <div class="col-3">
+                    <label class="lbl">PayPal email address:</label>
+                </div>
+                <div class="col-3">
+                    {{paymentSelected.paypalEmailAddress}}
+                </div>
+            </div>
+          
+        </ng-container>
         <br />
 
         <div class="row">
             <div *ngIf="ebayStore" class="col-5">
-                {{ebayStore.subscription}}<br/><br/>
+                Subscription level: {{ebayStore.subscription}}<br /><br />
             </div>
         </div>
         <div class="row">
-            <div class="col-5">
+            <div class="col-4">
                 <mat-form-field appearance="outline" class="outlinepadding">
                     <mat-label>% Profit</mat-label>
                     <input matInput formControlName="pctProfit" maxlength="40" placeholder="pct profit">
@@ -66,12 +111,10 @@
                     <input matInput formControlName="handlingTime" maxlength="40" placeholder="handling time">
                 </mat-form-field>
             </div>
-            <div class="col-2" *ngIf="policyHandlingTime">
-                {{policyHandlingTime}}
-            </div>
+
         </div>
         <div class="row">
-            <div class="col-5">
+            <div class="col-4">
                 <mat-form-field appearance="outline" class="outlinepadding">
                     <mat-label>Shipping time</mat-label>
                     <input matInput formControlName="shippingTime" maxlength="40" placeholder="shipping time">
@@ -94,18 +137,45 @@
                 </div>
             </div> -->
         <div class="row">
-            <div class="col-5">
+            <div class="col-4">
                 <mat-form-field appearance="outline" class="outlinepadding">
                     <mat-label>PayPal email</mat-label>
                     <input matInput formControlName="payPalEmail" maxlength="40" placeholder="payPal Email">
                 </mat-form-field>
             </div>
+            <div class="col-2" *ngIf="eBayUser">
+                From API: {{eBayUser.payPalEmail}}
+            </div>
         </div>
-        <div class="row">
-            <div class="col-5">
+        <!-- <div class="row">
+            <div class="col-4">
                 <mat-form-field appearance="outline" class="outlinepadding">
                     <mat-label>Shipping Profile</mat-label>
                     <input matInput formControlName="shippingProfile" maxlength="40" placeholder="shipping profile">
+                </mat-form-field>
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="col-3">
+                <mat-form-field>
+                    <mat-label>Who is paying for returns?</mat-label>
+                    <mat-select formControlName="returnsPayee">
+                        <mat-option *ngFor="let m of returnsPayee" [value]="m.value">
+                            {{ m.viewValue }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <mat-form-field>
+                    <mat-label>Shipping Type</mat-label>
+                    <mat-select formControlName="shippingType">
+                        <mat-option *ngFor="let m of shippingType" [value]="m.value">
+                            {{ m.viewValue }}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
         </div>

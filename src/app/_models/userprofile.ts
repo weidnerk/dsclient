@@ -85,3 +85,8 @@ export class UserProfileKeysView {
 //     keysID: number;
 //     userID: string;
 // }
+
+export interface eBayUser {
+    eBayUserID: string;
+    payPalEmail: string;
+}
