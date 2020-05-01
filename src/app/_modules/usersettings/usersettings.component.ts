@@ -35,9 +35,9 @@ export class UsersettingsComponent implements OnInit {
   eBayUser: eBayUser;
   storeChanged = 0;
   ebayStore: eBayStore;
-  shippingSelected: ShippingPolicy;
-  paymentSelected: PaymentPolicy;
-  returnSelected: ReturnPolicy;
+  shippingSelected: ShippingPolicy | null;
+  paymentSelected: PaymentPolicy | null;
+  returnSelected: ReturnPolicy | null;
 
   // status spinner variables
   color = 'primary';
@@ -119,6 +119,9 @@ export class UsersettingsComponent implements OnInit {
       value: event.source.value
     };
     this.selectedStore = selectedData.value;
+    this.shippingSelected = null;
+    this.returnSelected = null;
+    this.paymentSelected = null;
     this.getUserSettings();
     this.geteBayUser();
   }

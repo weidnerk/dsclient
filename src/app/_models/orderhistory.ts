@@ -334,6 +334,7 @@ export class ShippingPolicy {
     name: string;
     handlingTime: number;
     shippingService: string;
+    globalShipping: boolean;
 }
 export class PaymentPolicy {
     name: string;
