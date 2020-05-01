@@ -83,9 +83,9 @@ export class UsersettingsComponent implements OnInit {
           shippingProfile: userSettings.shippingProfile,
           payPalEmail: userSettings.payPalEmail
         });
-        this.storeChanged = 2;
+        this.storeChanged = 1;
         this.getBusinessPolicies();
-        this.getStore();
+        this.getStore();  // note: not setting storeChanged since getStore tends to take more long
       },
         error => {
           // if (error.errorStatus !== 404) {
@@ -156,15 +156,9 @@ export class UsersettingsComponent implements OnInit {
     this._userService.getStore(this.selectedStore)
       .subscribe(x => {
         this.ebayStore = x;
-        if (--this.storeChanged === 0) {
-          this.displayProgressSpinner = false;
-        }
       },
         error => {
           this.errorMessage = error.errMsg;
-          if (--this.storeChanged === 0) {
-            this.displayProgressSpinner = false;
-          }
         });
   }
   getStores() {
@@ -178,9 +172,9 @@ export class UsersettingsComponent implements OnInit {
         if (this.userStores.length === 1) {
           this.selectedStore = this.userStores[0].storeID;
           this.ctlSelectedStore.setValue(this.userStores[0].storeID);
-          this.storeChanged = 3;
+          this.storeChanged = 2;
           this.getBusinessPolicies();
-          this.getStore();
+          this.getStore();  // note: not setting storeChanged since getStore tends to take more long
           this.geteBayUser();
         }
         else {
