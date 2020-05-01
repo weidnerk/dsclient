@@ -59,7 +59,7 @@ export class ListingdbComponent implements OnInit {
   walItem: SupplierItem | null = null;
   userProfile: UserProfile;
   userSettingsView: UserSettingsView;
-  
+
   // used for testing fetch of variations
   variationItem: SupplierItem;
   sellerVariationItem: SellerListing;
@@ -147,7 +147,7 @@ export class ListingdbComponent implements OnInit {
   }
 
   initForm() {
-// get pct profit default setting
+    // get pct profit default setting
 
   }
 
@@ -993,6 +993,10 @@ export class ListingdbComponent implements OnInit {
       return true;
     else
       return false;
+  }
+  endListingDisable(): boolean {
+    let result = !(this.listing && this.listing.ListedItemID && !this.listing.Ended);
+    return result;
   }
   /**
    * no, make new component for log

@@ -263,12 +263,12 @@
               Item Specifics</button>
             <ng-container>
               <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onEndListing()"
-                [disabled]="!(listing && listing.ListedItemID && !listing.Ended)">End
+                [disabled]="endListingDisable()">End
                 Listing</button>
             </ng-container>
             <ng-container>
               <button class="btn" mat-button mat-raised-button color="primary" type="button"
-                (click)="onOverrideEndListing()" [disabled]="!(listing && listing.ListedItemID && !listing.Ended)"
+                (click)="onOverrideEndListing()" [disabled]="endListingDisable()"
                 matTooltip="Item was ended on eBay but exists in database.">Override End Listing</button>
             </ng-container>
             <span *ngIf="storing">
