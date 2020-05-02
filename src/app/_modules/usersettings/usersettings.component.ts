@@ -17,15 +17,6 @@ const STORENAME_REGEX = /^\S*$/; // a string consisting only of non-whitespaces
 })
 export class UsersettingsComponent implements OnInit {
 
-  returnsPayee = [
-    { value: 'Buyer', viewValue: 'Buyer' },
-    { value: 'Seller', viewValue: 'Seller' }
-  ];
-  shippingType = [
-    { value: 'Standard', viewValue: 'Standard' },
-    { value: 'Economy', viewValue: 'Economy' }
-  ];
-
   form: FormGroup;
   userSettingsView: UserSettingsView;
   errorMessage: string | null;
@@ -79,7 +70,6 @@ export class UsersettingsComponent implements OnInit {
         console.log('pctProfit: ' + userSettings.pctProfit);
         this.form.patchValue({
           pctProfit: userSettings.pctProfit,
-          handlingTime: userSettings.handlingTime,
           shippingProfile: userSettings.shippingProfile,
           payPalEmail: userSettings.payPalEmail
         });
@@ -253,10 +243,6 @@ export class UsersettingsComponent implements OnInit {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)],
         updateOn: 'submit'
       }],
-      handlingTime: [null, {
-        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)],
-        updateOn: 'submit'
-      }],
       shippingTime: [null, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)],
         updateOn: 'submit'
@@ -272,8 +258,6 @@ export class UsersettingsComponent implements OnInit {
       shippingPolicy: [null],
       selectedStore: [null],
       // shippingProfile: [null], // like 'mw'
-      returnsPayee: [null],
-      shippingType: [null],
       paymentPolicy: [null],
       returnPolicy: [null]
     })

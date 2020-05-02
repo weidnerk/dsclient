@@ -116,15 +116,6 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-5">
-                <mat-form-field appearance="outline" class="outlinepadding">
-                    <mat-label>Handling time</mat-label>
-                    <input matInput formControlName="handlingTime" maxlength="40" placeholder="handling time">
-                </mat-form-field>
-            </div>
-
-        </div>
-        <div class="row">
             <div class="col-4">
                 <mat-form-field appearance="outline" class="outlinepadding">
                     <mat-label>Shipping time</mat-label>
@@ -166,33 +157,11 @@
                 </mat-form-field>
             </div>
         </div> -->
-        <div class="row">
-            <div class="col-3">
-                <mat-form-field>
-                    <mat-label>Who is paying for returns?</mat-label>
-                    <mat-select formControlName="returnsPayee">
-                        <mat-option *ngFor="let m of returnsPayee" [value]="m.value">
-                            {{ m.viewValue }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <mat-form-field>
-                    <mat-label>Shipping Type</mat-label>
-                    <mat-select formControlName="shippingType">
-                        <mat-option *ngFor="let m of shippingType" [value]="m.value">
-                            {{ m.viewValue }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </div>
+      
         <button [disabled]="!selectedStore" class="btn" mat-button mat-raised-button color="primary"
             type="submit">Save</button>
     </form>
+    <br/><a target="_blank" href="https://bizpolicy.ebay.com/businesspolicy/policyoptin">Opt in to eBay Business Policies</a>
 </div>
 <app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
     [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
