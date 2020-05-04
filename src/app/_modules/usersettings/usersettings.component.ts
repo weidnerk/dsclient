@@ -16,7 +16,7 @@ const STORENAME_REGEX = /^\S*$/; // a string consisting only of non-whitespaces
   styleUrls: ['./usersettings.component.scss']
 })
 export class UsersettingsComponent implements OnInit {
-  
+
   returnsPayee = [
     { value: 'Buyer', viewValue: 'Buyer' },
     { value: 'Seller', viewValue: 'Seller' }
@@ -79,8 +79,8 @@ export class UsersettingsComponent implements OnInit {
       .subscribe(userSettings => {
         this.userSettingsView = userSettings;
         // console.log('storeID: ' + userSettings.storeID);
-        console.log('max: ' + userSettings.maxShippingDays);
-      
+        // console.log('max: ' + userSettings.maxShippingDays);
+
         this.form.patchValue({
           pctProfit: userSettings.pctProfit,
           payPalEmail: userSettings.payPalEmail,
@@ -110,7 +110,7 @@ export class UsersettingsComponent implements OnInit {
     settings.returnProfile = this.ctlReturnPolicy.value.name;
     settings.paymentProfile = this.ctlPaymentPolicy.value.name;
     settings.maxShippingDays = this.ctlMaxShippingDays.value;
-    this._userService.userSettingsSave(settings, ["PctProfit", "MaxShippingDays","ShippingProfile","ReturnProfile","PaymentProfile"])
+    this._userService.userSettingsSave(settings, ["PctProfit", "MaxShippingDays", "ShippingProfile", "ReturnProfile", "PaymentProfile"])
       .subscribe(si => {
         this.displayProgressSpinner = false;
       },
@@ -197,7 +197,7 @@ export class UsersettingsComponent implements OnInit {
     this._orderHistoryService.getBusinessPolicies(this.selectedStore)
       .subscribe(x => {
         this.eBayBusinessPolicies = x;
-        console.log('shipping: ' + this.userSettingsView.shippingProfile);
+        // console.log('shipping: ' + this.userSettingsView.shippingProfile);
         this.loadSelectedShippingPolicy();
         this.loadSelectedReturnPolicy();
         this.loadSelectedPaymentPolicy();
@@ -235,7 +235,7 @@ export class UsersettingsComponent implements OnInit {
   //   }
   // }
   /**
-   * select drop down value based on stored user setting
+   * Select drop down value based on stored user setting
    */
   loadSelectedShippingPolicy() {
     for (let m of this.eBayBusinessPolicies.shippingPolicies) {
@@ -248,7 +248,7 @@ export class UsersettingsComponent implements OnInit {
     }
   }
   /**
-   * select drop down value based on stored user setting
+   * Select drop down value based on stored user setting
    */
   loadSelectedReturnPolicy() {
     for (let m of this.eBayBusinessPolicies.returnPolicies) {
@@ -317,11 +317,18 @@ export class UsersettingsComponent implements OnInit {
       payPalEmail: [null, {
         updateOn: 'submit'
       }],
-      shippingPolicy: [null],
-      selectedStore: [null],
-      // shippingProfile: [null], // like 'mw'
-      paymentPolicy: [null],
-      returnPolicy: [null],
+      shippingPolicy: [null, {
+        validators: [Validators.required],
+        updateOn: 'submit'
+      }],      selectedStore: [null],
+      paymentPolicy: [null, {
+        validators: [Validators.required],
+        updateOn: 'submit'
+      }],
+      returnPolicy: [null, {
+        validators: [Validators.required],
+        updateOn: 'submit'
+      }],
       returnsPayee: [null],
       shippingType: [null]
     })
