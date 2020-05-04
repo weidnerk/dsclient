@@ -17,7 +17,7 @@
             <div *ngIf="eBayBusinessPolicies" class="col-3">
                 <mat-form-field style="width: 350px;">
                     <mat-label>Shipping policies</mat-label>
-                    <mat-select formControlName="shippingPolicy" (selectionChange)="shippingPolicySelected($event)">
+                    <mat-select formControlName="shippingPolicy" (selectionChange)="onShippingPolicySelected($event)">
                         <mat-option *ngFor="let m of eBayBusinessPolicies.shippingPolicies" [value]="m">
                             {{ m.name }}
                         </mat-option>
@@ -52,13 +52,13 @@
                     </div>
                 </div>
             </mat-card>
-            <br/>
+            <br />
         </div>
         <div *ngIf="eBayBusinessPolicies" class="row">
             <div class="col-3">
                 <mat-form-field style="width: 350px;">
                     <mat-label>Return policies</mat-label>
-                    <mat-select formControlName="returnPolicy" (selectionChange)="returnPolicySelected($event)">
+                    <mat-select formControlName="returnPolicy" (selectionChange)="onReturnPolicySelected($event)">
                         <mat-option *ngFor="let m of eBayBusinessPolicies.returnPolicies" [value]="m">
                             {{ m.name }}
                         </mat-option>
@@ -83,7 +83,7 @@
             <div class="col-3">
                 <mat-form-field style="width: 350px;">
                     <mat-label>Payment policies</mat-label>
-                    <mat-select formControlName="paymentPolicy" (selectionChange)="paymentPolicySelected($event)">
+                    <mat-select formControlName="paymentPolicy" (selectionChange)="onPaymentPolicySelected($event)">
                         <mat-option *ngFor="let m of eBayBusinessPolicies.paymentPolicies" [value]="m">
                             {{ m.name }}
                         </mat-option>
@@ -118,8 +118,8 @@
         <div class="row">
             <div class="col-4">
                 <mat-form-field appearance="outline" class="outlinepadding">
-                    <mat-label>Shipping time</mat-label>
-                    <input matInput formControlName="shippingTime" maxlength="40" placeholder="shipping time">
+                    <mat-label>Max Shipping days</mat-label>
+                    <input matInput formControlName="maxShippingDays" maxlength="40" placeholder="Max shipping days">
                     <mat-error *ngIf="ctlPctProfit.hasError('required')">
                         <mat-icon>error</mat-icon>&nbsp;
                         % profit required
@@ -149,6 +149,31 @@
                 From API: {{eBayUser.payPalEmail}}
             </div>
         </div>
+        <div class="row">
+            <div class="col-3">
+                <mat-form-field>
+                    <mat-label>Who is paying for returns?</mat-label>
+                    <mat-select formControlName="returnsPayee">
+                        <mat-option *ngFor="let m of returnsPayee" [value]="m.value">
+                            {{ m.viewValue }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <mat-form-field>
+                    <mat-label>Shipping Type</mat-label>
+                    <mat-select formControlName="shippingType">
+                        <mat-option *ngFor="let m of shippingType" [value]="m.value">
+                            {{ m.viewValue }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <br/>
         <!-- <div class="row">
             <div class="col-4">
                 <mat-form-field appearance="outline" class="outlinepadding">
@@ -157,11 +182,12 @@
                 </mat-form-field>
             </div>
         </div> -->
-      
+
         <button [disabled]="!selectedStore" class="btn" mat-button mat-raised-button color="primary"
             type="submit">Save</button>
     </form>
-    <br/><a target="_blank" href="https://bizpolicy.ebay.com/businesspolicy/policyoptin">Opt in to eBay Business Policies</a>
+    <br /><a target="_blank" href="https://bizpolicy.ebay.com/businesspolicy/policyoptin">Opt in to eBay Business
+        Policies</a>
 </div>
 <app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
     [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">

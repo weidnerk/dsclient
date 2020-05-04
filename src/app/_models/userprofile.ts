@@ -27,18 +27,14 @@ export class TokenStatusTypeCustom {
 
 export class UserSettings {
     userID: string;
-    //appID: string;
-    //devID: string;
-    //certID: string;
-    //token: string;
-    //userName: string;
-    //storeName: string;
-    //firstName: string;
     storeID: number;
     pctProfit: number;
     handlingTime: number;
     payPalEmail: string;
     shippingProfile: string;
+    returnProfile: string;
+    paymentProfile: string;
+    maxShippingDays: number;
 }
 
 export class UserSettingsView extends UserSettings {

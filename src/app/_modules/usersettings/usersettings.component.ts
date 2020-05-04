@@ -16,6 +16,15 @@ const STORENAME_REGEX = /^\S*$/; // a string consisting only of non-whitespaces
   styleUrls: ['./usersettings.component.scss']
 })
 export class UsersettingsComponent implements OnInit {
+  
+  returnsPayee = [
+    { value: 'Buyer', viewValue: 'Buyer' },
+    { value: 'Seller', viewValue: 'Seller' }
+  ];
+  shippingType = [
+    { value: 'Standard', viewValue: 'Standard' },
+    { value: 'Economy', viewValue: 'Economy' }
+  ];
 
   form: FormGroup;
   userSettingsView: UserSettingsView;
@@ -37,6 +46,7 @@ export class UsersettingsComponent implements OnInit {
   displayProgressSpinner = false;
 
   get ctlPctProfit() { return this.form.controls['pctProfit']; }
+  get ctlMaxShippingDays() { return this.form.controls['maxShippingDays']; }
   get ctlListingLimit() { return this.form.controls['listingLimit']; }
   get ctlSelectedStore() { return this.form.controls['selectedStore']; }
 
@@ -57,7 +67,9 @@ export class UsersettingsComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.ctlPctProfit.value);
+    if (this.formIsValid()) {
+      this.userSettingsSave();
+    }
   }
   getUserSettings() {
     this.displayProgressSpinner = true;
@@ -66,12 +78,13 @@ export class UsersettingsComponent implements OnInit {
     this._userService.UserSettingsViewGetByStore(this.selectedStore)
       .subscribe(userSettings => {
         this.userSettingsView = userSettings;
-        console.log('storeID: ' + userSettings.storeID);
-        console.log('pctProfit: ' + userSettings.pctProfit);
+        // console.log('storeID: ' + userSettings.storeID);
+        console.log('max: ' + userSettings.maxShippingDays);
+      
         this.form.patchValue({
           pctProfit: userSettings.pctProfit,
-          shippingProfile: userSettings.shippingProfile,
-          payPalEmail: userSettings.payPalEmail
+          payPalEmail: userSettings.payPalEmail,
+          maxShippingDays: userSettings.maxShippingDays
         });
         this.storeChanged = 1;
         this.getBusinessPolicies();
@@ -93,7 +106,11 @@ export class UsersettingsComponent implements OnInit {
     settings.pctProfit = this.ctlPctProfit.value;
     settings.storeID = this.selectedStore;
     settings.payPalEmail = this.ctlPayPalEmail.value
-    this._userService.userSettingsSave(settings, ["PctProfit", "PayPalEmail"])
+    settings.shippingProfile = this.ctlShippingPolicy.value.name;
+    settings.returnProfile = this.ctlReturnPolicy.value.name;
+    settings.paymentProfile = this.ctlPaymentPolicy.value.name;
+    settings.maxShippingDays = this.ctlMaxShippingDays.value;
+    this._userService.userSettingsSave(settings, ["PctProfit", "MaxShippingDays","ShippingProfile","ReturnProfile","PaymentProfile"])
       .subscribe(si => {
         this.displayProgressSpinner = false;
       },
@@ -115,7 +132,7 @@ export class UsersettingsComponent implements OnInit {
     this.getUserSettings();
     this.geteBayUser();
   }
-  shippingPolicySelected(event: MatSelectChange) {
+  onShippingPolicySelected(event: MatSelectChange) {
     this.errorMessage = null;
     const selectedData = {
       text: (event.source.selected as MatOption).viewValue,
@@ -124,7 +141,7 @@ export class UsersettingsComponent implements OnInit {
     this.shippingSelected = selectedData.value;
     this.getSelectedShippingPolicy();
   }
-  paymentPolicySelected(event: MatSelectChange) {
+  onPaymentPolicySelected(event: MatSelectChange) {
     this.errorMessage = null;
     const selectedData = {
       text: (event.source.selected as MatOption).viewValue,
@@ -133,7 +150,7 @@ export class UsersettingsComponent implements OnInit {
     this.paymentSelected = selectedData.value;
     this.getSelectedPaymentPolicy();
   }
-  returnPolicySelected(event: MatSelectChange) {
+  onReturnPolicySelected(event: MatSelectChange) {
     this.errorMessage = null;
     const selectedData = {
       text: (event.source.selected as MatOption).viewValue,
@@ -176,13 +193,14 @@ export class UsersettingsComponent implements OnInit {
           this.displayProgressSpinner = false;
         });
   }
-  /**
-   * look up handling time 
-   */
   getBusinessPolicies() {
     this._orderHistoryService.getBusinessPolicies(this.selectedStore)
       .subscribe(x => {
         this.eBayBusinessPolicies = x;
+        console.log('shipping: ' + this.userSettingsView.shippingProfile);
+        this.loadSelectedShippingPolicy();
+        this.loadSelectedReturnPolicy();
+        this.loadSelectedPaymentPolicy();
         if (--this.storeChanged === 0) {
           this.displayProgressSpinner = false;
         }
@@ -216,6 +234,45 @@ export class UsersettingsComponent implements OnInit {
   //     }
   //   }
   // }
+  /**
+   * select drop down value based on stored user setting
+   */
+  loadSelectedShippingPolicy() {
+    for (let m of this.eBayBusinessPolicies.shippingPolicies) {
+      if (m.name == this.userSettingsView.shippingProfile) {
+        this.shippingSelected = m;
+        this.form.patchValue({
+          shippingPolicy: this.shippingSelected
+        });
+      }
+    }
+  }
+  /**
+   * select drop down value based on stored user setting
+   */
+  loadSelectedReturnPolicy() {
+    for (let m of this.eBayBusinessPolicies.returnPolicies) {
+      if (m.name == this.userSettingsView.returnProfile) {
+        this.returnSelected = m;
+        this.form.patchValue({
+          returnPolicy: this.returnSelected
+        });
+      }
+    }
+  }
+  loadSelectedPaymentPolicy() {
+    for (let m of this.eBayBusinessPolicies.paymentPolicies) {
+      if (m.name == this.userSettingsView.paymentProfile) {
+        this.paymentSelected = m;
+        this.form.patchValue({
+          paymentPolicy: this.paymentSelected
+        });
+      }
+    }
+  }
+  /**
+   * show details of selected shipping policy (in card)
+   */
   getSelectedShippingPolicy() {
     for (let m of this.eBayBusinessPolicies.shippingPolicies) {
       if (m.name == this.ctlShippingPolicy.value.name) {
@@ -223,6 +280,9 @@ export class UsersettingsComponent implements OnInit {
       }
     }
   }
+  /**
+   * show details of selected payment policy (in card)
+   */
   getSelectedPaymentPolicy() {
     for (let m of this.eBayBusinessPolicies.paymentPolicies) {
       if (m.name == this.ctlPaymentPolicy.value.name) {
@@ -230,6 +290,9 @@ export class UsersettingsComponent implements OnInit {
       }
     }
   }
+  /**
+   * show details of selected return policy (in card)
+   */
   getSelectedReturnPolicy() {
     for (let m of this.eBayBusinessPolicies.returnPolicies) {
       if (m.name == this.ctlReturnPolicy.value.name) {
@@ -243,7 +306,7 @@ export class UsersettingsComponent implements OnInit {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)],
         updateOn: 'submit'
       }],
-      shippingTime: [null, {
+      maxShippingDays: [null, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)],
         updateOn: 'submit'
       }],
@@ -252,18 +315,20 @@ export class UsersettingsComponent implements OnInit {
         updateOn: 'submit'
       }],
       payPalEmail: [null, {
-        validators: [Validators.required],
         updateOn: 'submit'
       }],
       shippingPolicy: [null],
       selectedStore: [null],
       // shippingProfile: [null], // like 'mw'
       paymentPolicy: [null],
-      returnPolicy: [null]
+      returnPolicy: [null],
+      returnsPayee: [null],
+      shippingType: [null]
     })
   }
   formIsValid(): boolean {
     if (this.ctlPctProfit.invalid) { return false; }
+    if (this.ctlMaxShippingDays.invalid) { return false; }
     return true;
   }
   /*
