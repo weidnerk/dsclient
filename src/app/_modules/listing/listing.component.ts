@@ -59,6 +59,7 @@ export class ListingdbComponent implements OnInit {
   walItem: SupplierItem | null = null;
   userProfile: UserProfile;
   userSettingsView: UserSettingsView;
+  salesOrder: SalesOrder;
 
   // used for testing fetch of variations
   variationItem: SupplierItem;
@@ -109,7 +110,9 @@ export class ListingdbComponent implements OnInit {
   get ctlCheckDescription() { return this.listingForm.controls['checkDescription']; }
 
 
-  get ctlEbayOrderNum() { return this.orderForm.controls['ebayOrderNumber']; }
+  // get ctlEbayOrderNum() { return this.orderForm.controls['ebayOrderNumber']; }
+  get ctlFromDate() { return this.orderForm.controls['fromDate']; }
+  get ctlToDate() { return this.orderForm.controls['toDate']; }
   get ctlIPaid() { return this.orderForm.controls['ipaid']; }
   get ctlSupplierOrderNum() { return this.orderForm.controls['supplierOrderNumber']; }
 
@@ -335,10 +338,39 @@ export class ListingdbComponent implements OnInit {
     if (this.deleteButtonVal == true) {
       this.onDelete();
     }
-    if (this.orderButtonVal == true) {
-      this.setOrder();
+
+  }
+  onSetOrder() {
+    this.setOrder();
+  }
+  salesOrderStore() {
+    if (this.listing) {
+      let salesOrder = new SalesOrder();
+      salesOrder.listedItemID = this.listing.ListedItemID;
+      salesOrder.supplierOrderNumber = this.ctlSupplierOrderNum.value;
+      salesOrder.eBayOrderNumber = this.ctlEbayOrderNum.value;
+      salesOrder.i_paid = this.ctlIPaid.value;
+      salesOrder.qty = 1;
+      this._orderHistoryService.salesOrderStore(salesOrder, ["SupplierOrderNumber", "Qty", "ListedItemID", "eBayOrderNumber", "I_Paid"])
+        .subscribe(si => {
+        },
+          error => {
+            this.errorMessage = error.errMsg;
+          });
     }
   }
+  setOrder() {
+    if (this.listing) {
+      this._orderHistoryService.setOrder(this.listing, this.ctlFromDate.value, this.ctlToDate.value)
+        .subscribe(so => {
+          this.salesOrder = so;
+        },
+          error => {
+            this.errorMessage = error.errMsg;
+          });
+    }
+  }
+
   /**
    * Must pass all validation checks.
    */
@@ -603,22 +635,6 @@ export class ListingdbComponent implements OnInit {
     }
     return false;
   }
-  salesOrderStore() {
-    if (this.listing) {
-      let salesOrder = new SalesOrder();
-      salesOrder.ListedItemID = this.listing.ListedItemID;
-      salesOrder.SupplierOrderNumber = this.ctlSupplierOrderNum.value;
-      salesOrder.eBayOrderNumber = this.ctlEbayOrderNum.value;
-      salesOrder.I_Paid = this.ctlIPaid.value;
-      salesOrder.Qty = 1;
-      this._orderHistoryService.salesOrderStore(salesOrder, ["SupplierOrderNumber", "Qty", "ListedItemID", "eBayOrderNumber", "I_Paid"])
-        .subscribe(si => {
-        },
-          error => {
-            this.errorMessage = error.errMsg;
-          });
-    }
-  }
 
   createVariationListing() {
     this.displayProgressSpinner = true;
@@ -750,20 +766,6 @@ export class ListingdbComponent implements OnInit {
     }
   }
 
-  setOrder() {
-    if (this.listing) {
-      let list = new Listing();
-      list.ItemID = this.listing.ItemID;
-
-      this._orderHistoryService.setOrder(list)
-        .subscribe(si => {
-          this.statusMessage = 'Record stored.';
-        },
-          error => {
-            this.errorMessage = error.errMsg;
-          });
-    }
-  }
 
   /**
    * 01.29.2020 Recall this won't work unless have selenium first logon to my walmart account.
@@ -859,8 +861,11 @@ export class ListingdbComponent implements OnInit {
     })
   }
   buildOrderForm(): void {
+    let fromDate = this.getFormattedDate(new Date());
+    let toDate = this.getFormattedDate(this.addDays(new Date(), 1));
     this.orderForm = this.fb.group({
-      ebayOrderNumber: ["24-04242-80495"],
+      fromDate: [fromDate],
+      toDate: [toDate],
       supplierOrderNumber: ["xyz"],
       ipaid: [0]
     })
@@ -1036,5 +1041,15 @@ export class ListingdbComponent implements OnInit {
         error => {
           this.errorMessage = error.errMsg;
         });
+  }
+  getFormattedDate(date: Date) {
+    // let date = new Date();
+    let newdate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+    return newdate;
+  }
+  addDays(date: Date, days:number) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
   }
 }

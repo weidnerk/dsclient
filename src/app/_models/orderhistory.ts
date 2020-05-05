@@ -1,6 +1,5 @@
 // Open prior scan
-export class ModelViewTimesSold
-{
+export class ModelViewTimesSold {
     TimesSoldRpt: TimesSold[];
     ListingsProcessed: number;
     TotalOrders: number;
@@ -24,7 +23,7 @@ export class TimesSold {
     ShippingServiceCost: string;    // 10.07.2019 not being used.
     ShippingServiceName: string;
     ItemID: string;         // interesting aspect of TS - i did not have this field defined here but since returned
-                            // by the server, TimesSoldView gets 'ammended' to include the field.
+    // by the server, TimesSoldView gets 'ammended' to include the field.
     Price: number;          // latest sold price
     EbaySellerPrice: number;
     SellerUPC: string;
@@ -124,7 +123,7 @@ export class Listing {
     Created: Date;
     SupplierID: number;
     SupplierItem: SupplierItem;
-    StoreID:  number;
+    StoreID: number;
     Qty: number;
     Updated: Date;
     Warning: string[];
@@ -142,8 +141,7 @@ export class ListingView extends Listing {
     UpdatedByName: string;
     SupplierPicURL: string;
 }
-export class SellerListingItemSpecific
-{
+export class SellerListingItemSpecific {
     id: number;
     sellerItemId: string;
     itemName: string;
@@ -233,18 +231,18 @@ export class ListingNoteView extends ListingNote {
 export class SupplierItem {
     ID: number;
     MatchCount: number;
-    ItemURL : string;
-    SoldAndShippedBySupplier: boolean; 
-    SupplierBrand : string;
-    SupplierPrice : number;
-    IsVariation : boolean;
-    SupplierPicURL : string;
-    UPC : string;
-    MPN : string;
-    Description : string;
-    ItemID : string;
-    OutOfStock : boolean;
-    ShippingNotAvailable: boolean; 
+    ItemURL: string;
+    SoldAndShippedBySupplier: boolean;
+    SupplierBrand: string;
+    SupplierPrice: number;
+    IsVariation: boolean;
+    SupplierPicURL: string;
+    UPC: string;
+    MPN: string;
+    Description: string;
+    ItemID: string;
+    OutOfStock: boolean;
+    ShippingNotAvailable: boolean;
     Arrives: Date;
     BusinessDaysArrives: number;
     IsVERO: boolean;
@@ -259,13 +257,14 @@ export class SupplierItem {
     SourceID: number;
 }
 export class SalesOrder {
-    ID: number;
-    SupplierOrderNumber: string;
+    id: number;
+    supplierOrderNumber: string;
     eBayOrderNumber: string;
-    ListedItemID: string;
-    Qty: number;
-    DatePurchased: Date;
-    I_Paid: number;
+    listedItemID: string;
+    qty: number;
+    datePurchased: Date;
+    i_paid: number;
+    buyer: string;
 }
 
 // return type when getting proposed price 
@@ -274,37 +273,32 @@ export class PriceProfit {
     proposePrice: number;
 }
 
-export class SellerVariationSpecifics
-{
+export class SellerVariationSpecifics {
     NameValueList: NameValueList;
 }
 
-export class NameValueList
-{
+export class NameValueList {
     Name: string;
     Value: string;
 }
-export class SellingStatus
-{
+export class SellingStatus {
     QuantitySold: string;
     QuantitySoldByPickupInStore: string;
 }
-export class Variation
-{
+export class Variation {
     StartPrice: string;
     Quantity: string;
     VariationSpecifics: SellerVariationSpecifics;
     SellingStatus: SellingStatus;
 }
 export class SupplierVariation {
-    ItemID : string;
-    URL : string;
-    Variation : string;
-    Price : number;
+    ItemID: string;
+    URL: string;
+    Variation: string;
+    Price: number;
     Images: string[];
 }
-export class ListingItemSpecific
-{
+export class ListingItemSpecific {
     id: number;
     listingID: number;
     itemName: string;
@@ -354,3 +348,12 @@ export interface eBayStore {
     storeName: string;
     subscription: string;
 }
+// export interface GetOrdersResponse {
+//     buyerHandle: string;
+//     buyer: string;
+//     datePurchased: Date;
+//     buyerPaid: number;
+//     buyerState: string;
+//     itemID: string;
+
+// }

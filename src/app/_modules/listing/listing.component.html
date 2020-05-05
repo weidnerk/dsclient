@@ -345,18 +345,28 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab [disabled]='true' label="Orders">
+    <mat-tab [disabled]='false' label="Orders">
       <ng-container *ngIf="admin">
         <div class="container">
           <br />
           <form *ngIf="listing" [formGroup]="orderForm" (ngSubmit)="salesOrderStore()">
             <div class="row">
               <div class="col-2">
-                <label class="lbl">eBay order #:</label>
+                <label class="lbl">from date:</label>
               </div>
               <div class="col-10">
                 <mat-form-field appearance="outline" class="outlinepadding Url">
-                  <input matInput formControlName="ebayOrderNumber" maxlength="40" placeholder="ebay order #">
+                  <input matInput formControlName="fromDate" maxlength="40" placeholder="from date">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-2">
+                <label class="lbl">to date:</label>
+              </div>
+              <div class="col-10">
+                <mat-form-field appearance="outline" class="outlinepadding Url">
+                  <input matInput formControlName="toDate" maxlength="40" placeholder="to date">
                 </mat-form-field>
               </div>
             </div>
@@ -380,8 +390,18 @@
                 </mat-form-field>
               </div>
             </div>
-            <button class="btn" mat-button mat-raised-button color="primary" type="submit"
+            <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onSetOrder()"
               [disabled]="listing && !listing.ListedItemID">Save an Order</button>
+            <ng-container *ngIf="salesOrder">
+              <div class="row">
+                <div class="col-2">
+                  <label class="lbl">Buyer:</label>
+                </div>
+                <div class="col-2">
+                  <label class="lbl">{{salesOrder.buyer}}</label>
+                </div>
+              </div>
+            </ng-container>
           </form>
         </div>
       </ng-container>

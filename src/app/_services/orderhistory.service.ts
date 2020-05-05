@@ -541,11 +541,15 @@ export class OrderHistoryService {
      * Working on getting order details instead of manually updating 'Orders' spreadsheet.
      * @param listing 
      */
-    setOrder(listing: Listing) {
+    setOrder(listing: Listing, fromDate: Date, toDate: Date): Observable<SalesOrder> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
-            let url = this.setOrderUrl;
+            let url = this.setOrderUrl
+            + "?fromDate=" + fromDate
+            + "&toDate=" + toDate;
+            // + "?fromDate=" + fromDate.toISOString()
+            // + "&toDate=" + toDate.toISOString();
             let body = JSON.stringify(listing);
             const httpOptions = {
                 headers: new HttpHeaders({
@@ -553,7 +557,7 @@ export class OrderHistoryService {
                     'Authorization': 'Bearer ' + currentUser.access_token
                 })
             };
-            return this.http.get(url, httpOptions).pipe(
+            return this.http.post<SalesOrder>(url, body, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }
