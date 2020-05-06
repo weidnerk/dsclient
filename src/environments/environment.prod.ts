@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  API_ENDPOINT: 'http://droidds.com/scrapeAPI/',
+  API_ENDPOINT: 'http://dscruisecontrol.com/scrapeAPI/',
   REFRESH_SECONDS: '4',
   HELP_TEXT: `eBay requires that you obtain API keys which lets eBay identify who is searching their database.
 They are free and easy to acquire.  Follow this link: https://developer.ebay.com/join/

@@ -349,6 +349,9 @@
       <ng-container *ngIf="admin">
         <div class="container">
           <br />
+          <div class="error">
+            <span [innerHTML]="errorMessage"></span>
+          </div>
           <form *ngIf="listing" [formGroup]="orderForm" (ngSubmit)="salesOrderStore()">
             <div class="row">
               <div class="col-2">
@@ -391,14 +394,16 @@
               </div>
             </div>
             <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onSetOrder()"
-              [disabled]="listing && !listing.ListedItemID">Save an Order</button>
+              [disabled]="listing && !listing.ListedItemID">Fetch Order</button>
+              <br/><br/>
             <ng-container *ngIf="salesOrder">
               <div class="row">
-                <div class="col-2">
-                  <label class="lbl">Buyer:</label>
-                </div>
-                <div class="col-2">
-                  <label class="lbl">{{salesOrder.buyer}}</label>
+                <div class="col-4">
+                  <ul>
+                    <li *ngFor="let item of salesOrder">
+                       {{item.buyer}}
+                    </li>
+                 </ul>
                 </div>
               </div>
             </ng-container>

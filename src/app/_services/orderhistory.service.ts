@@ -541,7 +541,7 @@ export class OrderHistoryService {
      * Working on getting order details instead of manually updating 'Orders' spreadsheet.
      * @param listing 
      */
-    setOrder(listing: Listing, fromDate: Date, toDate: Date): Observable<SalesOrder> {
+    setOrder(listing: Listing, fromDate: Date, toDate: Date): Observable<SalesOrder[]> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
@@ -557,7 +557,7 @@ export class OrderHistoryService {
                     'Authorization': 'Bearer ' + currentUser.access_token
                 })
             };
-            return this.http.post<SalesOrder>(url, body, httpOptions).pipe(
+            return this.http.post<SalesOrder[]>(url, body, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }

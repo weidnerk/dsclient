@@ -59,7 +59,7 @@ export class ListingdbComponent implements OnInit {
   walItem: SupplierItem | null = null;
   userProfile: UserProfile;
   userSettingsView: UserSettingsView;
-  salesOrder: SalesOrder;
+  salesOrder: SalesOrder[];
 
   // used for testing fetch of variations
   variationItem: SupplierItem;
@@ -361,12 +361,15 @@ export class ListingdbComponent implements OnInit {
   }
   setOrder() {
     if (this.listing) {
+      this.displayProgressSpinner = true;
       this._orderHistoryService.setOrder(this.listing, this.ctlFromDate.value, this.ctlToDate.value)
         .subscribe(so => {
           this.salesOrder = so;
+          this.displayProgressSpinner = false;
         },
           error => {
             this.errorMessage = error.errMsg;
+            this.displayProgressSpinner = false;
           });
     }
   }
@@ -866,7 +869,7 @@ export class ListingdbComponent implements OnInit {
     this.orderForm = this.fb.group({
       fromDate: [fromDate],
       toDate: [toDate],
-      supplierOrderNumber: ["xyz"],
+      supplierOrderNumber: [null],
       ipaid: [0]
     })
   }
