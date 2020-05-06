@@ -265,6 +265,12 @@ export class SalesOrder {
     datePurchased: Date;
     i_paid: number;
     buyer: string;
+    buyerPaid: number;
+    total: number;
+    subTotal: number;
+    buyerState: string;
+    salesTax: number;
+    shippingCost: number;
 }
 
 // return type when getting proposed price 

@@ -9,95 +9,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     color: red;
     font-weight: bold;
 }
-
-// /*
-// mat-progress-spinner {
-//     float: left;
-//     width: 14px;
-//     height: 14px;
-//     margin: 5px 10px 0px 0px;
-// }
-// */
-
-// .right {
-//     width: 100px;
-//     float: left;
-//     text-align: right;
-// }
-
-// /*
-// .alignright {
-//     text-align: right;
-// }
-// */
-
-// .greenText {
-//     color: green;
-//     font-weight: bold;
-// }
-
-// /*
-// .priceBlack {
-//     color: black;
-// }
-// */
-// /*
-// .buttonPadding {
-//     margin-right: 10px !important;
-// }
-// */
-
-// /*
-// .tbwidth {
-//     width: 500px !important;
-//     color: blue !important;
-// }
-// */
-
-// /*
-// .statusText {
-//     color: purple;
-//     font-weight: bold;
-// }
-// */
-
-// mat-header-cell.headerright {
-//     display: flex;
-//     justify-content: flex-end;
-// }
-
-// mat-cell.cellright {
-//     display: flex !important;
-//     justify-content: flex-end !important;
-// }
-
-// mat-header-cell.cellright {
-//     display: flex !important;
-//     justify-content: flex-end !important;
-// }
-
-// mat-header-cell.headercenter {
-//     text-align: center;
-// }
-
-// mat-cell.cellcenter {
-//     text-align: center;
-// }
-
-
-// .inputWidth {
-//     width: 250px;
-// }
-
-// .numericcell {
-//     text-align: right;
-// }
-
-
-// .mat-row:hover {
-//     background-color: #f5f5f5;
-//   }
-
+.rightJustify {
+    text-align: right;
+}
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // needed for mat input boxes
 .matinput {
