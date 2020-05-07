@@ -271,6 +271,8 @@ export class SalesOrder {
     buyerState: string;
     salesTax: number;
     shippingCost: number;
+    finalValueFee: number;
+    payPalFee: number;
 }
 
 // return type when getting proposed price 

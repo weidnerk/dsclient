@@ -471,8 +471,24 @@
                       {{item.total | currency}}
                     </div>
                   </div>
-                </mat-card>
-                <br/>
+                  <div class="row">
+                    <div class="col-3">
+                      <label class="lbl">Final value fee</label>
+                    </div>
+                    <div class="col-4 rightJustify">
+                      {{item.finalValueFee | currency}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-3">
+                      <label class="lbl">PayPal fee</label>
+                    </div>
+                    <div class="col-4 rightJustify">
+                      {{item.payPalFee | currency}}
+                    </div>
+                  </div>
+                  </mat-card>
+              <br/>
               </div>
             </ng-container>
           </form>
