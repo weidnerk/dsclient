@@ -612,7 +612,12 @@ export class ListingdbComponent implements OnInit {
         .subscribe(si => {
           this.statusMessage = si;
           this.displayProgressSpinner = false;
-          this.router.navigate(['/gamma']);
+
+          // Seems we have to give time for the progress overlay to finish
+          // otherwise, redirect to listings and overlay never goes away.
+          setTimeout(() => {
+            this.router.navigate(['/gamma']);
+          }, 1000);
         },
           error => {
             this.errorMessage = error.errMsg;
@@ -1050,7 +1055,7 @@ export class ListingdbComponent implements OnInit {
     let newdate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
     return newdate;
   }
-  addDays(date: Date, days:number) {
+  addDays(date: Date, days: number) {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
