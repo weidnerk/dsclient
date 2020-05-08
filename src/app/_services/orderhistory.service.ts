@@ -44,6 +44,7 @@ export class OrderHistoryService {
     private getLastErrorUrl: string = environment.API_ENDPOINT + 'lasterror';
     private calculateWMPxUrl: string = environment.API_ENDPOINT + 'calculatewmpx';
     private storeSalesOrderUrl: string = environment.API_ENDPOINT + 'salesorderupdate';
+    private salesOrderAddUrl: string = environment.API_ENDPOINT + 'salesorderadd';
     private refreshItemSpecificsUrl: string = environment.API_ENDPOINT + 'refreshitemspecifics';
     private getSupplierItemUrl: string = environment.API_ENDPOINT + 'getsupplieritem';
     private getBusinessPoliciesUrl: string = environment.API_ENDPOINT + 'getbusinesspolicies';
@@ -478,6 +479,29 @@ export class OrderHistoryService {
             };
 
             return this.http.post(url, body, httpOptions).pipe(
+                catchError(this.handleError)
+            );
+        }
+        return observableThrowError(
+            {
+                errMsg: "could not obtain current user record"
+            }
+        )
+    }
+    salesOrderAdd(salesOrder: SalesOrder): Observable<SalesOrder> {
+        const userJson = localStorage.getItem('currentUser');
+        if (userJson) {
+            let currentUser = JSON.parse(userJson);
+            let url = this.salesOrderAddUrl;
+            let body = JSON.stringify(salesOrder);
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.access_token
+                })
+            };
+
+            return this.http.post<SalesOrder>(url, body, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }

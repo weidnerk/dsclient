@@ -53,7 +53,7 @@ export class ListingdbComponent implements OnInit {
     public dialog: MatDialog,
     private _listCheckService: ListCheckService) { }
 
-  private sub: any;
+  // private sub: any;
   listingID: number;  // Listing.ID
   listing: Listing;
   walItem: SupplierItem | null = null;
@@ -338,13 +338,56 @@ export class ListingdbComponent implements OnInit {
     if (this.deleteButtonVal == true) {
       this.onDelete();
     }
-
   }
   onSetOrder() {
+    this.errorMessage = null;
     this.setOrder();
   }
   onGetOrders() {
+    this.errorMessage = null;
     this.getOrders();
+  }
+  onSalesOrderAdd(listedItemID: string) {
+    this.errorMessage = null;
+    console.log(listedItemID);
+    let msg = this.orderFormIsValid();
+    if (msg === null) {
+      this.salesOrderAdd(listedItemID);
+    }
+    else {
+      this.errorMessage = msg;
+    }
+  }
+  salesOrderAdd(listedItemID: string) {
+    if (this.salesOrder) {
+      let order = this.getSalesOrderInArray(listedItemID);
+      if (order) {
+        this.displayProgressSpinner = true;
+        order.supplierOrderNumber = this.ctlSupplierOrderNum.value;
+        order.listingID = this.listing.ID;
+        this._orderHistoryService.salesOrderAdd(order)
+          .subscribe(si => {
+            let updated = si;
+            this.displayProgressSpinner = false;
+            console.log('sales order id: ' + updated.id);
+          },
+            error => {
+              this.displayProgressSpinner = false;
+              this.errorMessage = error.errMsg;
+            });
+      }
+      else {
+        this.errorMessage = "could not find listed item id: " + listedItemID;
+      }
+    }
+  }
+  getSalesOrderInArray(listedItemID: string): SalesOrder | null {
+    for (let m of this.salesOrder) {
+      if (m.listedItemID === listedItemID) {
+        return m;
+      }
+    }
+    return null;
   }
   salesOrderStore() {
     if (this.listing) {
@@ -887,10 +930,18 @@ export class ListingdbComponent implements OnInit {
     let fromDate = this.getFormattedDate(new Date());
     let toDate = this.getFormattedDate(this.addDays(new Date(), 1));
     this.orderForm = this.fb.group({
-      fromDate: [fromDate],
-      toDate: [toDate],
-      supplierOrderNumber: [null],
-      ipaid: [0]
+      ipaid: [null, {
+        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
+      }],
+      fromDate:  [fromDate, {
+        validators: [Validators.required]
+      }],
+      toDate:  [toDate, {
+        validators: [Validators.required]
+      }],
+      supplierOrderNumber:  [null, {
+        validators: [Validators.required]
+      }]
     })
   }
 
@@ -1074,5 +1125,17 @@ export class ListingdbComponent implements OnInit {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
+  }
+  orderFormIsValid(): string | null {
+    if (this.ctlFromDate.invalid) { return 'from date is invalid'; }
+    if (this.ctlToDate.invalid) { return 'to date is invalid'; }
+    if (this.ctlIPaid.invalid) { return 'i paid is invalid'; }
+    if (this.ctlSupplierOrderNum.invalid) { return 'Supplier Order Num'; }
+    if (this.ctlIPaid.value) {
+      if (this.ctlIPaid.value <= 0) {
+        return 'invalid i paid value';
+      }
+    }
+    return null;
   }
 }

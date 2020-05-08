@@ -258,6 +258,7 @@ export class SupplierItem {
 }
 export class SalesOrder {
     id: number;
+    listingID: number;
     supplierOrderNumber: string;
     eBayOrderNumber: string;
     listedItemID: string;

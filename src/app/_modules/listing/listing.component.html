@@ -1,7 +1,6 @@
 <div class="container">
   <mat-tab-group>
     <mat-tab label="Listing">
-
       <div class="container">
         <br />
         <form [formGroup]="listingForm" (ngSubmit)="onSubmit()">
@@ -349,8 +348,8 @@
       <ng-container *ngIf="admin">
         <div class="container">
           <br />
-          <div class="error">
-            <span [innerHTML]="errorMessage"></span>
+          <div *ngIf="errorMessage" class="error">
+            <span [innerHTML]="errorMessage"></span><br/><br/>
           </div>
           <form *ngIf="listing" [formGroup]="orderForm" (ngSubmit)="salesOrderStore()">
             <div class="row">
@@ -380,6 +379,10 @@
               <div class="col-10">
                 <mat-form-field appearance="outline" class="outlinepadding Url">
                   <input matInput formControlName="supplierOrderNumber" maxlength="40" placeholder="supplier order #">
+                  <mat-error *ngIf="ctlSupplierOrderNum.hasError('required')">
+                    <mat-icon>error</mat-icon>&nbsp;
+                    SupplierOrderNumber is required
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
@@ -390,17 +393,31 @@
               <div class="col-10">
                 <mat-form-field appearance="outline" class="outlinepadding Url">
                   <input matInput formControlName="ipaid" maxlength="40" placeholder="i paid">
+                  <mat-error *ngIf="ctlIPaid.hasError('required')">
+                    <mat-icon>error</mat-icon>&nbsp;
+                    I paid is required
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
+            <br/>
             <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onSetOrder()"
               [disabled]="listing && !listing.ListedItemID">Fetch Order from eBay</button>
             <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onGetOrders()"
               [disabled]="listing && !listing.ListedItemID">Fetch today's orders from eBay</button>
+            
             <br /><br />
             <ng-container *ngIf="salesOrder">
               <div *ngFor="let item of salesOrder">
                 <mat-card>
+                  <div class="row">
+                    <div class="col-3">
+                      <label class="lbl">Listed Item ID</label>
+                    </div>
+                    <div class="col-4">
+                      {{item.listedItemID}}
+                    </div>
+                  </div>
                   <div class="row">
                     <div class="col-3">
                       <label class="lbl">Buyer</label>
@@ -505,6 +522,8 @@
                       {{item.trackingNumber}}
                     </div>
                   </div>
+                  <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onSalesOrderAdd(item.listedItemID)"
+                  [disabled]="listing && !listing.ListedItemID">Save Order</button>
                 </mat-card>
                 <br />
               </div>
