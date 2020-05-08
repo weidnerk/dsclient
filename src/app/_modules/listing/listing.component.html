@@ -508,6 +508,22 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
+                      <label class="lbl">Profit</label>
+                    </div>
+                    <div class="col-4 rightJustify">
+                      {{item.profit | currency}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-3">
+                      <label class="lbl">Profit margin</label>
+                    </div>
+                    <div class="col-4 rightJustify">
+                      {{item.profitMargin | percent : '0.1-2'}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-3">
                       <label class="lbl">Order status</label>
                     </div>
                     <div class="col-4 rightJustify">

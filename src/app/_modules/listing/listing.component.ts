@@ -365,6 +365,7 @@ export class ListingdbComponent implements OnInit {
         this.displayProgressSpinner = true;
         order.supplierOrderNumber = this.ctlSupplierOrderNum.value;
         order.listingID = this.listing.ID;
+        order.i_paid = this.ctlIPaid.value;
         this._orderHistoryService.salesOrderAdd(order)
           .subscribe(si => {
             let updated = si;
@@ -411,6 +412,7 @@ export class ListingdbComponent implements OnInit {
       this._orderHistoryService.setOrder(this.listing, this.ctlFromDate.value, this.ctlToDate.value)
         .subscribe(so => {
           this.salesOrder = so;
+          this.calcProfit();
           this.displayProgressSpinner = false;
         },
           error => {
@@ -418,6 +420,15 @@ export class ListingdbComponent implements OnInit {
             this.displayProgressSpinner = false;
           });
     }
+  }
+  /**
+   * Recall that salesOrder is an array of orders between 2 days but UI just asks for single i_paid.
+   */
+  calcProfit() {
+    this.salesOrder.forEach((element) => {
+      element.profit = (element.subTotal + element.shippingCost) - element.finalValueFee - element.payPalFee - this.ctlIPaid.value;
+      element.profitMargin = (element.profit / element.total);
+    });
   }
   getOrders() {
     this.displayProgressSpinner = true;
@@ -933,13 +944,13 @@ export class ListingdbComponent implements OnInit {
       ipaid: [null, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }],
-      fromDate:  [fromDate, {
+      fromDate: [fromDate, {
         validators: [Validators.required]
       }],
-      toDate:  [toDate, {
+      toDate: [toDate, {
         validators: [Validators.required]
       }],
-      supplierOrderNumber:  [null, {
+      supplierOrderNumber: [null, {
         validators: [Validators.required]
       }]
     })

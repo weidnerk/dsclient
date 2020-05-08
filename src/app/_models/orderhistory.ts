@@ -276,6 +276,8 @@ export class SalesOrder {
     payPalFee: number;
     orderStatus: string;
     trackingNumber: string;
+    profit: number;
+    profitMargin: number;
 }
 
 // return type when getting proposed price 
