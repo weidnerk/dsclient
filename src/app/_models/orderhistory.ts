@@ -273,6 +273,8 @@ export class SalesOrder {
     shippingCost: number;
     finalValueFee: number;
     payPalFee: number;
+    orderStatus: string;
+    trackingNumber: string;
 }
 
 // return type when getting proposed price 

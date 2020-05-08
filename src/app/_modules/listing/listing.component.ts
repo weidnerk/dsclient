@@ -343,6 +343,9 @@ export class ListingdbComponent implements OnInit {
   onSetOrder() {
     this.setOrder();
   }
+  onGetOrders() {
+    this.getOrders();
+  }
   salesOrderStore() {
     if (this.listing) {
       let salesOrder = new SalesOrder();
@@ -372,6 +375,18 @@ export class ListingdbComponent implements OnInit {
             this.displayProgressSpinner = false;
           });
     }
+  }
+  getOrders() {
+    this.displayProgressSpinner = true;
+    this._orderHistoryService.getOrders(this.ctlFromDate.value, this.ctlToDate.value)
+      .subscribe(so => {
+        this.salesOrder = so;
+        this.displayProgressSpinner = false;
+      },
+        error => {
+          this.errorMessage = error.errMsg;
+          this.displayProgressSpinner = false;
+        });
   }
 
   /**
