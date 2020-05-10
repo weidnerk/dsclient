@@ -538,7 +538,7 @@
                       {{item.trackingNumber}}
                     </div>
                   </div>
-                  <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onSalesOrderAdd(item.listedItemID)"
+                  <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onSalesOrderAdd(item.listedItemID, item.buyer)"
                   [disabled]="listing && !listing.ListedItemID">Save Order</button>
                 </mat-card>
                 <br />

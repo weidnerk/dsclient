@@ -347,20 +347,20 @@ export class ListingdbComponent implements OnInit {
     this.errorMessage = null;
     this.getOrders();
   }
-  onSalesOrderAdd(listedItemID: string) {
+  onSalesOrderAdd(listedItemID: string, buyer: string) {
     this.errorMessage = null;
     console.log(listedItemID);
     let msg = this.orderFormIsValid();
     if (msg === null) {
-      this.salesOrderAdd(listedItemID);
+      this.salesOrderAdd(listedItemID, buyer);
     }
     else {
       this.errorMessage = msg;
     }
   }
-  salesOrderAdd(listedItemID: string) {
+  salesOrderAdd(listedItemID: string, buyer: string) {
     if (this.salesOrder) {
-      let order = this.getSalesOrderInArray(listedItemID);
+      let order = this.getSalesOrderInArray(listedItemID, buyer);
       if (order) {
         this.displayProgressSpinner = true;
         order.supplierOrderNumber = this.ctlSupplierOrderNum.value;
@@ -382,9 +382,9 @@ export class ListingdbComponent implements OnInit {
       }
     }
   }
-  getSalesOrderInArray(listedItemID: string): SalesOrder | null {
+  getSalesOrderInArray(listedItemID: string, buyer: string): SalesOrder | null {
     for (let m of this.salesOrder) {
-      if (m.listedItemID === listedItemID) {
+      if (m.listedItemID === listedItemID && m.buyer === buyer) {
         return m;
       }
     }
@@ -426,7 +426,9 @@ export class ListingdbComponent implements OnInit {
    */
   calcProfit() {
     this.salesOrder.forEach((element) => {
-      element.profit = (element.subTotal + element.shippingCost) - element.finalValueFee - element.payPalFee - this.ctlIPaid.value;
+      let revenue = element.subTotal + element.shippingCost;
+      let expenses = element.finalValueFee + element.payPalFee + +this.ctlIPaid.value;
+      element.profit = revenue - expenses;
       element.profitMargin = (element.profit / element.total);
     });
   }
