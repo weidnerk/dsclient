@@ -341,7 +341,13 @@ export class ListingdbComponent implements OnInit {
   }
   onSetOrder() {
     this.errorMessage = null;
-    this.setOrder();
+    let msg = this.orderFormIsValid();
+    if (msg === null) {
+      this.setOrder();
+    }
+    else {
+      this.errorMessage = msg;
+    }
   }
   onGetOrders() {
     this.errorMessage = null;
