@@ -213,7 +213,7 @@
 
           <div class="row">
             <div class="col-2">
-              <label class="lbl">Primary Category ID:</label>
+              <label>Primary Category ID:</label>
             </div>
             <div *ngIf="listing" class="col-10">
               {{listing.PrimaryCategoryID}}
@@ -222,7 +222,7 @@
 
           <div class="row">
             <div class="col-2">
-              <label class="lbl">Primary Category Name:</label>
+              <label>Primary Category Name:</label>
             </div>
             <div *ngIf="listing" class="col-10">
               {{listing.PrimaryCategoryName}}
@@ -231,7 +231,7 @@
 
           <!-- <div class="row">
             <div class="col-2">
-              <label class="lbl"></label>
+              <label></label>
             </div>
             <div class="col-10">
               <mat-slide-toggle formControlName="checkDescription">Any Description issues
@@ -306,7 +306,7 @@
           <br />
           <div *ngIf="ctlDescription.value" class="row">
             <div class="col-2">
-              <label class="lbl">Render: </label>
+              <label>Render: </label>
             </div>
             <div class="col-10">
               <div [innerHTML]='ctlDescription.value'></div>
@@ -315,7 +315,7 @@
 
           <div class="row">
             <div class="col-2">
-              <label class="lbl">Description: </label>
+              <label>Description: </label>
             </div>
             <div class="col-10">
               <mat-form-field appearance="outline" class="outlinepadding descriptionWidth">
@@ -354,7 +354,7 @@
           <form *ngIf="listing" [formGroup]="orderForm" (ngSubmit)="salesOrderStore()">
             <div class="row">
               <div class="col-2">
-                <label class="lbl">from date:</label>
+                <label>from date:</label>
               </div>
               <div class="col-10">
                 <mat-form-field appearance="outline" class="outlinepadding Url">
@@ -364,7 +364,7 @@
             </div>
             <div class="row">
               <div class="col-2">
-                <label class="lbl">to date:</label>
+                <label>to date:</label>
               </div>
               <div class="col-10">
                 <mat-form-field appearance="outline" class="outlinepadding Url">
@@ -374,7 +374,7 @@
             </div>
             <div class="row">
               <div class="col-2">
-                <label class="lbl">Supplier order #:</label>
+                <label>Supplier order #:</label>
               </div>
               <div class="col-10">
                 <mat-form-field appearance="outline" class="outlinepadding Url">
@@ -388,7 +388,7 @@
             </div>
             <div class="row">
               <div class="col-2">
-                <label class="lbl">I Paid:</label>
+                <label>I Paid:</label>
               </div>
               <div class="col-10">
                 <mat-form-field appearance="outline" class="outlinepadding Url">
@@ -412,7 +412,7 @@
                 <mat-card>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Listed Item ID</label>
+                      <label>Listed Item ID</label>
                     </div>
                     <div class="col-4">
                       {{item.listedItemID}}
@@ -420,7 +420,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Supplier order #</label>
+                      <label>Supplier order #</label>
                     </div>
                     <div class="col-4">
                       {{item.supplierOrderNumber}}
@@ -428,7 +428,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Buyer</label>
+                      <label>Buyer</label>
                     </div>
                     <div class="col-4">
                       {{item.buyer}}
@@ -436,7 +436,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Date purchased</label>
+                      <label>Date purchased</label>
                     </div>
                     <div class="col-4">
                       {{item.datePurchased | date:'M/d/y'}}
@@ -444,7 +444,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Buyer State</label>
+                      <label>Buyer State</label>
                     </div>
                     <div class="col-4">
                       {{item.buyerState}}
@@ -452,7 +452,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Qty</label>
+                      <label>Qty</label>
                     </div>
                     <div class="col-4 rightJustify">
                       {{item.qty}}
@@ -460,15 +460,18 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Buyer paid</label>
+                      <label>Buyer paid</label>
                     </div>
                     <div class="col-4 rightJustify">
                       {{item.buyerPaid | currency}}
                     </div>
+                    <div *ngIf="item.buyerPaid === 0" class="col-3">
+                      <label class="redText">RETURN</label>
+                    </div>
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Sub total</label>
+                      <label>Sub total</label>
                     </div>
                     <div class="col-4 rightJustify">
                       {{item.subTotal | currency}}
@@ -476,7 +479,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Shipping</label>
+                      <label>Shipping</label>
                     </div>
                     <div class="col-4 rightJustify">
                       {{item.shippingCost | currency}}
@@ -484,7 +487,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Sales tax</label>
+                      <label>Sales tax</label>
                     </div>
                     <div class="col-4 rightJustify">
                       {{item.salesTax | currency}}
@@ -492,7 +495,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Total</label>
+                      <label>Total</label>
                     </div>
                     <div class="col-4 rightJustify">
                       {{item.total | currency}}
@@ -500,7 +503,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Final value fee</label>
+                      <label>Final value fee</label>
                     </div>
                     <div class="col-4 rightJustify">
                       {{item.finalValueFee | currency}}
@@ -508,7 +511,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">PayPal fee</label>
+                      <label>PayPal fee</label>
                     </div>
                     <div class="col-4 rightJustify">
                       {{item.payPalFee | currency}}
@@ -516,7 +519,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Profit</label>
+                      <label>Profit</label>
                     </div>
                     <div class="col-4 rightJustify">
                       {{item.profit | currency}}
@@ -524,7 +527,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Profit margin</label>
+                      <label>Profit margin</label>
                     </div>
                     <div class="col-4 rightJustify">
                       {{item.profitMargin | percent : '0.1-2'}}
@@ -532,7 +535,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Order status</label>
+                      <label>Order status</label>
                     </div>
                     <div class="col-4 rightJustify">
                       {{item.orderStatus}}
@@ -540,7 +543,7 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <label class="lbl">Tracking #</label>
+                      <label>Tracking #</label>
                     </div>
                     <div class="col-4 rightJustify">
                       {{item.trackingNumber}}

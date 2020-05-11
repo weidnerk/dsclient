@@ -355,39 +355,43 @@ export class ListingdbComponent implements OnInit {
   }
   onSalesOrderAdd(listedItemID: string, buyer: string) {
     this.errorMessage = null;
-    console.log(listedItemID);
     let msg = this.orderFormIsValid();
     if (msg === null) {
-      this.salesOrderAdd(listedItemID, buyer);
+      let order = this.getSalesOrderInArray(listedItemID, buyer);
+      if (order) {
+        if (order.buyerPaid === 0 || order.total === 0) {
+          this.errorMessage = "Is this a Return?  Order not saved."
+        }
+        else {
+          order.supplierOrderNumber = this.ctlSupplierOrderNum.value;
+          order.listingID = this.listing.ID;
+          order.i_paid = this.ctlIPaid.value;
+          this.salesOrderAdd(order);
+        }
+      }
+      else {
+        this.errorMessage = "Could not find listed item id: " + listedItemID;
+      }
     }
     else {
       this.errorMessage = msg;
     }
   }
-  salesOrderAdd(listedItemID: string, buyer: string) {
-    if (this.salesOrder) {
-      let order = this.getSalesOrderInArray(listedItemID, buyer);
-      if (order) {
-        this.displayProgressSpinner = true;
-        order.supplierOrderNumber = this.ctlSupplierOrderNum.value;
-        order.listingID = this.listing.ID;
-        order.i_paid = this.ctlIPaid.value;
-        this._orderHistoryService.salesOrderAdd(order)
-          .subscribe(si => {
-            let updated = si;
-            this.displayProgressSpinner = false;
-            console.log('sales order id: ' + updated.id);
-          },
-            error => {
-              this.displayProgressSpinner = false;
-              this.errorMessage = error.errMsg;
-            });
-      }
-      else {
-        this.errorMessage = "could not find listed item id: " + listedItemID;
-      }
-    }
+  salesOrderAdd(order: SalesOrder) {
+    this.displayProgressSpinner = true;
+
+    this._orderHistoryService.salesOrderAdd(order)
+      .subscribe(si => {
+        let updated = si;
+        this.displayProgressSpinner = false;
+        console.log('sales order id: ' + updated.id);
+      },
+        error => {
+          this.displayProgressSpinner = false;
+          this.errorMessage = error.errMsg;
+        });
   }
+
   getSalesOrderInArray(listedItemID: string, buyer: string): SalesOrder | null {
     for (let m of this.salesOrder) {
       if (m.listedItemID === listedItemID && m.buyer === buyer) {
