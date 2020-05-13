@@ -518,10 +518,12 @@ export class ListingdbComponent implements OnInit {
    */
   saveListing() {
 
+    let updateItemSpecifics = false;
     // if new listing
     if (!this.listing && this.walItem) {
       this.listing = new Listing();
       this.listing.ID = 0;
+      updateItemSpecifics = true;
     }
     if (this.listing && this.walItem) {
       this.listing.StoreID = this.userProfile.selectedStore;
@@ -545,7 +547,7 @@ export class ListingdbComponent implements OnInit {
 
       this.displayProgressSpinner = true;
 
-      this._orderHistoryService.listingStore(this.listing, true,
+      this._orderHistoryService.listingStore(this.listing, updateItemSpecifics,
         ["ListingTitle",
           "ListingPrice",
           "Qty",
@@ -594,6 +596,7 @@ export class ListingdbComponent implements OnInit {
 
           // Could be new listing, so once we save, lock down the supplier URL
           this.ctlSourceURL.disable();
+          this.ctlSellerItemID.disable();
 
           this.displayProgressSpinner = false;
         },
