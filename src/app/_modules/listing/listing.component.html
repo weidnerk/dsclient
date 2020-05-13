@@ -260,7 +260,11 @@
             <button class="btn" mat-button mat-raised-button color="primary" (click)="refreshItemSpecifics()"
               [disabled]="!storeButtonEnable || !listingForm.valid || !walItem">Refresh
               Item Specifics</button>
-            <ng-container>
+              <ng-container>
+                <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onInActive()"
+                  [disabled]="endListingDisable()">Inactive</button>
+              </ng-container>
+              <ng-container>
               <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onEndListing()"
                 [disabled]="endListingDisable()">End
                 Listing</button>

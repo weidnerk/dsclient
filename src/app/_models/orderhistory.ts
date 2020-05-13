@@ -132,6 +132,7 @@ export class Listing {
     SellerListing: SellerListing | null;
     Ended: Date;
     PctProfit: number;
+    InActive: boolean;
 }
 export class ListingView extends Listing {
     Seller: string;

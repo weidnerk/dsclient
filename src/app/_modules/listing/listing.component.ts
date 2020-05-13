@@ -339,6 +339,10 @@ export class ListingdbComponent implements OnInit {
       this.onDelete();
     }
   }
+  onInActive() {
+    this.errorMessage = null;
+    this.inActive();
+  }
   onSetOrder() {
     this.errorMessage = null;
     let msg = this.orderFormIsValid();
@@ -488,7 +492,25 @@ export class ListingdbComponent implements OnInit {
     }
     return null;
   }
+  inActive() {
+    if (this.listing) {
+      this.listing.InActive = true;
 
+      this.displayProgressSpinner = true;
+
+      this._orderHistoryService.listingStore(this.listing, false,
+        ["InActive"]
+        )
+        .subscribe(updatedListing => {
+          this.statusMessage = 'Record stored.';
+          this.displayProgressSpinner = false;
+        },
+          error => {
+            this.displayProgressSpinner = false;
+            this.errorMessage = error.errMsg;
+          });
+    }
+  }
   /**
    * Note there is no need to set the SellerListing property of Listing since
    * it's already been stored (when first created the Listing record).
@@ -523,7 +545,7 @@ export class ListingdbComponent implements OnInit {
 
       this.displayProgressSpinner = true;
 
-      this._orderHistoryService.listingStore(this.listing,
+      this._orderHistoryService.listingStore(this.listing, true,
         ["ListingTitle",
           "ListingPrice",
           "Qty",

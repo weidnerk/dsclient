@@ -441,11 +441,11 @@ export class OrderHistoryService {
                 }
             )
     }
-    listingStore(listing: Listing, fieldNames: string[]): Observable<Listing> {
+    listingStore(listing: Listing, updateItemSpecifics: boolean, fieldNames: string[]): Observable<Listing> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
-            let url = this.storeListingUrl;
+            let url = this.storeListingUrl + "?updateItemSpecifics=" + updateItemSpecifics;
             let dto = { "Listing": listing, "FieldNames": fieldNames };
             let body = JSON.stringify(dto);
             const httpOptions = {
