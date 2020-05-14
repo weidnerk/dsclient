@@ -110,13 +110,12 @@
           </div>
 
           <div class="row">
-            <div class="col-2">
-              <label>Listing Id:</label>
-            </div>
-            <div class="col-2">
+            <div class="col-12">
+              <label>Listing Id:</label>&nbsp;
               <span *ngIf="listing && listing.ListedItemID"><a target="_blank"
                   href="https://www.ebay.com/itm/{{listing.ListedItemID}}">{{listing.ListedItemID}}</a></span>
               <span *ngIf="!listing || (listing && !listing.ListedItemID)">Not listed.</span>
+              <span *ngIf="(listing && listing.Ended)"> Ended: {{listing.Ended| date:'M/d/y'}}</span>
             </div>
           </div>
 
