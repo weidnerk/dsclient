@@ -599,8 +599,6 @@ export class OrderHistoryService {
             let url = this.getOrdersUrl
             + "?fromDate=" + fromDate
             + "&toDate=" + toDate;
-            // + "?fromDate=" + fromDate.toISOString()
-            // + "&toDate=" + toDate.toISOString();
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',
