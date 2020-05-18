@@ -256,23 +256,20 @@
             <button class="btn" mat-button mat-raised-button color="primary" type="submit"
               [disabled]="deleteButtonDisable()" (click)="deleteButtonVal=true">Delete</button>
 
-            <button class="btn" mat-button mat-raised-button color="primary" (click)="refreshItemSpecifics()"
-              [disabled]="!storeButtonEnable || !listingForm.valid || !walItem">Refresh
+            <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onEndListing()"
+              [disabled]="endListingDisable()">End
+              Listing</button>
+            <br /><br />
+            <button [hidden]="true" class="btn" mat-button mat-raised-button color="primary"
+              (click)="refreshItemSpecifics()" [disabled]="!storeButtonEnable || !listingForm.valid || !walItem">Refresh
               Item Specifics</button>
-              <ng-container>
-                <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onInActive()"
-                  [disabled]="endListingDisable()">Inactive</button>
-              </ng-container>
-              <ng-container>
-              <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onEndListing()"
-                [disabled]="endListingDisable()">End
-                Listing</button>
-            </ng-container>
-            <ng-container>
-              <button class="btn" mat-button mat-raised-button color="primary" type="button"
-                (click)="onOverrideEndListing()" [disabled]="endListingDisable()"
-                matTooltip="Item was ended on eBay but exists in database.">Override End Listing</button>
-            </ng-container>
+            <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onInActive()"
+              [disabled]="endListingDisable()">Inactive</button>
+            <button class="btn" mat-button mat-raised-button color="primary" type="button"
+              (click)="onOverrideEndListing()" [disabled]="endListingDisable()"
+              matTooltip="Item was ended on eBay but exists in database.">Override End Listing</button>
+            <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onDownloadImages()"
+              [disabled]="!listing">Download images</button>
             <span *ngIf="storing">
               <img
                 src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==">
@@ -352,7 +349,7 @@
         <div class="container">
           <br />
           <div *ngIf="errorMessage" class="error">
-            <span [innerHTML]="errorMessage"></span><br/><br/>
+            <span [innerHTML]="errorMessage"></span><br /><br />
           </div>
           <form *ngIf="listing" [formGroup]="orderForm" (ngSubmit)="salesOrderStore()">
             <div class="row">
@@ -403,12 +400,12 @@
                 </mat-form-field>
               </div>
             </div>
-            <br/>
+            <br />
             <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onSetOrder()"
               [disabled]="listing && !listing.ListedItemID">Fetch Order from eBay</button>
             <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onGetOrders()"
               [disabled]="listing && !listing.ListedItemID">Fetch today's orders from eBay</button>
-            
+
             <br /><br />
             <ng-container *ngIf="salesOrder">
               <div *ngFor="let item of salesOrder">
@@ -552,8 +549,9 @@
                       {{item.trackingNumber}}
                     </div>
                   </div>
-                  <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onSalesOrderAdd(item.listedItemID, item.buyer)"
-                  [disabled]="listing && !listing.ListedItemID">Save Order</button>
+                  <button class="btn" mat-button mat-raised-button color="primary" type="button"
+                    (click)="onSalesOrderAdd(item.listedItemID, item.buyer)"
+                    [disabled]="listing && !listing.ListedItemID">Save Order</button>
                 </mat-card>
                 <br />
               </div>

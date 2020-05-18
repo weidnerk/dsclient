@@ -500,7 +500,7 @@ export class ListingdbComponent implements OnInit {
 
       this._orderHistoryService.listingStore(this.listing, false,
         ["InActive"]
-        )
+      )
         .subscribe(updatedListing => {
           this.statusMessage = 'Record stored.';
           this.displayProgressSpinner = false;
@@ -1185,5 +1185,15 @@ export class ListingdbComponent implements OnInit {
       }
     }
     return null;
+  }
+  onDownloadImages() {
+    if (this.listing) {
+      this._orderHistoryService.downloadImages(this.listing.SupplierID)
+        .subscribe(x => {
+        },
+          error => {
+            this.errorMessage = error.errMsg;
+          });
+    }
   }
 }

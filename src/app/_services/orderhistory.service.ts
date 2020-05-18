@@ -52,6 +52,7 @@ export class OrderHistoryService {
     private getStoreAnalysisUrl: string = environment.API_ENDPOINT + 'storeanalysis';
     private storeListingLogUrl: string = environment.API_ENDPOINT + 'listinglogadd';
     private saveStoreProfileUrl: string = environment.API_ENDPOINT + 'storeprofileadd';
+    private getDownloadImagesUrl: string = environment.API_ENDPOINT + 'downloadimages';
 
     constructor(private http: HttpClient) { }
 
@@ -850,6 +851,28 @@ export class OrderHistoryService {
                 }
             )
     }
+    downloadImages(ID: number) {
+        const userJson = localStorage.getItem('currentUser');
+        if (userJson) {
+            let currentUser = JSON.parse(userJson);
+            let url = this.getDownloadImagesUrl + "?ID=" + ID;
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.access_token
+                })
+            };
+            return this.http.get(url, httpOptions).pipe(
+                catchError(this.handleError)
+            );
+        }
+        else
+            return observableThrowError(
+                {
+                    errMsg: "could not obtain current user record"
+                }
+            )
+    }
     listingLogAdd(log: ListingLog) {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
@@ -874,6 +897,7 @@ export class OrderHistoryService {
             }
         )
     }
+    
     /**
      * Use this as model.
      * @param error 
@@ -903,55 +927,6 @@ export class OrderHistoryService {
                 errMsg = ' ' + error.error.Message;
             }
             errMsg += ' ' + errDetail;
-        }
-        return observableThrowError(
-            {
-                "errMsg": errMsg,
-                "errStatus": error.status
-            });
-    }
-    private handleError_orig(error: HttpErrorResponse) {
-        let errMsg: string | null = null;
-        let errDetail: string | null = null;
-        if (error.error) {
-            if (error.error instanceof ErrorEvent) {
-                // A client-side or network error occurred. Handle it accordingly.
-                errMsg = error.error.message;
-            }
-        }
-        if (errMsg == null) {
-            // The backend returned an unsuccessful response code.
-            // The response body may contain clues as to what went wrong,
-            errDetail = `Backend returned code ${error.status}`;
-
-            // specifically added for case when can't connect to API
-            if (error.message) {
-                // might have both error.message and error.error.Message populated
-                if (error.error) {
-                    if (error.error.Message) {
-                        errMsg = error.message + ";" + error.error.Message;
-                    }
-                    else {
-                        errMsg = error.message;
-                    }
-                }
-                else {
-                    errMsg = error.message;
-                }
-            }
-            else {
-                if (error.error) {
-                    if (error.error.Message) {
-                        errMsg = error.error.Message;
-                    }
-                    else {
-                        errMsg = error.error;
-                    }
-                }
-                else {
-                    errMsg = error.statusText;
-                }
-            }
         }
         return observableThrowError(
             {
