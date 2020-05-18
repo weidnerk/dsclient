@@ -180,9 +180,9 @@ export class UsersettingsComponent implements OnInit {
           this.selectedStore = this.userStores[0].storeID;
           this.ctlSelectedStore.setValue(this.userStores[0].storeID);
           this.storeChanged = 2;
-          this.getBusinessPolicies();
-          this.getStore();  // note: not setting storeChanged since getStore tends to take more long
-          this.geteBayUser();
+
+          this.getUserSettings();
+          // this.geteBayUser();
         }
         else {
           this.displayProgressSpinner = false;
@@ -238,12 +238,14 @@ export class UsersettingsComponent implements OnInit {
    * Select drop down value based on stored user setting
    */
   loadSelectedShippingPolicy() {
-    for (let m of this.eBayBusinessPolicies.shippingPolicies) {
-      if (m.name == this.userSettingsView.shippingProfile) {
-        this.shippingSelected = m;
-        this.form.patchValue({
-          shippingPolicy: this.shippingSelected
-        });
+    if (this.userSettingsView.shippingProfile) {
+      for (let m of this.eBayBusinessPolicies.shippingPolicies) {
+        if (m.name == this.userSettingsView.shippingProfile) {
+          this.shippingSelected = m;
+          this.form.patchValue({
+            shippingPolicy: this.shippingSelected
+          });
+        }
       }
     }
   }
@@ -251,22 +253,26 @@ export class UsersettingsComponent implements OnInit {
    * Select drop down value based on stored user setting
    */
   loadSelectedReturnPolicy() {
-    for (let m of this.eBayBusinessPolicies.returnPolicies) {
-      if (m.name == this.userSettingsView.returnProfile) {
-        this.returnSelected = m;
-        this.form.patchValue({
-          returnPolicy: this.returnSelected
-        });
+    if (this.userSettingsView.returnProfile) {
+      for (let m of this.eBayBusinessPolicies.returnPolicies) {
+        if (m.name == this.userSettingsView.returnProfile) {
+          this.returnSelected = m;
+          this.form.patchValue({
+            returnPolicy: this.returnSelected
+          });
+        }
       }
     }
   }
   loadSelectedPaymentPolicy() {
-    for (let m of this.eBayBusinessPolicies.paymentPolicies) {
-      if (m.name == this.userSettingsView.paymentProfile) {
-        this.paymentSelected = m;
-        this.form.patchValue({
-          paymentPolicy: this.paymentSelected
-        });
+    if (this.userSettingsView.paymentProfile) {
+      for (let m of this.eBayBusinessPolicies.paymentPolicies) {
+        if (m.name == this.userSettingsView.paymentProfile) {
+          this.paymentSelected = m;
+          this.form.patchValue({
+            paymentPolicy: this.paymentSelected
+          });
+        }
       }
     }
   }
@@ -320,7 +326,7 @@ export class UsersettingsComponent implements OnInit {
       shippingPolicy: [null, {
         validators: [Validators.required],
         updateOn: 'submit'
-      }],      selectedStore: [null],
+      }], selectedStore: [null],
       paymentPolicy: [null, {
         validators: [Validators.required],
         updateOn: 'submit'
