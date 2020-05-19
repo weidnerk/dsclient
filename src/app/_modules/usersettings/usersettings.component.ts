@@ -33,7 +33,6 @@ export class UsersettingsComponent implements OnInit {
   selectedStore: number;
   eBayBusinessPolicies: eBayBusinessPolicies;
   eBayUser: eBayUser;
-  storeChanged = 0;
   ebayStore: eBayStore;
   shippingSelected: ShippingPolicy | null;
   paymentSelected: PaymentPolicy | null;
@@ -86,7 +85,6 @@ export class UsersettingsComponent implements OnInit {
           payPalEmail: userSettings.payPalEmail,
           maxShippingDays: userSettings.maxShippingDays
         });
-        this.storeChanged = 1;
         this.getBusinessPolicies();
         this.getStore();  // note: not setting storeChanged since getStore tends to take more long
       },
@@ -95,9 +93,7 @@ export class UsersettingsComponent implements OnInit {
           //   this.errorMessage = JSON.stringify(error);
           // }
           this.errorMessage = error.errMsg;
-          if (--this.storeChanged === 0) {
             this.displayProgressSpinner = false;
-          }
         });
   }
   userSettingsSave() {
@@ -169,7 +165,6 @@ export class UsersettingsComponent implements OnInit {
         });
   }
   getStores() {
-    ++this.storeChanged;
     this.displayProgressSpinner = true;
     this._userService.getUserStores()
       .subscribe(x => {
@@ -179,7 +174,6 @@ export class UsersettingsComponent implements OnInit {
         if (this.userStores.length === 1) {
           this.selectedStore = this.userStores[0].storeID;
           this.ctlSelectedStore.setValue(this.userStores[0].storeID);
-          this.storeChanged = 2;
 
           this.getUserSettings();
           // this.geteBayUser();
@@ -201,30 +195,22 @@ export class UsersettingsComponent implements OnInit {
         this.loadSelectedShippingPolicy();
         this.loadSelectedReturnPolicy();
         this.loadSelectedPaymentPolicy();
-        if (--this.storeChanged === 0) {
           this.displayProgressSpinner = false;
-        }
       },
         error => {
           this.errorMessage = error.errMsg;
-          if (--this.storeChanged === 0) {
             this.displayProgressSpinner = false;
-          }
         });
   }
   geteBayUser() {
     this._userService.geteBayUser(this.selectedStore)
       .subscribe(x => {
         this.eBayUser = x;
-        if (--this.storeChanged === 0) {
           this.displayProgressSpinner = false;
-        }
       },
         error => {
           this.errorMessage = error.errMsg;
-          if (--this.storeChanged === 0) {
             this.displayProgressSpinner = false;
-          }
         });
   }
   // getHandlingTime() {

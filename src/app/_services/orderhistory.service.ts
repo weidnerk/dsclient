@@ -851,28 +851,7 @@ export class OrderHistoryService {
                 }
             )
     }
-    downloadImages(ID: number) {
-        const userJson = localStorage.getItem('currentUser');
-        if (userJson) {
-            let currentUser = JSON.parse(userJson);
-            let url = this.getDownloadImagesUrl + "?ID=" + ID;
-            const httpOptions = {
-                headers: new HttpHeaders({
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + currentUser.access_token
-                })
-            };
-            return this.http.get(url, httpOptions).pipe(
-                catchError(this.handleError)
-            );
-        }
-        else
-            return observableThrowError(
-                {
-                    errMsg: "could not obtain current user record"
-                }
-            )
-    }
+   
     listingLogAdd(log: ListingLog) {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
