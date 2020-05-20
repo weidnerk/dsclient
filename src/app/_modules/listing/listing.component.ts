@@ -566,6 +566,7 @@ export class ListingdbComponent implements OnInit {
             this.listing.PrimaryCategoryID = updatedListing.PrimaryCategoryID;
             this.listing.PrimaryCategoryName = updatedListing.PrimaryCategoryName;
             this.listing.SellerListing = updatedListing.SellerListing;
+            this.listing.Warning = updatedListing.Warning;
           }
           if (!this.ctlListingTitle.value) {
 
@@ -628,7 +629,29 @@ export class ListingdbComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result === 'Yes') {
-          this.createListing();
+          if (this.listing.Warning && this.listing.Warning.length > 0) {
+            const dialogRef = this.dialog.open(ConfirmComponent,
+              {
+                disableClose: true,
+                height: '200px',
+                width: '900px',
+                data: {
+                  titleMessage: "Please confirm you are overriding warnings."
+                }
+              });
+
+            dialogRef.afterClosed().subscribe(result => {
+              if (result === 'Yes') {
+                this.createListing();
+              }
+              if (result === 'No') {
+                // console.log('No');
+              }
+            });
+          }
+          else {
+            this.createListing();
+          }
         }
         if (result === 'No') {
           // console.log('No');
@@ -1186,5 +1209,5 @@ export class ListingdbComponent implements OnInit {
     }
     return null;
   }
- 
+
 }
