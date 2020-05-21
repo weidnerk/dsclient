@@ -47,6 +47,7 @@ import { ResearchComponent } from 'src/app/research/cr.component';
 import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
 import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
 import { ConfirmComponent } from 'src/app/confirm/confirm.component';
+import { EndlistingComponent } from 'src/app/endlisting/endlisting.component';
 
 @NgModule({
   declarations: [ 
@@ -66,7 +67,8 @@ import { ConfirmComponent } from 'src/app/confirm/confirm.component';
     ListingnoteComponent,
     ResearchComponent,
     ShowmessagesComponent,
-    ConfirmComponent
+    ConfirmComponent,
+    EndlistingComponent
   ],
   imports: [
     CommonModule,

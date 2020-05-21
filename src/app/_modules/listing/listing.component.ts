@@ -16,6 +16,7 @@ import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.compone
 import { UserProfile, UserSettingsView } from 'src/app/_models/userprofile';
 import { UserService } from 'src/app/_services';
 import { ConfirmComponent } from 'src/app/confirm/confirm.component';
+import { EndlistingComponent } from 'src/app/endlisting/endlisting.component';
 
 @Component({
   selector: 'app-listing',
@@ -715,6 +716,23 @@ export class ListingdbComponent implements OnInit {
 
   }
   onEndListing() {
+    const dialogRef = this.dialog.open(EndlistingComponent,
+      {
+        disableClose: true,
+        height: '200px',
+        width: '900px'
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'Yes') {
+        this.endListing();
+      }
+      if (result === 'No') {
+        console.log('No');
+      }
+    });
+  }
+  onEndListing_old() {
     const dialogRef = this.dialog.open(ConfirmComponent,
       {
         disableClose: true,
@@ -730,7 +748,7 @@ export class ListingdbComponent implements OnInit {
         this.endListing();
       }
       if (result === 'No') {
-        // console.log('No');
+        console.log('No');
       }
     });
   }
