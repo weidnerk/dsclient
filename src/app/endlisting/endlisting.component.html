@@ -1,6 +1,10 @@
 <div>Are you sure you want to end the listing?</div>
-<br/>
+<br />
+<mat-form-field appearance="outline" class="outlinepadding">
+    <mat-label>Reason</mat-label>
+    <input matInput [(ngModel)]="reason" maxlength="40" placeholder="reason">
+</mat-form-field>
 <div mat-dialog-actions>
-    <button color="accent" type="button" (click)="dialogRef.close('Yes')" color="primary" mat-raised-button>Yes</button>
-    <button mat-button type="button" (click)="dialogRef.close('No')" tabindex="-1">No</button>
+    <button color="accent" type="button" (click)="onEndListingYes()" color="primary" mat-raised-button>Yes</button>
+    <button mat-button type="button" (click)="onEndListingNo()" tabindex="-1">No</button>
 </div>

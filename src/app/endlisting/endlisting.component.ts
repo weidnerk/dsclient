@@ -8,6 +8,8 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dial
 })
 export class EndlistingComponent implements OnInit {
 
+  reason: string;
+  
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<EndlistingComponent>) {
   }
@@ -15,4 +17,10 @@ export class EndlistingComponent implements OnInit {
   ngOnInit(): void {
   }
   
+  onEndListingYes() {
+    this.dialogRef.close(this.reason);
+  }
+  onEndListingNo() {
+    this.dialogRef.close();
+  }
 }

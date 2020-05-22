@@ -719,39 +719,20 @@ export class ListingdbComponent implements OnInit {
     const dialogRef = this.dialog.open(EndlistingComponent,
       {
         disableClose: true,
-        height: '200px',
+        height: '300px',
         width: '900px'
       });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === 'Yes') {
+      if (result) {
         this.endListing();
       }
-      if (result === 'No') {
+      if (!result) {
         console.log('No');
       }
     });
   }
-  onEndListing_old() {
-    const dialogRef = this.dialog.open(ConfirmComponent,
-      {
-        disableClose: true,
-        height: '200px',
-        width: '900px',
-        data: {
-          titleMessage: "Are you sure you want to end the listing?"
-        }
-      });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'Yes') {
-        this.endListing();
-      }
-      if (result === 'No') {
-        console.log('No');
-      }
-    });
-  }
+ 
   endListing() {
     if (this.listing) {
       this.displayProgressSpinner = true;
