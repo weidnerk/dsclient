@@ -886,7 +886,7 @@ export class ListingdbComponent implements OnInit {
   calculateWMPrice() {
     if (this.walItem) {
       this.displayProgressSpinner = true;
-      this._orderHistoryService.calculateWMPx(this.walItem.SupplierPrice)
+      this._orderHistoryService.calculateWMPx(this.walItem.SupplierPrice, this.ctlPctProfit.value)
         .subscribe(wi => {
           this.priceProfit = wi;
           let px = (Math.round(wi.proposePrice * 100) / 100).toFixed(2);

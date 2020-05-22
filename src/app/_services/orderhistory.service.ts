@@ -353,10 +353,10 @@ export class OrderHistoryService {
                 }
             )
     }
-    calculateWMPx(supplierPrice: number): Observable<PriceProfit> {
+    calculateWMPx(supplierPrice: number, pctProfit: number): Observable<PriceProfit> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
-            let url = this.calculateWMPxUrl + "?supplierPrice=" + supplierPrice.toString();
+            let url = this.calculateWMPxUrl + "?supplierPrice=" + supplierPrice.toString() + "&pctProfit=" + pctProfit.toString();
             let currentUser = JSON.parse(userJson);
             const httpOptions = {
                 headers: new HttpHeaders({
