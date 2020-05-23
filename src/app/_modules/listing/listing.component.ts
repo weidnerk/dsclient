@@ -82,6 +82,7 @@ export class ListingdbComponent implements OnInit {
   supplierPicsMsg: string | null;
   ebayURL: string;
   priceProfit: PriceProfit;
+  profit: number;
   log: ListingLogView[];
   notesButtonText: string = "Notes";
 
@@ -902,7 +903,7 @@ export class ListingdbComponent implements OnInit {
           this.errorMessage = error.errMsg;
         });
   }
-  calculateWMPrice() {
+  onCalculateWMPrice() {
     if (this.walItem) {
       this.displayProgressSpinner = true;
       this._orderHistoryService.calculateWMPx(this.walItem.SupplierPrice, this.ctlPctProfit.value)
@@ -920,7 +921,24 @@ export class ListingdbComponent implements OnInit {
           });
     }
   }
-
+  onCalculateProfit() {
+    if (this.walItem) {
+      this.displayProgressSpinner = true;
+      this._orderHistoryService.calculateProfit(this.listing)
+        .subscribe(wi => {
+          this.profit = wi;
+          let px = (Math.round(this.profit * 100) / 100).toFixed(2);
+          this.listingForm.patchValue({
+            listingPrice: px.toString()
+          });
+          this.displayProgressSpinner = false;
+        },
+          error => {
+            this.errorMessage = error.errMsg;
+            this.displayProgressSpinner = false;
+          });
+    }
+  }
 
   /**
    * 01.29.2020 Recall this won't work unless have selenium first logon to my walmart account.
