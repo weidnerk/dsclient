@@ -48,6 +48,7 @@ import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
 import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
 import { ConfirmComponent } from 'src/app/confirm/confirm.component';
 import { EndlistingComponent } from 'src/app/endlisting/endlisting.component';
+import { ErrordisplayComponent } from 'src/app/errordisplay/errordisplay.component';
 
 @NgModule({
   declarations: [ 
@@ -68,7 +69,8 @@ import { EndlistingComponent } from 'src/app/endlisting/endlisting.component';
     ResearchComponent,
     ShowmessagesComponent,
     ConfirmComponent,
-    EndlistingComponent
+    EndlistingComponent,
+    ErrordisplayComponent
   ],
   imports: [
     CommonModule,

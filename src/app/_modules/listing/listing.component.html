@@ -133,7 +133,7 @@
               <label *ngIf="ctlSourceURL.value">
                 <a target="_blank" href='{{ctlSourceURL.value}}'>&nbsp;GO</a>
               </label>
-              &nbsp;<button class="loadwalmart" color="primary" type="button" (click)="getWmItem()" mat-raised-button
+              &nbsp;<button class="loadwalmart" color="primary" type="button" (click)="onGetWmItem()" mat-raised-button
                 [disabled]="!ctlSourceURL.value">Load Walmart</button>&nbsp;
             </div>
           </div>

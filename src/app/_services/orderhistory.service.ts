@@ -32,6 +32,7 @@ export class OrderHistoryService {
     private createVariationListingUrl: string = environment.API_ENDPOINT + 'createvariationlisting';
     private getWmDerivedUrl: string = environment.API_ENDPOINT + 'getwmderived';
     private getWmItemUrl: string = environment.API_ENDPOINT + 'getwmitem';
+    private getSupplierItemByURLUrl: string = environment.API_ENDPOINT + 'getsupplieritembyurl';
     private getListingsUrl: string = environment.API_ENDPOINT + 'getlistings';
     private getSellerProfileUrl: string = environment.API_ENDPOINT + 'getsellerprofile';
     private deleteListingRecordUrl: string = environment.API_ENDPOINT + 'deletelistingrecord';
@@ -336,6 +337,29 @@ export class OrderHistoryService {
             let currentUser = JSON.parse(userJson);
             let url = this.getWmItemUrl + "?userName=" + currentUser.userName
                 + "&url=" + sourceUrl;
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.access_token
+                })
+            };
+            return this.http.get<SupplierItem>(url, httpOptions).pipe(
+                catchError(this.handleError)
+            );
+        }
+        else
+            return observableThrowError(
+                {
+                    errMsg: "could not obtain current user record"
+                }
+            )
+    }
+    getSupplierItemByURL(URL: string): Observable<SupplierItem> {
+        const userJson = localStorage.getItem('currentUser');
+        if (userJson) {
+            let currentUser = JSON.parse(userJson);
+            let url = this.getSupplierItemByURLUrl
+                + "?URL=" + URL;
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',

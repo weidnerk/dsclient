@@ -17,6 +17,7 @@ import { UserProfile, UserSettingsView } from 'src/app/_models/userprofile';
 import { UserService } from 'src/app/_services';
 import { ConfirmComponent } from 'src/app/confirm/confirm.component';
 import { EndlistingComponent } from 'src/app/endlisting/endlisting.component';
+import { ErrordisplayComponent } from 'src/app/errordisplay/errordisplay.component';
 
 @Component({
   selector: 'app-listing',
@@ -732,7 +733,7 @@ export class ListingdbComponent implements OnInit {
       }
     });
   }
- 
+
   endListing() {
     if (this.listing) {
       this.displayProgressSpinner = true;
@@ -817,11 +818,29 @@ export class ListingdbComponent implements OnInit {
   /**
    * Called when user clicks 'Load WM'
    */
-  getWmItem() {
+  onGetWmItem() {
     this.validationMessage = "";
     this.errorMessage = "";
     this.displayProgressSpinner = true;
     this.supplierPicsMsg = null;
+
+    if (!this.listing) {
+      this._orderHistoryService.getSupplierItemByURL(this.ctlSourceURL.value)
+        .subscribe(si => {
+          if (!si) {
+            this.getWMItem();
+          }
+          else {
+            this.displayProgressSpinner = false;
+            this.displayError('Item exists');
+          }
+        });
+    }
+    else {
+      this.getWMItem();
+    }
+  }
+  getWMItem() {
     this._orderHistoryService.getWmItem(this.ctlSourceURL.value)
       .subscribe(wi => {
 
@@ -1027,6 +1046,21 @@ export class ListingdbComponent implements OnInit {
     });
   }
 
+  displayError(msg: string) {
+    const dialogRef = this.dialog.open(ErrordisplayComponent,
+      {
+        disableClose: true,
+        height: '200px',
+        width: '900px',
+        data: {
+          msg: msg
+        }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
   onDelete() {
     const dialogRef = this.dialog.open(ConfirmComponent,
       {
