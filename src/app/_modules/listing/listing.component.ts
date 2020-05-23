@@ -611,7 +611,7 @@ export class ListingdbComponent implements OnInit {
   onCreateListing() {
     // seller's image is only available when first saving record.
     let sellerImgURL = this.listing.SellerListing?.PictureURL;
-    let tmsg = "Please confirm supplier item matches seller's item.<br/><br/>";
+    let tmsg = "<b>[StoreName]</b><br/><br/>Please confirm supplier item matches seller's item.<br/><br/>";
     tmsg += this.listing.PrimaryCategoryID + "<br/>";
     tmsg += this.listing.PrimaryCategoryName + "<br/><br/>";
 
