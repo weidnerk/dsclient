@@ -32,7 +32,7 @@ export class OrderHistoryService {
     private createVariationListingUrl: string = environment.API_ENDPOINT + 'createvariationlisting';
     private getWmDerivedUrl: string = environment.API_ENDPOINT + 'getwmderived';
     private getWmItemUrl: string = environment.API_ENDPOINT + 'getwmitem';
-    private getSupplierItemByURLUrl: string = environment.API_ENDPOINT + 'getsupplieritembyurl';
+    private getListingBySupplierURLUrl: string = environment.API_ENDPOINT + 'getlistingbysupplierurl';
     private getListingsUrl: string = environment.API_ENDPOINT + 'getlistings';
     private getSellerProfileUrl: string = environment.API_ENDPOINT + 'getsellerprofile';
     private deleteListingRecordUrl: string = environment.API_ENDPOINT + 'deletelistingrecord';
@@ -355,12 +355,13 @@ export class OrderHistoryService {
                 }
             )
     }
-    getSupplierItemByURL(URL: string): Observable<SupplierItem> {
+    getListingBySupplierURL(storeID: number, URL: string): Observable<SupplierItem> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
-            let url = this.getSupplierItemByURLUrl
-                + "?URL=" + URL;
+            let url = this.getListingBySupplierURLUrl
+                + "?URL=" + URL
+                + "&storeID=" + storeID;
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',
@@ -400,11 +401,12 @@ export class OrderHistoryService {
                 }
             )
     }
-    calculateProfit(listing: Listing): Observable<number> {
+    calculateProfit(listingPrice: number, supplierPrice: number): Observable<number> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
-            let body = JSON.stringify(listing);
-            let url = this.calculateProfitUrl;
+            let url = this.calculateProfitUrl
+            + "?listingPrice=" + listingPrice
+            + "&supplierPrice=" + supplierPrice;
             let currentUser = JSON.parse(userJson);
             const httpOptions = {
                 headers: new HttpHeaders({
@@ -412,7 +414,7 @@ export class OrderHistoryService {
                     'Authorization': 'Bearer ' + currentUser.access_token
                 })
             };
-            return this.http.post<number>(url, body, httpOptions).pipe(
+            return this.http.get<number>(url, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }

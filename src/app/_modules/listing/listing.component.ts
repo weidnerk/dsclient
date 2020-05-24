@@ -826,7 +826,7 @@ export class ListingdbComponent implements OnInit {
     this.supplierPicsMsg = null;
 
     if (!this.listing) {
-      this._orderHistoryService.getSupplierItemByURL(this.ctlSourceURL.value)
+      this._orderHistoryService.getListingBySupplierURL(this.userProfile.selectedStore, this.ctlSourceURL.value)
         .subscribe(si => {
           if (!si) {
             this.getWMItem();
@@ -890,7 +890,7 @@ export class ListingdbComponent implements OnInit {
           this.supplierPicsMsg = "Failed to retrieve item images from supplier."
         }
         if (!this.ctlListingPrice.value) {
-          this.calculateWMPrice();
+          this.onCalculateWMPrice();
         }
         else {
           this.displayProgressSpinner = false;
@@ -924,7 +924,7 @@ export class ListingdbComponent implements OnInit {
   onCalculateProfit() {
     if (this.walItem) {
       this.displayProgressSpinner = true;
-      this._orderHistoryService.calculateProfit(this.listing)
+      this._orderHistoryService.calculateProfit(this.ctlListingPrice.value, this.walItem.SupplierPrice)
         .subscribe(wi => {
           this.profit = wi;
           let px = (Math.round(this.profit * 100) / 100).toFixed(2);
