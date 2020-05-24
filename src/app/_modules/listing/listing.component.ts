@@ -824,6 +824,7 @@ export class ListingdbComponent implements OnInit {
     this.errorMessage = "";
     this.displayProgressSpinner = true;
     this.supplierPicsMsg = null;
+    this.ctlDescription.setValue(null);
 
     if (!this.listing) {
       this._orderHistoryService.getListingBySupplierURL(this.userProfile.selectedStore, this.ctlSourceURL.value)
