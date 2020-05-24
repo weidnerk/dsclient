@@ -927,10 +927,6 @@ export class ListingdbComponent implements OnInit {
       this._orderHistoryService.calculateProfit(this.ctlListingPrice.value, this.walItem.SupplierPrice)
         .subscribe(wi => {
           this.profit = wi;
-          let px = (Math.round(this.profit * 100) / 100).toFixed(2);
-          this.listingForm.patchValue({
-            listingPrice: px.toString()
-          });
           this.displayProgressSpinner = false;
         },
           error => {
