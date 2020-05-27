@@ -1,4 +1,7 @@
 <div class="container">
+  <div *ngIf="userSettingsView">
+    {{userSettingsView.storeName}}
+  </div>
   <mat-tab-group>
     <mat-tab label="Listing">
       <div class="container">

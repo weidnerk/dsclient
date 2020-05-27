@@ -613,7 +613,7 @@ export class ListingdbComponent implements OnInit {
   onCreateListing() {
     // seller's image is only available when first saving record.
     let sellerImgURL = this.listing.SellerListing?.PictureURL;
-    let tmsg = "<b>[StoreName]</b><br/><br/>Please confirm supplier item matches seller's item.<br/><br/>";
+    let tmsg = "<b>" + this.userSettingsView.storeName + "</b><br/><br/>Please confirm supplier item matches seller's item.<br/><br/>";
     tmsg += this.listing.PrimaryCategoryID + "<br/>";
     tmsg += this.listing.PrimaryCategoryName + "<br/><br/>";
 
@@ -633,13 +633,14 @@ export class ListingdbComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result === 'Yes') {
           if (this.listing.Warning && this.listing.Warning.length > 0) {
+            let tmsg = "<b>" + this.userSettingsView.storeName + "</b><br/><br/>Please confirm you are overriding warnings.<br/><br/>";
             const dialogRef = this.dialog.open(ConfirmComponent,
               {
                 disableClose: true,
                 height: '200px',
                 width: '900px',
                 data: {
-                  titleMessage: "Please confirm you are overriding warnings."
+                  titleMessage: tmsg
                 }
               });
 
@@ -663,13 +664,14 @@ export class ListingdbComponent implements OnInit {
     }
     else {
       if (this.listing.Warning && this.listing.Warning.length > 0) {
+        let tmsg = "<b>" + this.userSettingsView.storeName + "</b><br/><br/>Please confirm you are overriding warnings.<br/><br/>";
         const dialogRef = this.dialog.open(ConfirmComponent,
           {
             disableClose: true,
-            height: '200px',
+            height: '300px',
             width: '900px',
             data: {
-              titleMessage: "Please confirm you are overriding warnings."
+              titleMessage: tmsg
             }
           });
 
@@ -1001,7 +1003,7 @@ export class ListingdbComponent implements OnInit {
   buildForm(): void {
     this.listingForm = this.fb.group({
       listingTitle: [null, Validators.compose([Validators.maxLength(80)])],
-      listingPrice: [{value: null, disabled: true}, {
+      listingPrice: [{ value: null, disabled: true }, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
       }],
       profit: [null],
@@ -1167,9 +1169,7 @@ export class ListingdbComponent implements OnInit {
         // 04.23.2020 hold off for now - overkill
         //this.getBusinessPolicies();
 
-        if (this.listingID === 0) {
-          this.getUserSettings();
-        }
+        this.getUserSettings();
       },
         error => {
           // if (error.errorStatus !== 404) {
