@@ -408,6 +408,10 @@
                     <mat-icon>error</mat-icon>&nbsp;
                     I paid is required
                   </mat-error>
+                  <mat-error *ngIf="ctlIPaid.invalid">
+                    <mat-icon>error</mat-icon>&nbsp;
+                    I paid is invalid
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
