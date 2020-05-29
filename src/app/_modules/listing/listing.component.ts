@@ -57,7 +57,7 @@ export class ListingdbComponent implements OnInit {
 
   // private sub: any;
   listingID: number;  // Listing.ID
-  listing: Listing;
+  listing: Listing | null;
   walItem: SupplierItem | null = null;
   userProfile: UserProfile;
   userSettingsView: UserSettingsView;
@@ -154,7 +154,13 @@ export class ListingdbComponent implements OnInit {
 
   initForm() {
     // get pct profit default setting
-
+    this.imgSourceArray = null;
+    this.listing = null;
+    this.ctlSourceURL.setValue(null);
+    this.ctlListingTitle.setValue(null);
+    this.ctlDescription.setValue(null);
+    this.ctlListingPrice.setValue(null);
+    this.ctlSellerItemID.setValue(null);
   }
 
   getData() {
@@ -300,7 +306,7 @@ export class ListingdbComponent implements OnInit {
 
     this.listingButtonEnable = false;
 
-    if (this.walItem) {
+    if (this.walItem && this.listing) {
       if (this.walItem.ItemURL != this.ctlSourceURL.value) {
         this.walItem = null;
 
@@ -329,7 +335,7 @@ export class ListingdbComponent implements OnInit {
         if (this.listButtonVal == true) {
           this.listButtonVal = false;
           this.validationMessage = this.isValid();
-          if (!this.validationMessage) {
+          if (!this.validationMessage && this.listing) {
             this.onCreateListing();
           }
           else {
@@ -365,7 +371,7 @@ export class ListingdbComponent implements OnInit {
     let msg = this.orderFormIsValid();
     if (msg === null) {
       let order = this.getSalesOrderInArray(listedItemID, buyer);
-      if (order) {
+      if (order && this.listing) {
         if (order.buyerPaid === 0 || order.total === 0) {
           this.errorMessage = "Is this a Return?  Order not saved."
         }
@@ -611,73 +617,54 @@ export class ListingdbComponent implements OnInit {
     }
   }
   onCreateListing() {
-    // seller's image is only available when first saving record.
-    let sellerImgURL = this.listing.SellerListing?.PictureURL;
-    let tmsg = "<b>" + this.userSettingsView.storeName + "</b><br/><br/>Please confirm supplier item matches seller's item.<br/><br/>";
-    tmsg += this.listing.PrimaryCategoryID + "<br/>";
-    tmsg += this.listing.PrimaryCategoryName + "<br/><br/>";
+    if (this.listing) {
+      // seller's image is only available when first saving record.
+      let sellerImgURL = this.listing.SellerListing?.PictureURL;
+      let tmsg = "<b>" + this.userSettingsView.storeName + "</b><br/><br/>Please confirm supplier item matches seller's item.<br/><br/>";
+      tmsg += this.listing.PrimaryCategoryID + "<br/>";
+      tmsg += this.listing.PrimaryCategoryName + "<br/><br/>";
 
-    // ...not greatest way to test for new listing...
-    if (!this.listing.Listed && sellerImgURL) {     // new listing
-      const dialogRef = this.dialog.open(ConfirmComponent,
-        {
-          disableClose: true,
-          height: '500px',
-          width: '900px',
-          data: {
-            titleMessage: tmsg,
-            imgURL: sellerImgURL
-          }
-        });
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result === 'Yes') {
-          if (this.listing.Warning && this.listing.Warning.length > 0) {
-            let tmsg = "<b>" + this.userSettingsView.storeName + "</b><br/><br/>Please confirm you are overriding warnings.<br/><br/>";
-            const dialogRef = this.dialog.open(ConfirmComponent,
-              {
-                disableClose: true,
-                height: '200px',
-                width: '900px',
-                data: {
-                  titleMessage: tmsg
-                }
-              });
-
-            dialogRef.afterClosed().subscribe(result => {
-              if (result === 'Yes') {
-                this.createListing();
-              }
-              if (result === 'No') {
-                // console.log('No');
-              }
-            });
-          }
-          else {
-            this.createListing();
-          }
-        }
-        if (result === 'No') {
-          // console.log('No');
-        }
-      });
-    }
-    else {
-      if (this.listing.Warning && this.listing.Warning.length > 0) {
-        let tmsg = "<b>" + this.userSettingsView.storeName + "</b><br/><br/>Please confirm you are overriding warnings.<br/><br/>";
+      // ...not greatest way to test for new listing...
+      if (!this.listing.Listed && sellerImgURL) {     // new listing
         const dialogRef = this.dialog.open(ConfirmComponent,
           {
             disableClose: true,
-            height: '300px',
+            height: '500px',
             width: '900px',
             data: {
-              titleMessage: tmsg
+              titleMessage: tmsg,
+              imgURL: sellerImgURL
             }
           });
 
         dialogRef.afterClosed().subscribe(result => {
           if (result === 'Yes') {
-            this.createListing();
+            if (this.listing) {
+              if (this.listing.Warning && this.listing.Warning.length > 0) {
+                let tmsg = "<b>" + this.userSettingsView.storeName + "</b><br/><br/>Please confirm you are overriding warnings.<br/><br/>";
+                const dialogRef = this.dialog.open(ConfirmComponent,
+                  {
+                    disableClose: true,
+                    height: '200px',
+                    width: '900px',
+                    data: {
+                      titleMessage: tmsg
+                    }
+                  });
+
+                dialogRef.afterClosed().subscribe(result => {
+                  if (result === 'Yes') {
+                    this.createListing();
+                  }
+                  if (result === 'No') {
+                    // console.log('No');
+                  }
+                });
+              }
+              else {
+                this.createListing();
+              }
+            }
           }
           if (result === 'No') {
             // console.log('No');
@@ -685,7 +672,30 @@ export class ListingdbComponent implements OnInit {
         });
       }
       else {
-        this.createListing();
+        if (this.listing.Warning && this.listing.Warning.length > 0) {
+          let tmsg = "<b>" + this.userSettingsView.storeName + "</b><br/><br/>Please confirm you are overriding warnings.<br/><br/>";
+          const dialogRef = this.dialog.open(ConfirmComponent,
+            {
+              disableClose: true,
+              height: '300px',
+              width: '900px',
+              data: {
+                titleMessage: tmsg
+              }
+            });
+
+          dialogRef.afterClosed().subscribe(result => {
+            if (result === 'Yes') {
+              this.createListing();
+            }
+            if (result === 'No') {
+              // console.log('No');
+            }
+          });
+        }
+        else {
+          this.createListing();
+        }
       }
     }
   }
@@ -694,18 +704,20 @@ export class ListingdbComponent implements OnInit {
    * Post to eBay
    */
   createListing() {
-    this.displayProgressSpinner = true;
 
+    this.displayProgressSpinner = true;
     this._orderHistoryService.listingCreate(this.listingID)
       .subscribe(si => {
         this.displayProgressSpinner = false;
         this.listingButtonEnable = false;
 
-        // Say new listing gets stored, ask for confirmation and listed.
-        // User makes quick change and relists - don't need matching product confirm again.
-        // Use 'listed' field to determine this but createlisting sends back a response, not the listing,
-        // so just set to current date time.
-        this.listing.Listed = new Date();
+        if (this.listing) {
+          // Say new listing gets stored, ask for confirmation and listed.
+          // User makes quick change and relists - don't need matching product confirm again.
+          // Use 'listed' field to determine this but createlisting sends back a response, not the listing,
+          // so just set to current date time.
+          this.listing.Listed = new Date();
+        }
 
         this.statusMessage = this.delimitedToHTML(si);
         this.showMessage();
@@ -1201,17 +1213,19 @@ export class ListingdbComponent implements OnInit {
    */
   onGetListingLog() {
 
-    this._orderHistoryService.getListingLog(this.listing.ID)
-      .subscribe(li => {
-        if (li) {
-          this.log = li;
-        }
-        this.displayProgressSpinner = false;
-      },
-        error => {
+    if (this.listing) {
+      this._orderHistoryService.getListingLog(this.listing.ID)
+        .subscribe(li => {
+          if (li) {
+            this.log = li;
+          }
           this.displayProgressSpinner = false;
-          this.errorMessage = error.errMsg;
-        });
+        },
+          error => {
+            this.displayProgressSpinner = false;
+            this.errorMessage = error.errMsg;
+          });
+    }
   }
   getBusinessPolicies() {
     this._orderHistoryService.getBusinessPolicies(this.selectedStore)
