@@ -310,7 +310,8 @@ export class ListingdbComponent implements OnInit {
     this.listingButtonEnable = false;
 
     if (this.walItem) {
-      if (this.walItem.ItemURL != this.ctlSourceURL.value && this.listing) {
+      if (this.walItem.ItemURL != this.ctlSourceURL.value) {
+        // Case where new listing and already clicked Load Supplier item once but then changed the URL and click Submit.
         this.walItem = null;
 
         this.ctlSellerItemID.setValue(null);
@@ -318,10 +319,12 @@ export class ListingdbComponent implements OnInit {
         this.ctlListingPrice.setValue(null);
         this.ctlListingQty.setValue(null);
         this.ctlListingTitle.setValue(null);
-        this.listing.PrimaryCategoryID = "";
-        this.listing.PrimaryCategoryName = "";
+        if (this.listing) {
+          this.listing.PrimaryCategoryID = "";
+          this.listing.PrimaryCategoryName = "";
+          this.listing.SellerListing = null;
+        }
         this.imgSourceArray = [];
-        this.listing.SellerListing = null;
         this.validationMessage = "Supplier URL changed";
       }
       else {
@@ -841,7 +844,15 @@ export class ListingdbComponent implements OnInit {
     this.errorMessage = "";
     this.displayProgressSpinner = true;
     this.supplierPicsMsg = null;
-    this.ctlDescription.setValue(null);
+
+    // If new and already loaded a supplier URL, then clear exisitng fields
+    if (this.walItem) {
+      if (this.walItem.ItemURL != this.ctlSourceURL.value) {
+        this.walItem = null;
+        this.ctlSellerItemID.setValue(null);
+        this.ctlDescription.setValue(null);
+      }
+    }
 
     if (!this.listing) {
       this._orderHistoryService.getListingBySupplierURL(this.userProfile.selectedStore, this.ctlSourceURL.value)
