@@ -161,6 +161,9 @@ export class ListingdbComponent implements OnInit {
     this.ctlDescription.setValue(null);
     this.ctlListingPrice.setValue(null);
     this.ctlSellerItemID.setValue(null);
+    this.ctlSourceURL.enable();
+    this.ctlSellerItemID.enable();
+    this.ctlListingQty.setValue(1);
   }
 
   getData() {
@@ -306,8 +309,8 @@ export class ListingdbComponent implements OnInit {
 
     this.listingButtonEnable = false;
 
-    if (this.walItem && this.listing) {
-      if (this.walItem.ItemURL != this.ctlSourceURL.value) {
+    if (this.walItem) {
+      if (this.walItem.ItemURL != this.ctlSourceURL.value && this.listing) {
         this.walItem = null;
 
         this.ctlSellerItemID.setValue(null);
