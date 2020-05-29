@@ -138,10 +138,10 @@
               </label>
               &nbsp;<button class="loadwalmart" color="primary" type="button" (click)="onGetWmItem()" mat-raised-button
                 [disabled]="!ctlSourceURL.value || !userProfile">Load Walmart</button>&nbsp;
-                <span *ngIf="!userProfile">
-                  <img
-                    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                </span>
+              <span *ngIf="!userProfile">
+                <img
+                  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+              </span>
             </div>
           </div>
 
@@ -180,8 +180,8 @@
             <div class="col-2">
               <span *ngIf="priceProfit">
                 {{(priceProfit.proposePrice - priceProfit.breakEven) | currency}}</span>
-                &nbsp;<span *ngIf="profit">
-                  {{(profit) | currency}}</span>
+              &nbsp;<span *ngIf="profit">
+                {{(profit) | currency}}</span>
             </div>
             <div class="col-3">
               <mat-form-field appearance="outline" class="outlinepadding">
@@ -473,17 +473,7 @@
                       {{item.qty}}
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Buyer paid</label>
-                    </div>
-                    <div class="col-4 rightJustify">
-                      {{item.buyerPaid | currency}}
-                    </div>
-                    <div *ngIf="item.buyerPaid === 0" class="col-3">
-                      <label class="redText">RETURN</label>
-                    </div>
-                  </div>
+
                   <div class="row">
                     <div class="col-3">
                       <label>Sub total</label>
@@ -500,7 +490,7 @@
                       {{item.shippingCost | currency}}
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row border-bottom">
                     <div class="col-3">
                       <label>Sales tax</label>
                     </div>
@@ -510,10 +500,28 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
+                      <label>Buyer paid</label>
+                    </div>
+                    <div class="col-4 rightJustify">
+                      {{item.buyerPaid | currency}}
+                    </div>
+                    <div *ngIf="item.buyerPaid === 0" class="col-3">
+                      <label class="redText">RETURN</label>
+                    </div>
+                  </div>
+                  <!-- <div class="row">
+                    <div class="col-3">
                       <label>Total</label>
                     </div>
                     <div class="col-4 rightJustify">
                       {{item.total | currency}}
+                    </div>
+                  </div> -->
+
+                  <!-- blank line -->
+                  <div class="row">
+                    <div class="col-3">
+                      &nbsp;
                     </div>
                   </div>
                   <div class="row">
