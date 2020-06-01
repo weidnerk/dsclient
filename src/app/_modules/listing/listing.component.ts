@@ -354,6 +354,10 @@ export class ListingdbComponent implements OnInit {
       this.onDelete();
     }
   }
+  /**
+   * 06.01.2020
+   * I'm thinking new defect rate, reprice logic makes this obsolete.
+   */
   onInActive() {
     this.errorMessage = null;
     this.inActive();
@@ -747,6 +751,9 @@ export class ListingdbComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        let reason = result;
+        // store the reason in the log
+
         this.endListing();
       }
       if (!result) {
