@@ -382,15 +382,11 @@ export class ListingdbComponent implements OnInit {
     if (msg === null) {
       let order = this.getSalesOrderInArray(listedItemID, buyer);
       if (order && this.listing) {
-        if (order.buyerPaid === 0 || order.total === 0) {
-          this.errorMessage = "Is this a Return?  Order not saved."
-        }
-        else {
-          order.supplierOrderNumber = this.ctlSupplierOrderNum.value;
-          order.listingID = this.listing.ID;
-          order.i_paid = this.ctlIPaid.value;
-          this.salesOrderAdd(order);
-        }
+
+        order.supplierOrderNumber = this.ctlSupplierOrderNum.value;
+        order.listingID = this.listing.ID;
+        order.i_paid = this.ctlIPaid.value;
+        this.salesOrderAdd(order);
       }
       else {
         this.errorMessage = "Could not find listed item id: " + listedItemID;
