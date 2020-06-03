@@ -74,12 +74,13 @@ export class ListCheckService {
             )
     }
 
-    endListing(listedID: number): Observable<string> {
+    endListing(listedID: number, reason: string): Observable<string> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
             let url = this.endListingUrl
-                + "?listingID=" + listedID;
+                + "?listingID=" + listedID
+                + "&reason=" + reason;
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',

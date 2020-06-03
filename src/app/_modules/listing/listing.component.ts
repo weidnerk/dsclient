@@ -734,10 +734,7 @@ export class ListingdbComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        let reason = result;
-        // store the reason in the log
-
-        this.endListing();
+          this.endListing(result);
       }
       if (!result) {
         console.log('No');
@@ -745,10 +742,10 @@ export class ListingdbComponent implements OnInit {
     });
   }
 
-  endListing() {
+  endListing(reason: string) {
     if (this.listing) {
       this.displayProgressSpinner = true;
-      this._listCheckService.endListing(this.listing.ID)
+      this._listCheckService.endListing(this.listing.ID, reason)
         .subscribe(si => {
           this.statusMessage = si;
           this.displayProgressSpinner = false;
