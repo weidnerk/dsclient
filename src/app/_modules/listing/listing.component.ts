@@ -137,19 +137,6 @@ export class ListingdbComponent implements OnInit {
 
     this.listingForm.controls['variation'].disable();
     this.listingForm.controls['variationDescription'].disable();
-
-    // itemId is seller's listing id
-    // passing rptNumber and qtySold to potentially record in Listing table.
-    this.sub = this.route.params.subscribe(params => {
-      this.listingID = +params['listingID'];
-      if (this.listingID > 0) {
-        this.ctlSellerItemID.disable();
-        this.getData();
-      }
-      else {
-        this.initForm();
-      }
-    });
   }
 
   initForm() {
@@ -1260,6 +1247,19 @@ export class ListingdbComponent implements OnInit {
         this.userSettingsView = userSettings;
         this.listingForm.patchValue({
           pctProfit: userSettings.pctProfit
+        });
+
+        // itemId is seller's listing id
+        // passing rptNumber and qtySold to potentially record in Listing table.
+        this.sub = this.route.params.subscribe(params => {
+          this.listingID = +params['listingID'];
+          if (this.listingID > 0) {
+            this.ctlSellerItemID.disable();
+            this.getData();
+          }
+          else {
+            this.initForm();
+          }
         });
       },
         error => {
