@@ -112,6 +112,10 @@
                 <mat-form-field appearance="outline" class="outlinepadding">
                     <mat-label>% Profit</mat-label>
                     <input matInput formControlName="pctProfit" maxlength="40" placeholder="pct profit">
+                    <mat-error *ngIf="ctlPctProfit.hasError('required')">
+                        <mat-icon>error</mat-icon>&nbsp;
+                        % profit required
+                    </mat-error>
                 </mat-form-field>
             </div>
         </div>
@@ -120,9 +124,9 @@
                 <mat-form-field appearance="outline" class="outlinepadding">
                     <mat-label>Max Shipping days</mat-label>
                     <input matInput formControlName="maxShippingDays" maxlength="40" placeholder="Max shipping days">
-                    <mat-error *ngIf="ctlPctProfit.hasError('required')">
+                    <mat-error *ngIf="ctlMaxShippingDays.hasError('required')">
                         <mat-icon>error</mat-icon>&nbsp;
-                        % profit required
+                        Max shipping days required
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -138,7 +142,7 @@
                     </mat-form-field>
                 </div>
             </div> -->
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-4">
                 <mat-form-field appearance="outline" class="outlinepadding">
                     <mat-label>PayPal email</mat-label>
@@ -173,7 +177,7 @@
                 </mat-form-field>
             </div>
         </div>
-        <br/>
+        <br/> -->
         <!-- <div class="row">
             <div class="col-4">
                 <mat-form-field appearance="outline" class="outlinepadding">

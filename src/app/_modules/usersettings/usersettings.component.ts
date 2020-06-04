@@ -66,6 +66,7 @@ export class UsersettingsComponent implements OnInit {
   }
 
   onSubmit() {
+    this.errorMessage = null;
     if (this.formIsValid()) {
       this.userSettingsSave();
     }
@@ -93,7 +94,7 @@ export class UsersettingsComponent implements OnInit {
           //   this.errorMessage = JSON.stringify(error);
           // }
           this.errorMessage = error.errMsg;
-            this.displayProgressSpinner = false;
+          this.displayProgressSpinner = false;
         });
   }
   userSettingsSave() {
@@ -102,18 +103,32 @@ export class UsersettingsComponent implements OnInit {
     settings.pctProfit = this.ctlPctProfit.value;
     settings.storeID = this.selectedStore;
     settings.payPalEmail = this.ctlPayPalEmail.value
-    settings.shippingProfile = this.ctlShippingPolicy.value.name;
-    settings.returnProfile = this.ctlReturnPolicy.value.name;
-    settings.paymentProfile = this.ctlPaymentPolicy.value.name;
     settings.maxShippingDays = this.ctlMaxShippingDays.value;
-    this._userService.userSettingsSave(settings, ["PctProfit", "MaxShippingDays", "ShippingProfile", "ReturnProfile", "PaymentProfile"])
-      .subscribe(si => {
-        this.displayProgressSpinner = false;
-      },
-        error => {
-          this.errorMessage = error.errMsg;
+
+    if (this.eBayBusinessPolicies) {
+      settings.shippingProfile = this.ctlShippingPolicy.value.name;
+      settings.returnProfile = this.ctlReturnPolicy.value.name;
+      settings.paymentProfile = this.ctlPaymentPolicy.value.name;
+      this._userService.userSettingsSave(settings, ["PctProfit", "MaxShippingDays", "ShippingProfile", "ReturnProfile", "PaymentProfile"])
+        .subscribe(si => {
           this.displayProgressSpinner = false;
-        });
+        },
+          error => {
+            this.errorMessage = error.errMsg;
+            this.displayProgressSpinner = false;
+          });
+    }
+    else {
+      this._userService.userSettingsSave(settings, ["PctProfit", "MaxShippingDays"])
+        .subscribe(si => {
+          this.userSettingsView = si;
+          this.displayProgressSpinner = false;
+        },
+          error => {
+            this.errorMessage = error.errMsg;
+            this.displayProgressSpinner = false;
+          });
+    }
   }
   storeSelected(event: MatSelectChange) {
     this.errorMessage = null;
@@ -169,18 +184,7 @@ export class UsersettingsComponent implements OnInit {
     this._userService.getUserStores()
       .subscribe(x => {
         this.userStores = x;
-
-        // user has just 1 store, so select it
-        if (this.userStores.length === 1) {
-          this.selectedStore = this.userStores[0].storeID;
-          this.ctlSelectedStore.setValue(this.userStores[0].storeID);
-
-          this.getUserSettings();
-          // this.geteBayUser();
-        }
-        else {
-          this.displayProgressSpinner = false;
-        }
+        this.displayProgressSpinner = false;
       },
         error => {
           this.errorMessage = error.errMsg;
@@ -192,25 +196,40 @@ export class UsersettingsComponent implements OnInit {
       .subscribe(x => {
         this.eBayBusinessPolicies = x;
         // console.log('shipping: ' + this.userSettingsView.shippingProfile);
-        this.loadSelectedShippingPolicy();
-        this.loadSelectedReturnPolicy();
-        this.loadSelectedPaymentPolicy();
-          this.displayProgressSpinner = false;
+        if (!this.eBayBusinessPolicies.shippingPolicies) {
+          this.errorMessage = "No shipping policies defined - did you opt-in to business policies?";
+        }
+        else {
+          this.loadSelectedShippingPolicy();
+          if (!this.eBayBusinessPolicies.returnPolicies) {
+            this.errorMessage = "No return policies defined - did you opt-in to business policies?";
+          }
+          else {
+            this.loadSelectedReturnPolicy();
+            if (!this.eBayBusinessPolicies.paymentPolicies) {
+              this.errorMessage = "No payment policies defined - did you opt-in to business policies?";
+            }
+            else {
+              this.loadSelectedPaymentPolicy();
+            }
+          }
+        }
+        this.displayProgressSpinner = false;
       },
         error => {
           this.errorMessage = error.errMsg;
-            this.displayProgressSpinner = false;
+          this.displayProgressSpinner = false;
         });
   }
   geteBayUser() {
     this._userService.geteBayUser(this.selectedStore)
       .subscribe(x => {
         this.eBayUser = x;
-          this.displayProgressSpinner = false;
+        this.displayProgressSpinner = false;
       },
         error => {
           this.errorMessage = error.errMsg;
-            this.displayProgressSpinner = false;
+          this.displayProgressSpinner = false;
         });
   }
   // getHandlingTime() {
@@ -328,6 +347,19 @@ export class UsersettingsComponent implements OnInit {
   formIsValid(): boolean {
     if (this.ctlPctProfit.invalid) { return false; }
     if (this.ctlMaxShippingDays.invalid) { return false; }
+
+    if (this.userSettingsView) {
+      if (!this.eBayBusinessPolicies) {
+        this.errorMessage = "Missing business policies - did you opt-in to business policies?";
+        return false;
+      }
+      else {
+        if (!this.eBayBusinessPolicies.paymentPolicies || !this.eBayBusinessPolicies.returnPolicies || !this.eBayBusinessPolicies.shippingPolicies) {
+          this.errorMessage = "Missing business policies - did you opt-in to business policies?";
+          return false;
+        }
+      }
+    }
     return true;
   }
   /*

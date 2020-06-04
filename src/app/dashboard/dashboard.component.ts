@@ -56,8 +56,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.getStores();
-    this.getUserProfile();  // to get selected store
-    
+
     this.getErrorCount();
     if (this._orderHistoryService.isAdmin()) {
       this.getLastError();
@@ -123,7 +122,14 @@ export class DashboardComponent implements OnInit {
   getStores() {
     this._userService.getUserStores()
       .subscribe(x => {
-        this.userStores = x;
+        if (!x || x.length == 0) {
+          this.errorMessage = 'No stores configured - enter API keys.';
+        }
+        else {
+          this.userStores = x;
+         
+          this.getUserProfile();  // to get selected store
+        }
       },
         error => {
           this.errorMessage = error.errMsg;
@@ -142,13 +148,22 @@ export class DashboardComponent implements OnInit {
   getUserProfile() {
     this._userService.UserProfileGet()
       .subscribe(profile => {
-        this.userProfile = profile;
-        if (profile.selectedStore) {
-          this.selectedStore = profile.selectedStore;
-          this.getDashboard();
+        if (!profile.selectedStore) {
+          this.errorMessage = "No settings configured.";
         }
         else {
-          this.errorMessage = 'No settings configured.';
+          this.userProfile = profile;
+          if (profile.selectedStore) {
+            this.selectedStore = profile.selectedStore;
+            this.getDashboard();
+          }
+          else {
+            // should not need to get here since profile.selectedStore should always have value
+            if (this.userStores.length === 1) {
+              this.selectedStore = this.userStores[0].storeID;
+              this.getDashboard();
+            }
+          }
         }
       },
         error => {

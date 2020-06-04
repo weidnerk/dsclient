@@ -401,7 +401,7 @@ export class UserService {
                 }
             )
     }
-    userSettingsSave(userSettings: UserSettings, fieldNames: string[]) {
+    userSettingsSave(userSettings: UserSettings, fieldNames: string[]): Observable<UserSettingsView>  {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
@@ -414,7 +414,7 @@ export class UserService {
                     'Authorization': 'Bearer ' + currentUser.access_token
                 })
             };
-            return this.http.post(url, body, httpOptions).pipe(
+            return this.http.post<UserSettingsView>(url, body, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }
