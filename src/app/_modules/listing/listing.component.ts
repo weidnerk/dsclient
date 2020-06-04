@@ -734,7 +734,7 @@ export class ListingdbComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-          this.endListing(result);
+        this.endListing(result);
       }
       if (!result) {
         console.log('No');
@@ -905,12 +905,7 @@ export class ListingdbComponent implements OnInit {
         if (!wi.SupplierPicURL) {
           this.supplierPicsMsg = "Failed to retrieve item images from supplier."
         }
-        if (!this.ctlListingPrice.value) {
-          this.onCalculateWMPrice();
-        }
-        else {
-          this.displayProgressSpinner = false;
-        }
+        this.onCalculateWMPrice();
       },
         error => {
           this.imgSourceArray = null;
