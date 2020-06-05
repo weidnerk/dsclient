@@ -67,6 +67,7 @@ export class UserProfileKeys {
     APIEmail: string;
 }
 export class UserProfileKeysView {
+    id: number; // ebayKeys ID
     userID: string;
     storeID: number;
     appID: string;
@@ -75,12 +76,12 @@ export class UserProfileKeysView {
     APIEmail: string;
     token: string;
 }
-// export class UserToken {
-//     token: string;
-//     storeID: number;
-//     keysID: number;
-//     userID: string;
-// }
+export class UserToken {
+    token: string;
+    storeID: number;
+    keysID: number;
+    userID: string;
+}
 
 export interface eBayUser {
     eBayUserID: string;

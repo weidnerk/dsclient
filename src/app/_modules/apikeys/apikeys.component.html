@@ -59,7 +59,7 @@
     </div>
     <div [ngClass]="{'error': tokenStatus.ExpirationTime==null}">
       Token status: {{tokenStatus.StatusStr}}
-      <button [disabled]="!selectedStore" class="btn" mat-button mat-raised-button color="primary" (click)="onGetTokenStatus()">Get</button>
+      <button type="button" [disabled]="!selectedStore" class="btn" mat-button mat-raised-button color="primary" (click)="onGetTokenStatus()">Get</button>
     </div>
   </form>
   <span class="error">{{errorMessage}}</span>

@@ -11,7 +11,7 @@ import { ResetPasswordViewModel } from '../_models/ResetPasswordViewModel';
 import { ForgotPasswordViewModel } from '../_models/ResetPasswordViewModel';
 import { ChangePasswordBindingModel } from '../_models/ResetPasswordViewModel';
 // import { UserProfileVM } from '../_models/userprofile';
-import { UserProfile, TokenStatusTypeCustom, UserSettings, AppIDSelect, UserStoreView, UserSettingsView, UserProfileKeys, UserProfileView, UserProfileKeysView, eBayUser } from '../_models/userprofile';
+import { UserProfile, TokenStatusTypeCustom, UserSettings, AppIDSelect, UserStoreView, UserSettingsView, UserProfileKeys, UserProfileView, UserProfileKeysView, eBayUser, UserToken } from '../_models/userprofile';
 import { eBayStore } from '../_models/orderhistory';
 
 @Injectable()
@@ -430,7 +430,7 @@ export class UserService {
      * @param keys 
      * @param fieldNames 
      */
-    eBayKeysSave(keys: UserProfileKeys, fieldNames: string[], token: string, storeID: number): Observable<string> {
+    eBayKeysSave(keys: UserProfileKeys, fieldNames: string[], token: string, storeID: number): Observable<UserToken> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
@@ -443,7 +443,7 @@ export class UserService {
                     'Authorization': 'Bearer ' + currentUser.access_token
                 })
             };
-            return this.http.post<string>(url, body, httpOptions).pipe(
+            return this.http.post<UserToken>(url, body, httpOptions).pipe(
                 catchError(this.handleError)
             );
         }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { TokenStatusTypeCustom, AppIDSelect, UserSettings, UserSettingsView, UserStoreView, UserProfileKeys, UserProfileKeysView } from '../../_models/userprofile';
+import { TokenStatusTypeCustom, AppIDSelect, UserSettings, UserSettingsView, UserStoreView, UserProfileKeys, UserProfileKeysView, UserToken } from '../../_models/userprofile';
 import { UserService } from '../../_services/index';
 import { environment } from '../../../environments/environment';
 import { MatOption } from '@angular/material/core';
@@ -25,6 +25,7 @@ export class ApikeysComponent implements OnInit {
   selectedStore: number;
   userSettingsView: UserSettingsView;
   userProfileKeysView: UserProfileKeysView;
+  userToken: UserToken;
 
   // status spinner variables
   color = 'primary';
@@ -46,9 +47,11 @@ export class ApikeysComponent implements OnInit {
   }
   onGetTokenStatus() {
     console.log('onGetTokenStatus');
+    this.errorMessage = "";
     this.getTokenStatus();
   }
   getTokenStatus() {
+    
     this.displayProgressSpinner = true;
     this._userService.TokenStatus(this.selectedStore)
       .subscribe(s => {
@@ -124,7 +127,6 @@ export class ApikeysComponent implements OnInit {
   }
 
   onSubmit() {
-  
     this.saveKeys();
   }
   onApiHelp() {
@@ -183,8 +185,8 @@ export class ApikeysComponent implements OnInit {
   saveKeys() {
     this.displayProgressSpinner = true;
     let keys = new UserProfileKeys();
-    if (this.userSettingsView) {
-      keys.id = this.userSettingsView.ebayKeyID;
+    if (this.userProfileKeysView) {
+      keys.id = this.userProfileKeysView.id;
     }
     else {
       // first time saving
@@ -197,7 +199,13 @@ export class ApikeysComponent implements OnInit {
     keys.APIEmail = this.ctlAPIEmail.value;
     
     this._userService.eBayKeysSave(keys, ["AppID","CertID","DevID","EmailAddress"], this.ctlAPIToken.value, this.selectedStore)
-    .subscribe(s => {
+    .subscribe(ut => {
+      this.userToken = ut;
+      if (!this.userProfileKeysView) {  // new store
+        this.userProfileKeysView = new UserProfileKeysView();
+        this.userProfileKeysView.storeID = this.userToken.storeID;
+        this.userProfileKeysView.id = this.userToken.keysID;
+      }
       if (this.selectedStore == 0) {
         this.getStores()
       }

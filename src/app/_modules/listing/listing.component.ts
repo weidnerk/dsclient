@@ -617,8 +617,7 @@ export class ListingdbComponent implements OnInit {
       tmsg += this.listing.PrimaryCategoryID + "<br/>";
       tmsg += this.listing.PrimaryCategoryName + "<br/><br/>";
 
-      // ...not greatest way to test for new listing...
-      if (!this.listing.Listed && sellerImgURL) {     // new listing
+      if (!this.listing.Listed && sellerImgURL) {     // new listing, show the user the seller's image
         const dialogRef = this.dialog.open(ConfirmComponent,
           {
             disableClose: true,
