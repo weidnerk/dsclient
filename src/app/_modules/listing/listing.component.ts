@@ -138,7 +138,56 @@ export class ListingdbComponent implements OnInit {
     this.listingForm.controls['variation'].disable();
     this.listingForm.controls['variationDescription'].disable();
   }
+  /**
+     * Need storeID for new listing.
+     */
+  getUserProfile() {
+    this._userService.UserProfileGet()
+      .subscribe(profile => {
+        this.userProfile = profile;
+        this.selectedStore = profile.selectedStore;
 
+        // 04.23.2020 hold off for now - overkill
+        //this.getBusinessPolicies();
+
+        this.getUserSettings();
+      },
+        error => {
+          // if (error.errorStatus !== 404) {
+          //   this.errorMessage = JSON.stringify(error);
+          // }
+          this.errorMessage = error.errMsg;
+          this.displayProgressSpinner = false;
+        });
+  }
+  getUserSettings() {
+    // shouldn't this be 'get use settings for some store selection?'
+    this._userService.UserSettingsViewGetByStore(this.userProfile.selectedStore)
+      .subscribe(userSettings => {
+        this.userSettingsView = userSettings;
+        this.listingForm.patchValue({
+          pctProfit: userSettings.pctProfit
+        });
+
+        // itemId is seller's listing id
+        // passing rptNumber and qtySold to potentially record in Listing table.
+
+        // Supposed to unsubscribe?
+        this.sub = this.route.params.subscribe(params => {
+          this.listingID = +params['listingID'];
+          if (this.listingID > 0) {
+            this.ctlSellerItemID.disable();
+            this.getData();
+          }
+          else {
+            this.initForm();
+          }
+        });
+      },
+        error => {
+          this.errorMessage = error.errMsg;
+        });
+  }
   initForm() {
     // get pct profit default setting
     this.imgSourceArray = null;
@@ -712,7 +761,9 @@ export class ListingdbComponent implements OnInit {
         }
 
         this.statusMessage = this.delimitedToHTML(si);
-        this.showMessage();
+        this.statusMessage += "<br/><br/>";
+        this.statusMessage += "https://www.google.com";
+        this.showMessage(this.statusMessage);
       },
         error => {
           this.errorMessage = this.delimitedToHTML(error.errMsg);
@@ -1152,11 +1203,11 @@ export class ListingdbComponent implements OnInit {
         });
   }
 
-  showMessage() {
+  showMessage(msg: string) {
     const dialogRef = this.dialog.open(ShowmessagesComponent, {
       height: '500px',
       width: '600px',
-      data: { message: this.statusMessage }
+      data: { message: msg }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1164,28 +1215,7 @@ export class ListingdbComponent implements OnInit {
     });
   }
 
-  /**
-   * Need storeID for new listing.
-   */
-  getUserProfile() {
-    this._userService.UserProfileGet()
-      .subscribe(profile => {
-        this.userProfile = profile;
-        this.selectedStore = profile.selectedStore;
 
-        // 04.23.2020 hold off for now - overkill
-        //this.getBusinessPolicies();
-
-        this.getUserSettings();
-      },
-        error => {
-          // if (error.errorStatus !== 404) {
-          //   this.errorMessage = JSON.stringify(error);
-          // }
-          this.errorMessage = error.errMsg;
-          this.displayProgressSpinner = false;
-        });
-  }
   deleteButtonDisable(): boolean {
     if (!this.listing || (this.listing && this.listing.ID == 0) || (this.listing && this.listing.Listed))
       return true;
@@ -1231,32 +1261,7 @@ export class ListingdbComponent implements OnInit {
           this.errorMessage = error.errMsg;
         });
   }
-  getUserSettings() {
-    // shouldn't this be 'get use settings for some store selection?'
-    this._userService.UserSettingsViewGetByStore(this.userProfile.selectedStore)
-      .subscribe(userSettings => {
-        this.userSettingsView = userSettings;
-        this.listingForm.patchValue({
-          pctProfit: userSettings.pctProfit
-        });
 
-        // itemId is seller's listing id
-        // passing rptNumber and qtySold to potentially record in Listing table.
-        this.sub = this.route.params.subscribe(params => {
-          this.listingID = +params['listingID'];
-          if (this.listingID > 0) {
-            this.ctlSellerItemID.disable();
-            this.getData();
-          }
-          else {
-            this.initForm();
-          }
-        });
-      },
-        error => {
-          this.errorMessage = error.errMsg;
-        });
-  }
   getFormattedDate(date: Date) {
     // let date = new Date();
     let newdate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
