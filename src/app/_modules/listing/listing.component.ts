@@ -762,7 +762,7 @@ export class ListingdbComponent implements OnInit {
 
         this.statusMessage = this.delimitedToHTML(si);
         this.statusMessage += "<br/><br/>";
-        this.statusMessage += "https://www.google.com";
+        this.statusMessage += "<a target='_blank' href='https://www.google.com'>google</a>";
         this.showMessage(this.statusMessage);
       },
         error => {
