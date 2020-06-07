@@ -3,6 +3,7 @@ export class UserProfile {
     firstname: string;
     lastname: string;
     selectedStore: number;
+    isVA: boolean;
 }
 export class UserProfileView {
     userID: string;

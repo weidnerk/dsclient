@@ -6,6 +6,8 @@ import { UserService } from '../../_services/index';
 import { environment } from '../../../environments/environment';
 import { MatOption } from '@angular/material/core';
 import { MatSelectChange } from '@angular/material/select';
+import { MatDialog } from '@angular/material/dialog';
+import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
 
 @Component({
   selector: 'app-apikeys',
@@ -33,7 +35,10 @@ export class ApikeysComponent implements OnInit {
   value = 50;
   displayProgressSpinner: boolean = false;
 
-  constructor(private route: Router, private fb: FormBuilder, private _userService: UserService) { }
+  constructor(private route: Router, 
+    private fb: FormBuilder, 
+    private _userService: UserService,
+    public dialog: MatDialog,) { }
 
   get ctlAppID() { return this.apikeysForm.controls['appidkey']; }
   get ctlDevID() { return this.apikeysForm.controls['devidkey']; }
@@ -213,7 +218,19 @@ export class ApikeysComponent implements OnInit {
     },
       error => {
         this.errorMessage = error.errMsg;
+        this.showMessage(this.errorMessage);
         this.displayProgressSpinner = false;
       });
+  }
+  showMessage(msg: string) {
+    const dialogRef = this.dialog.open(ShowmessagesComponent, {
+      height: '500px',
+      width: '600px',
+      data: { message: msg }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
   }
 }
