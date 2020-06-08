@@ -31,13 +31,16 @@
         <mat-icon>settings</mat-icon>
         User Settings
     </a>
-    <a *ngIf="isAdmin" mat-list-item routerLinkActive="list-item-active" routerLink="/">
+    <a [disabled]="profile && profile.isVA" mat-list-item routerLinkActive="list-item-active" routerLink="/">
         <mat-icon>security</mat-icon>
         Admin
     </a>
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="/apikeys">
+    <a [disabled]="profile && profile.isVA" mat-list-item routerLinkActive="list-item-active" routerLink="/apikeys">
         <mat-icon>vpn_key</mat-icon>
         API Keys
     </a>
-
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/changepassword">
+        <mat-icon>lock_open_outline</mat-icon>
+        Change password
+    </a>
 </mat-nav-list>

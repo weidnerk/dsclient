@@ -73,7 +73,7 @@
             </div>
         </div> -->
         <br />
-        <button [disabled]="!isConfigured" (click)="onStoreScan()" class="btn" mat-button mat-raised-button color="primary" type="button">Store
+        <button [disabled]="!isConfigured || (userProfile && userProfile.isVA)" (click)="onStoreScan()" class="btn" mat-button mat-raised-button color="primary" type="button">Store
             Scan</button>
 
     </mat-card>

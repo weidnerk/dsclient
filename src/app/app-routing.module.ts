@@ -10,6 +10,7 @@ import { AuthGuard } from './_guards/index';
 import { Dashboardv2Component } from './dashboard-v2/dashboard.component';
 import { DefaultComponent } from './layouts/default/default.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
+import { ChangepasswordComponent } from './changepassword/changepassword.component';
 
 const routes: Routes = [
     {
@@ -66,6 +67,9 @@ const routes: Routes = [
         },
         { path: 'forgotpassword', 
             component: ForgotpasswordComponent
+        },
+        { path: 'changepassword', 
+            component: ChangepasswordComponent
         }
     ]
     },

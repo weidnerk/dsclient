@@ -25,6 +25,6 @@ enter the 3 keys and the token and click OK.
 If the keys are not entered correctly, you will continue to get 'No results matching search
   criteria.' when searching.
 
-Email support at: onepluswonder@gmail.com
+Email support at: dscruisecontrol@gmail.com
 `
 };
