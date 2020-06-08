@@ -88,6 +88,11 @@ export class UsersettingsComponent implements OnInit {
         });
         this.getBusinessPolicies();
         this.getStore();  // note: not setting storeChanged since getStore tends to take more long
+
+        if (this.userSettingsView.isVA) {
+          this.ctlPctProfit.disable();
+          this.ctlMaxShippingDays.disable();
+        }
       },
         error => {
           // if (error.errorStatus !== 404) {

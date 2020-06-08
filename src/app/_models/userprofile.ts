@@ -49,6 +49,7 @@ export class UserSettingsView extends UserSettings {
     firstName: string;
     ebayKeyID: number;
     APIEmail: string;
+    isVA: boolean;
 }
 
 export class AppIDSelect {
