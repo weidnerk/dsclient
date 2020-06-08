@@ -47,6 +47,10 @@
                             <mat-icon>error</mat-icon>&nbsp;
                             Lastname required
                         </mat-error>
+                        <mat-error *ngIf="lastName.hasError('pattern')">
+                            <mat-icon>error</mat-icon>&nbsp;
+                            Please enter valid last name.
+                        </mat-error>
                     </mat-form-field>
                 </div>
                 <div>

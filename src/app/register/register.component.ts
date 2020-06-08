@@ -8,7 +8,7 @@ import { User } from '../_models/index';
 
 const USERNAME_REGEX = /^[0-9a-zA-Z.]+$/;   // alpha-numeric and a period
 const FIRSTNAME_REGEX = /^[a-zA-Z]+$/;
-const LASTNAME_REGEX = /^[a-zA-Z ']+$/;
+const LASTNAME_REGEX = /^[-a-zA-Z ']+$/;    // allow hyphen in last name
 
 function passwordMatcher(c: AbstractControl): { [key: string]: boolean } | null {
     // return { nomatch: true };

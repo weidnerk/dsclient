@@ -11,6 +11,7 @@ export class UserProfileView {
     lastname: string;
     selectedStore: number;
     username: string;
+    isVA: boolean;
 }
 
 // a little different from actual UserProfile in AccountController since need to pass userName so we can look up id
