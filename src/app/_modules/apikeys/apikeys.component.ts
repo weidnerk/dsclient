@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { TokenStatusTypeCustom, AppIDSelect, UserSettings, UserSettingsView, UserStoreView, UserProfileKeys, UserProfileKeysView, UserToken } from '../../_models/userprofile';
+import { TokenStatusTypeCustom, AppIDSelect, UserSettings, UserSettingsView, UserStoreView, UserProfileKeys, UserProfileKeysView, UserToken, UserProfileView } from '../../_models/userprofile';
 import { UserService } from '../../_services/index';
 import { environment } from '../../../environments/environment';
 import { MatOption } from '@angular/material/core';
@@ -25,10 +25,10 @@ export class ApikeysComponent implements OnInit {
   apiHelpText: string = environment.HELP_TEXT;
   userStores: UserStoreView[];
   selectedStore: number;
-  userSettingsView: UserSettingsView;
   userProfileKeysView: UserProfileKeysView;
   userToken: UserToken;
-
+  profile: UserProfileView;
+  
   // status spinner variables
   color = 'primary';
   mode = 'indeterminate';
@@ -166,6 +166,18 @@ export class ApikeysComponent implements OnInit {
           });
           this.getAPIKeys();
         }
+        if (x.length > 0) {
+          this.getUserProfile();    // want to know if VA so we can disable Save button
+        }
+      },
+        error => {
+          this.errorMessage = error.errMsg;
+        });
+  }
+  getUserProfile() {
+    this._userService.UserProfileGet()
+      .subscribe(profile => {
+        this.profile = profile;
       },
         error => {
           this.errorMessage = error.errMsg;

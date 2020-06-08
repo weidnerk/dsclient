@@ -49,7 +49,7 @@
       </mat-form-field>
     </div>
     <div>
-      <button mat-button mat-raised-button color="primary" type="submit" [disabled]="!formIsValid()">Submit</button>
+      <button mat-button mat-raised-button color="primary" type="submit" [disabled]="!formIsValid() || profile?.isVA">Submit</button>
       <a (click)="onCancel()" class="btn btn-link">Cancel</a>
       <!-- <a (click)="onDelete()" class="btn btn-link">Delete</a> -->
     </div>

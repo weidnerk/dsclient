@@ -187,11 +187,13 @@
             </div>
         </div> -->
 
-        <button [disabled]="!selectedStore" class="btn" mat-button mat-raised-button color="primary"
-            type="submit">Save</button>
+        <button [disabled]="!selectedStore || userSettingsView?.isVA" class="btn" mat-button mat-raised-button
+            color="primary" type="submit">Save</button>
     </form>
-    <br /><a target="_blank" href="https://bizpolicy.ebay.com/businesspolicy/policyoptin">Opt in to eBay Business
-        Policies</a>
+    <ng-container *ngIf="userSettingsView && !userSettingsView.isVA">
+        <br /><a target="_blank" href="https://bizpolicy.ebay.com/businesspolicy/policyoptin">Opt in to eBay Business
+            Policies</a>
+    </ng-container>
 </div>
 <app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
     [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
