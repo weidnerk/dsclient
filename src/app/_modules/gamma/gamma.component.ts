@@ -12,7 +12,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { DomSanitizer } from '@angular/platform-browser';
 import { OrderHistoryService } from '../../_services/orderhistory.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../_services';
 import { UserStoreView, UserSettingsView, UserProfile } from '../../_models/userprofile';
 import { fromEvent } from 'rxjs';
@@ -43,6 +43,7 @@ export class GammaComponent {
   userProfile: UserProfile;
   unlisted = true;
   listed = false;
+  sub: any;
 
   // status spinner variables
   color = 'primary';
@@ -50,8 +51,9 @@ export class GammaComponent {
   value = 50;
   displayProgressSpinner = false;
 
-  constructor(private route: Router,
-    public _service: OrderHistoryService,
+  constructor(private router: Router,
+    private route: ActivatedRoute,
+    private _service: OrderHistoryService,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
     private _userService: UserService) {
@@ -94,7 +96,7 @@ export class GammaComponent {
           this.errorMessage = error.errMsg;
         });
   }
-  
+
   getUserProfile() {
     this._userService.UserProfileGet()
       .subscribe(profile => {
@@ -102,12 +104,25 @@ export class GammaComponent {
         if (!profile.selectedStore) {
           this.displayProgressSpinner = false;
           setTimeout(() => {
-              this.route.navigate(['/']);
+            this.router.navigate(['/']);
           }, 500);
         }
         this.selectedStore = profile.selectedStore;
         this.getStores();
-        this.loadData();
+
+        this.sub = this.route.paramMap.subscribe(params => {
+          if (params.get('listed') === '1') {
+            console.log('listed');
+            this.listed = true;
+            this.unlisted = false;
+          }
+          if (params.get('listed') === '2') {
+            console.log('unlisted');
+            this.listed = false;
+            this.unlisted = true;
+          }
+          this.loadData();
+        });
       },
         error => {
           // if (error.errorStatus !== 404) {
@@ -184,9 +199,9 @@ export class GammaComponent {
   }
   addItem() {
     console.log('add item');
-    this.route.navigate(['/listingdetaildb/0']);
+    this.router.navigate(['/listingdetaildb/0']);
   }
- 
+
   userProfileSave() {
     this.userProfile.selectedStore = this.selectedStore;
     this._userService.UserProfileSave(this.userProfile)

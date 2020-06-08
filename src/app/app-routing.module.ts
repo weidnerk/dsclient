@@ -31,7 +31,7 @@ const routes: Routes = [
             canActivate: [AuthGuard]
         },
         {
-            path: 'gamma',
+            path: 'gamma/:listed',
             loadChildren: () => import('./_modules/gamma/gamma.module').then(m => m.GammaModule),
             canActivate: [AuthGuard]
         },

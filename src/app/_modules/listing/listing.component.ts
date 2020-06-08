@@ -4,7 +4,7 @@
  */
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { OrderHistoryService } from '../../_services/orderhistory.service';
 import { Listing, DeriveProfit, TimesSold, ListingNoteView, SellerListing, SupplierItem, SalesOrder, PriceProfit, ListingLogView, eBayBusinessPolicies, ListingLog } from '../../_models/orderhistory';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
@@ -187,6 +187,9 @@ export class ListingdbComponent implements OnInit {
         error => {
           this.errorMessage = error.errMsg;
         });
+  }
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
   initForm() {
     // get pct profit default setting
@@ -1048,10 +1051,6 @@ export class ListingdbComponent implements OnInit {
   getFirstImg(imgStr: string): string {
     var a = imgStr.split(';');
     return a[0];
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
   }
 
   goBack() {
