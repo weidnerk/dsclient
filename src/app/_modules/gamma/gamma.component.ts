@@ -111,13 +111,19 @@ export class GammaComponent {
         this.getStores();
 
         this.sub = this.route.paramMap.subscribe(params => {
-          if (params.get('listed') === '1') {
-            console.log('listed');
-            this.listed = true;
-            this.unlisted = false;
+          if (params.has('listed')) {
+            if (params.get('listed') === '1') {
+              console.log('listed');
+              this.listed = true;
+              this.unlisted = false;
+            }
+            if (params.get('listed') === '2') {
+              console.log('unlisted');
+              this.listed = false;
+              this.unlisted = true;
+            }
           }
-          if (params.get('listed') === '2') {
-            console.log('unlisted');
+          else {
             this.listed = false;
             this.unlisted = true;
           }

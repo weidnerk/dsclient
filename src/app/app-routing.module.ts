@@ -36,6 +36,11 @@ const routes: Routes = [
             canActivate: [AuthGuard]
         },
         {
+            path: 'gamma',
+            loadChildren: () => import('./_modules/gamma/gamma.module').then(m => m.GammaModule),
+            canActivate: [AuthGuard]
+        },
+        {
             path: 'research',
             component: ResearchComponent,
             canActivate: [AuthGuard]
