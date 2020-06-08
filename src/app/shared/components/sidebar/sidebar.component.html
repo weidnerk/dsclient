@@ -27,7 +27,7 @@
 
     <h2 matSubheader>Tools</h2>
 
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="/usersettings">
+    <a [disabled]="profile && profile.isVA" mat-list-item routerLinkActive="list-item-active" routerLink="/usersettings">
         <mat-icon>settings</mat-icon>
         User Settings
     </a>

@@ -765,7 +765,9 @@ export class ListingdbComponent implements OnInit {
 
         this.statusMessage = this.delimitedToHTML(si);
         this.statusMessage += "<br/><br/>";
-        this.statusMessage += "<a target='_blank' href='https://www.google.com'>google</a>";
+        let newItemID = this.getFirstInList(si);
+        let ref = "https://www.ebay.com/itm/" + newItemID;
+        this.statusMessage += "<a target='_blank' href='" + ref + "'" + ">eBay</a>";
         this.showMessage(this.statusMessage);
       },
         error => {
@@ -774,8 +776,18 @@ export class ListingdbComponent implements OnInit {
           this.listingButtonEnable = false;
         });
   }
-  onOverrideEndListing() {
+  onOverrideEndListing(status: string) {
+    let pos:number = status.indexOf('NO');
+    if (pos > -1) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+  wasItemListed(): boolean {
 
+    return false;
   }
   onEndListing() {
     const dialogRef = this.dialog.open(EndlistingComponent,
