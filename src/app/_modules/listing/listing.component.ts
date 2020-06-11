@@ -443,6 +443,7 @@ export class ListingdbComponent implements OnInit {
         let updated = si;
         this.displayProgressSpinner = false;
         console.log('sales order id: ' + updated.id);
+        this.showMessage("Order saved.");
       },
         error => {
           this.displayProgressSpinner = false;
