@@ -1,4 +1,4 @@
-<br/>
+<br />
 <div class="container-fluid">
   <div class="row">
     <div class="filter col-3">
@@ -27,78 +27,82 @@
   <div class="error">
     <span [innerHTML]="errorMessage"></span>
   </div>
-  <mat-table #table [dataSource]="dataSource" matSort>
+  <div class="table-container">
+    <mat-table #table [dataSource]="dataSource" matSort>
 
-    <ng-container matColumnDef="Source">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Source</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <a target="_blank" href="{{row.SourceURL}}">
-          <mat-icon svgIcon="wmicon"></mat-icon>
-        </a>
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Store">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Store</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <a *ngIf="row.ListedItemID" target="_blank" href="https://www.ebay.com/itm/{{row.ListedItemID}}">
-          <mat-icon>info_outline</mat-icon>
-        </a>
-        <span *ngIf="!row.ListedItemID">
-          <mat-icon>info_outline</mat-icon>
-        </span>
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="ListedItemID">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Seller Item ID</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.ItemID}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Seller">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Seller</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.Seller}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Title">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.Title}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="SupplierPicURL">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Pic</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <span *ngIf="row.SupplierPicURL">
-          <a [routerLink]="['/listingdetaildb',row.ID]"><img [src]="getFirstImg(row.SupplierPicURL)" height="150px" width="150px"></a>
-        </span></mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="ListingPrice">
-      <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Listing Price</mat-header-cell>
-      <mat-cell class="cellright" *matCellDef="let row">{{row.ListingPrice | currency}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Qty">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.Qty}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="CreatedByName">
-      <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Created By</mat-header-cell>
-      <mat-cell class="cellright" *matCellDef="let row">{{row.CreatedByName}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="UpdatedByName">
-      <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Updated By</mat-header-cell>
-      <mat-cell class="cellright" *matCellDef="let row">{{row.UpdatedByName}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="ListedByName">
-      <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Listed By</mat-header-cell>
-      <mat-cell class="cellright" *matCellDef="let row">{{row.ListedByName}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Listed">
-      <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Listed</mat-header-cell>
-      <mat-cell class="cellright" *matCellDef="let row">{{row.Listed | date:'MM/dd/yyyy'}}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="Source">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Source</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a target="_blank" href="{{row.SourceURL}}">
+            <mat-icon svgIcon="wmicon"></mat-icon>
+          </a>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Store">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Store</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a *ngIf="row.ListedItemID" target="_blank" href="https://www.ebay.com/itm/{{row.ListedItemID}}">
+            <mat-icon>info_outline</mat-icon>
+          </a>
+          <span *ngIf="!row.ListedItemID">
+            <mat-icon>info_outline</mat-icon>
+          </span>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ListedItemID">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Seller Item ID</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.ItemID}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Seller">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Seller</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.Seller}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Title">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.Title}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="SupplierPicURL">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Pic</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span *ngIf="row.SupplierPicURL">
+            <a [routerLink]="['/listingdetaildb',row.ID]"><img [src]="getFirstImg(row.SupplierPicURL)" height="150px"
+                width="150px"></a>
+          </span></mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ListingPrice">
+        <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Listing Price</mat-header-cell>
+        <mat-cell class="cellright" *matCellDef="let row">{{row.ListingPrice | currency}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Qty">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.Qty}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="CreatedByName">
+        <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Created By</mat-header-cell>
+        <mat-cell class="cellright" *matCellDef="let row">{{row.CreatedByName}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="UpdatedByName">
+        <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Updated By</mat-header-cell>
+        <mat-cell class="cellright" *matCellDef="let row">{{row.UpdatedByName}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ListedByName">
+        <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Listed By</mat-header-cell>
+        <mat-cell class="cellright" *matCellDef="let row">{{row.ListedByName}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Listed">
+        <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Listed</mat-header-cell>
+        <mat-cell class="cellright" *matCellDef="let row">{{row.Listed | date:'MM/dd/yyyy'}}</mat-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;">
-    </mat-row>
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
 
-  </mat-table>
-  <mat-paginator [pageSize]="100" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </mat-table>
+  </div>
+ 
 </div>
+<mat-paginator [pageSize]="100" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 <app-progress-spinner [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
   [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
 </app-progress-spinner>
