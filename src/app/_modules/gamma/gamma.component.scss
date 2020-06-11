@@ -13,9 +13,8 @@
     width: 300px !important;
    }
 .table-container {
-    // using max-height sets fixes the height of the window - might want to make paginator footer sticky but I don't want.
-   // max-height: calc(100vh - 155px); // or height: calc(100vh - 155px); depending on your need  change
-    width: 100%;
-    overflow: auto; // add scrollbar to the element, not the page itself
+  max-height: calc(100vh - 155px); // or height: calc(100vh - 155px); depending on your need  change
+  width: 100%;
+  overflow: auto; // add scrollbar to the element, not the page itself
     // max-height: calc(100vh - 240px);
   }
