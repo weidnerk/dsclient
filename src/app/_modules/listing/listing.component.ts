@@ -670,6 +670,10 @@ export class ListingdbComponent implements OnInit {
       tmsg += this.listing.PrimaryCategoryID + "<br/>";
       tmsg += this.listing.PrimaryCategoryName + "<br/><br/>";
 
+      if (!sellerImgURL) {
+        this.showMessage("No seller image to display.");
+      }
+
       if (!this.listing.Listed && sellerImgURL) {     // new listing, show the user the seller's image
         const dialogRef = this.dialog.open(ConfirmComponent,
           {
@@ -769,6 +773,10 @@ export class ListingdbComponent implements OnInit {
         let newItemID = this.getFirstInList(si);
         let ref = "https://www.ebay.com/itm/" + newItemID;
         this.statusMessage += "<a target='_blank' href='" + ref + "'" + ">eBay</a>";
+
+        this.statusMessage += "<br/>Presume 1st record in response is just item ID<br/>";
+        this.statusMessage += "Presume 2nd record in response is of the form 'Listed: YES'<br/>";
+        this.statusMessage += "What happens if the item could not be listed?<br/>";
         this.showMessage(this.statusMessage);
       },
         error => {
@@ -778,7 +786,7 @@ export class ListingdbComponent implements OnInit {
         });
   }
   onOverrideEndListing(status: string) {
-    let pos:number = status.indexOf('NO');
+    let pos: number = status.indexOf('NO');
     if (pos > -1) {
       return false;
     }
@@ -961,15 +969,17 @@ export class ListingdbComponent implements OnInit {
 
         this.walItem = supp;
 
-        // this.imgSource = wi.SupplierPicURL;
-        this.imgSourceArray = this.convertStringListToArray(wi.SupplierPicURL);
-        if (!this.ctlDescription.value) {
-          this.listingForm.patchValue({
-            description: wi.Description
-          });
-        }
         if (!wi.SupplierPicURL) {
-          this.supplierPicsMsg = "Failed to retrieve item images from supplier."
+          // this.supplierPicsMsg = "Failed to retrieve item images from supplier."
+          this.showMessage("Failed to retrieve item images from supplier.")
+        }
+        else {
+          this.imgSourceArray = this.convertStringListToArray(wi.SupplierPicURL);
+          if (!this.ctlDescription.value) {
+            this.listingForm.patchValue({
+              description: wi.Description
+            });
+          }
         }
         this.onCalculateWMPrice();
       },

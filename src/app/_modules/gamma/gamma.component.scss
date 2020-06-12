@@ -12,6 +12,8 @@
 .filter {
     width: 300px !important;
    }
+
+  //  taken from https://stackoverflow.com/questions/51709280/angular-6-material-data-table-with-fixed-header-and-paginator
 .table-container {
   max-height: calc(100vh - 155px); // or height: calc(100vh - 155px); depending on your need  change
   width: 100%;
