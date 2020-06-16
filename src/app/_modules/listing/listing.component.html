@@ -255,9 +255,9 @@
             </span>
             <button color="primary" type="button" (click)="onCalculateWMPrice()" mat-raised-button
               [disabled]="!walItem || !ctlPctProfit.value">Calculate
-              Price</button>
-            <button color="primary" type="button" (click)="onCalculateProfit()" mat-raised-button
-              [disabled]="!walItem || !ctlPctProfit.value">Calculate
+              Price</button>&nbsp;
+            <button color="primary" type="button" (click)="onCalculateProfit()" mat-raised-button matTooltip="Use 7% sales tax"
+              [disabled]="!walItem || !ctlPctProfit.value">Calculate Approx
               Profit</button>
             <button class="btn" mat-button mat-raised-button color="primary" type="submit" (click)="storeButtonVal=true"
               [disabled]="!listingForm.valid || !walItem">Save</button>

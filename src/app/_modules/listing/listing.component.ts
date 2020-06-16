@@ -481,7 +481,7 @@ export class ListingdbComponent implements OnInit {
       this._orderHistoryService.setOrder(this.listing, this.ctlFromDate.value, this.ctlToDate.value)
         .subscribe(so => {
           this.salesOrder = so;
-          this.calcProfit();
+          this.calcProfitOnOrder();
           this.displayProgressSpinner = false;
         },
           error => {
@@ -492,8 +492,9 @@ export class ListingdbComponent implements OnInit {
   }
   /**
    * Recall that salesOrder is an array of orders between 2 days but UI just asks for single i_paid.
+   * Used on Orders page, not the listing page.
    */
-  calcProfit() {
+  calcProfitOnOrder() {
     this.salesOrder.forEach((element) => {
       let revenue = element.subTotal + element.shippingCost;
       let expenses = element.finalValueFee + element.payPalFee + +this.ctlIPaid.value;
