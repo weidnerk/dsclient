@@ -355,7 +355,7 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab [disabled]='false' label="Orders">
+    <mat-tab [disabled]='userProfile.isVA' label="Orders">
       <ng-container>
         <div class="container">
           <br />
@@ -657,7 +657,7 @@
         </ng-container>
       </ng-container>
     </mat-tab>
-    <mat-tab label="Log">
+    <mat-tab [disabled]="userProfile.isVA" label="Log">
       <br />
       <div>
         <button class="loadwalmart" color="primary" type="button" (click)="onGetListingLog()" mat-raised-button>Get
