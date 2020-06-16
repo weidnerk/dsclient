@@ -40,14 +40,14 @@ mat-card{
     padding: 10px;
     border-radius: 5px;
   }
-//   get a label to align with a mat-form-field on same row
+// get a label to align with a mat-form-field on same row
 span.relative {
     position: relative;
     top: -8px;
 }
 
-// align items on seller item id row
-span.sellerItemID {
+// align label with mat input
+span.labelmatinput {
     position: relative;
     top: 12px;
 }

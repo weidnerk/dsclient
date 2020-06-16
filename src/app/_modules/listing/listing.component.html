@@ -177,9 +177,10 @@
               </mat-form-field>
             </div>
             <div class="col-2">
-              <span *ngIf="priceProfit">
+              <!-- <span *ngIf="priceProfit">
                 {{(priceProfit.proposePrice - priceProfit.breakEven) | currency}}</span>
-              &nbsp;<span *ngIf="profit">
+              &nbsp; -->
+              <span class="labelmatinput" *ngIf="profit">
                 {{(profit) | currency}}</span>
             </div>
             <div class="col-3">
@@ -208,7 +209,7 @@
               </span>
             </div>
             <div class="col-3">
-              <span class="sellerItemID"><i> Click Save will then store seller's item specifics.</i></span>
+              <span class="labelmatinput"><i> Click Save will then store seller's item specifics.</i></span>
             </div>
             <div class="col-3">
               <span *ngIf="listing && listing.SellerListing">
