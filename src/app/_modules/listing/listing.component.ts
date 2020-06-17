@@ -1253,8 +1253,18 @@ export class ListingdbComponent implements OnInit {
       return false;
   }
   endListingDisable(): boolean {
-    let result = !(this.listing && this.listing.ListedItemID && !this.listing.Ended);
-    return result;
+
+    // If we have a listed item has not been ended then disable = false, meaning, we can End Listing
+    let disable = !(this.listing
+      && this.listing?.ListedItemID
+      && !this.listing?.Ended);
+
+    if (!disable) {
+      if (this.userProfile.isVA) {
+        disable = true;
+      }
+    }
+    return disable;
   }
   /**
    * no, make new component for log
