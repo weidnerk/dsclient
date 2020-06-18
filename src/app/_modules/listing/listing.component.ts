@@ -172,8 +172,7 @@ export class ListingdbComponent implements OnInit {
         // itemId is seller's listing id
         // passing rptNumber and qtySold to potentially record in Listing table.
 
-        // Supposed to unsubscribe?
-        this.sub = this.route.params.subscribe(params => {
+        this.route.params.subscribe(params => {
           this.listingID = +params['listingID'];
           if (this.listingID > 0) {
             this.ctlSellerItemID.disable();
@@ -187,9 +186,6 @@ export class ListingdbComponent implements OnInit {
         error => {
           this.errorMessage = error.errMsg;
         });
-  }
-  ngOnDestroy() {
-    this.sub.unsubscribe();
   }
   initForm() {
     // get pct profit default setting

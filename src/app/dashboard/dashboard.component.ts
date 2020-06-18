@@ -42,6 +42,7 @@ export class DashboardComponent implements OnInit {
   userStores: UserStoreView[];
   selectedStore: number;
   userProfile: UserProfile;
+  admin = false;
 
   // status spinner variables
   color = 'primary';
@@ -55,10 +56,11 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
+    this.admin = this._orderHistoryService.isAdmin();
     this.getStores();
 
     this.getErrorCount();
-    if (this._orderHistoryService.isAdmin()) {
+    if (this.admin) {
       this.getLastError();
     }
   }

@@ -75,9 +75,10 @@
         <button [disabled]="!isConfigured || (userProfile && userProfile.isVA)" (click)="onStoreScan()" class="btn"
             mat-button mat-raised-button color="primary" type="button">Store
             Scan</button>&nbsp;
-        <button [disabled]="!isConfigured || (userProfile && userProfile.isVA)" class="btn" mat-button mat-raised-button
-            color="primary" type="button">Compare orders</button>
-
+        <ng-container *ngIf="admin">
+            <button [disabled]="!isConfigured || (userProfile && userProfile.isVA)" class="btn" mat-button
+                mat-raised-button color="primary" type="button" matTooltip="API vs SalesOrder">Compare orders</button>
+        </ng-container>
     </mat-card>
 </ng-container>
 <br />
