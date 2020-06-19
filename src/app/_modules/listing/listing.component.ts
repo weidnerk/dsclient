@@ -176,6 +176,9 @@ export class ListingdbComponent implements OnInit {
           this.listingID = +params['listingID'];
           if (this.listingID > 0) {
             this.ctlSellerItemID.disable();
+            if (this.userProfile.isVA) {
+              this.ctlPctProfit.disable();
+            }
             this.getData();
           }
           else {
@@ -191,6 +194,7 @@ export class ListingdbComponent implements OnInit {
     // get pct profit default setting
     this.imgSourceArray = null;
     this.listing = null;
+    this.walItem = null;
     this.ctlSourceURL.setValue(null);
     this.ctlListingTitle.setValue(null);
     this.ctlDescription.setValue(null);
@@ -199,6 +203,9 @@ export class ListingdbComponent implements OnInit {
     this.ctlSourceURL.enable();
     this.ctlSellerItemID.enable();
     this.ctlListingQty.setValue(1);
+    if (this.userProfile.isVA) {
+      this.ctlPctProfit.disable();
+    }
   }
 
   getData() {
@@ -226,7 +233,7 @@ export class ListingdbComponent implements OnInit {
           if (this.listing) {
             this.imgSourceArray = this.convertStringListToArray(this.listing.SupplierItem.SupplierPicURL);
           }
-
+          /*
           if (li.CheckShipping !== null) {
             this.listingForm.patchValue({
               checkShipping: (li.CheckShipping) ? '1' : '0'
@@ -275,6 +282,7 @@ export class ListingdbComponent implements OnInit {
               checkSupplierPics: (li.CheckSupplierPics) ? '1' : '0'
             });
           }
+          */
           this.ctlSourceURL.disable();
           if (li.Listed) {
 

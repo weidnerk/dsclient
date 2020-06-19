@@ -2,7 +2,7 @@
 <ng-container>
     <mat-form-field>
         <mat-label>Accounts</mat-label>
-        <mat-select [(ngModel)]="selectedStore" (selectionChange)="storeSelected($event)">
+        <mat-select [(ngModel)]="selectedStore" (selectionChange)="onStoreSelected($event)">
             <mat-option *ngFor="let m of userStores" [value]="m.storeID">
                 {{ m.eBayUserID }}
             </mat-option>

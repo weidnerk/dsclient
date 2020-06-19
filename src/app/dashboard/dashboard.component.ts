@@ -137,7 +137,8 @@ export class DashboardComponent implements OnInit {
           this.errorMessage = error.errMsg;
         });
   }
-  storeSelected(event: MatSelectChange) {
+  onStoreSelected(event: MatSelectChange) {
+    this.errorMessage = null;
     const selectedData = {
       text: (event.source.selected as MatOption).viewValue,
       value: event.source.value
