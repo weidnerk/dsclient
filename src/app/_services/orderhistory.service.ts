@@ -405,8 +405,8 @@ export class OrderHistoryService {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let url = this.calculateProfitUrl
-            + "?listingPrice=" + listingPrice
-            + "&supplierPrice=" + supplierPrice;
+                + "?listingPrice=" + listingPrice
+                + "&supplierPrice=" + supplierPrice;
             let currentUser = JSON.parse(userJson);
             const httpOptions = {
                 headers: new HttpHeaders({
@@ -622,8 +622,8 @@ export class OrderHistoryService {
         if (userJson) {
             let currentUser = JSON.parse(userJson);
             let url = this.setOrderUrl
-            + "?fromDate=" + fromDate
-            + "&toDate=" + toDate;
+                + "?fromDate=" + fromDate
+                + "&toDate=" + toDate;
             // + "?fromDate=" + fromDate.toISOString()
             // + "&toDate=" + toDate.toISOString();
             let body = JSON.stringify(listing);
@@ -648,8 +648,8 @@ export class OrderHistoryService {
         if (userJson) {
             let currentUser = JSON.parse(userJson);
             let url = this.getOrdersUrl
-            + "?fromDate=" + fromDate
-            + "&toDate=" + toDate;
+                + "?fromDate=" + fromDate
+                + "&toDate=" + toDate;
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',
@@ -901,7 +901,7 @@ export class OrderHistoryService {
                 }
             )
     }
-   
+
     listingLogAdd(log: ListingLog) {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
@@ -926,7 +926,7 @@ export class OrderHistoryService {
             }
         )
     }
-    
+
     /**
      * Use this as model.
      * @param error 
@@ -949,11 +949,13 @@ export class OrderHistoryService {
             if (error.message) {
                 errMsg = ' ' + error.message;
             }
-            if (error.error) {
-                errMsg = ' ' + error.error;
-            }
-            if (error.error && error.error.Message) {
-                errMsg = ' ' + error.error.Message;
+            else {
+                if (error.error) {
+                    errMsg = ' ' + error.error;
+                }
+                if (error.error && error.error.Message) {
+                    errMsg = ' ' + error.error.Message;
+                }
             }
             errMsg += ' ' + errDetail;
         }

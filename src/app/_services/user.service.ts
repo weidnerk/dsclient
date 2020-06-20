@@ -214,7 +214,7 @@ export class UserService {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
-            let url = this.getUserProfileKeysUrl + "?storeID=" + storeID; 
+            let url = this.getUserProfileKeysUrl + "?storeID=" + storeID;
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',
@@ -302,7 +302,7 @@ export class UserService {
                 }
             )
     }
-   
+
     TradingAPIUsage(): Observable<number> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
@@ -333,7 +333,7 @@ export class UserService {
         if (userJson) {
             let currentUser = JSON.parse(userJson);
             let url = this.getTokenStatusTypeUrl + "?userName=" + currentUser.userName
-                    + "&storeID=" + storeID;
+                + "&storeID=" + storeID;
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',
@@ -401,7 +401,7 @@ export class UserService {
                 }
             )
     }
-    userSettingsSave(userSettings: UserSettings, fieldNames: string[]): Observable<UserSettingsView>  {
+    userSettingsSave(userSettings: UserSettings, fieldNames: string[]): Observable<UserSettingsView> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
@@ -471,11 +471,13 @@ export class UserService {
             if (error.message) {
                 errMsg = ' ' + error.message;
             }
-            if (error.error) {
-                errMsg = ' ' + error.error;
-            }
-            if (error.error && error.error.Message) {
-                errMsg = ' ' + error.error.Message;
+            else {
+                if (error.error) {
+                    errMsg = ' ' + error.error;
+                }
+                if (error.error && error.error.Message) {
+                    errMsg = ' ' + error.error.Message;
+                }
             }
             errMsg += ' ' + errDetail;
         }

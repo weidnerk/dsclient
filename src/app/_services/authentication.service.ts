@@ -61,11 +61,13 @@ export class AuthenticationService {
             if (error.message) {
                 errMsg = ' ' + error.message;
             }
-            if (error.error) {
-                errMsg = ' ' + error.error;
-            }
-            if (error.error && error.error.Message) {
-                errMsg = ' ' + error.error.Message;
+            else {
+                if (error.error) {
+                    errMsg = ' ' + error.error;
+                }
+                if (error.error && error.error.Message) {
+                    errMsg = ' ' + error.error.Message;
+                }
             }
             errMsg += ' ' + errDetail;
         }
