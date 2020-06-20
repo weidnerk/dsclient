@@ -156,7 +156,7 @@ export class GammaComponent {
   generateHeaders() {
     this.displayedColumns.push("Source");
     this.displayedColumns.push("Store");
-    // this.displayedColumns.push("ListedItemID");
+    this.displayedColumns.push("QtySold");
     this.displayedColumns.push("Seller");
     this.displayedColumns.push("SupplierPicURL");
     this.displayedColumns.push("Title");

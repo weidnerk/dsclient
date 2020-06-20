@@ -141,6 +141,7 @@ export class ListingView extends Listing {
     CreatedByName: string;
     UpdatedByName: string;
     SupplierPicURL: string;
+    QtySold: number;
 }
 export class SellerListingItemSpecific {
     id: number;
