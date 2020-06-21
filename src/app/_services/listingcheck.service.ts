@@ -124,31 +124,33 @@ export class ListCheckService {
     }
 
     private handleError(error: HttpErrorResponse) {
-        let errMsg: string | null = null;
+        let errMsg: string = "";
         let errDetail: string | null = null;
         if (error.error) {
             if (error.error instanceof ErrorEvent) {
                 // A client-side or network error occurred. Handle it accordingly.
-                errMsg = error.error.message;
+                errMsg += error.error.message;
             }
         }
-        if (errMsg == null) {
-            // The backend returned an unsuccessful response code.
-            // The response body may contain clues as to what went wrong,
-            errDetail = `Backend returned code ${error.status}`;
+        // The backend returned an unsuccessful response code.
+        // The response body may contain clues as to what went wrong,
+        errDetail = `Backend returned code ${error.status}`;
 
-            // specifically added for case when can't connect to API
-            if (error.message) {
-                errMsg = ' ' + error.message;
-            }
-            if (error.error) {
-                errMsg = ' ' + error.error;
-            }
-            if (error.error && error.error.Message) {
-                errMsg = ' ' + error.error.Message;
-            }
-            errMsg += ' ' + errDetail;
+        // specifically added for case when can't connect to API
+        if (error.message) {
+            errMsg += ' ' + error.message;
         }
+
+        /*
+        Have to validate this case: error.error might be an object - when is it a string?
+        if (error.error) {
+            errMsg += ' ' + error.error;
+        }
+        */
+        if (error.error && error.error.Message) {
+            errMsg += ' ' + error.error.Message;
+        }
+        errMsg += ' ' + errDetail;
         return observableThrowError(
             {
                 "errMsg": errMsg,
