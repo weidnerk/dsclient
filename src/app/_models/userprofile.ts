@@ -50,6 +50,7 @@ export class UserSettingsView extends UserSettings {
     ebayKeyID: number;
     APIEmail: string;
     isVA: boolean;
+    salesPermission: boolean;
 }
 
 export class AppIDSelect {

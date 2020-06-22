@@ -39,7 +39,7 @@ export class GammaComponent {
   logStatus: string;
   userStores: UserStoreView[];
   selectedStore: number;
-  userSettingsView: UserSettingsView;
+  // userSettingsView: UserSettingsView;
   userProfile: UserProfile;
   unlisted = true;
   listed = false;
@@ -113,12 +113,10 @@ export class GammaComponent {
         this.sub = this.route.paramMap.subscribe(params => {
           if (params.has('listed')) {
             if (params.get('listed') === '1') {
-              console.log('listed');
               this.listed = true;
               this.unlisted = false;
             }
             if (params.get('listed') === '2') {
-              console.log('unlisted');
               this.listed = false;
               this.unlisted = true;
             }
