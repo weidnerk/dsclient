@@ -13,13 +13,22 @@ export class ChangepasswordComponent implements OnInit {
 
   errorMessage: string;
 
-  constructor(private route: Router, private fb: FormBuilder, private _userService: UserService) { }
+  constructor(private route: Router,
+    private router: Router, 
+    private fb: FormBuilder, 
+    private _userService: UserService) { }
 
   form: FormGroup;
   get oldPassword() { return this.form.controls['oldpassword']; }
   get newPassword() { return this.form.controls['newpassword']; }
   get confirmPassword() { return this.form.controls['confirmpassword']; }
   
+   // status spinner variables
+   color = 'primary';
+   mode = 'indeterminate';
+   value = 50;
+   displayProgressSpinner = false;
+
   ngOnInit() {
     this.buildForm();
   }
@@ -33,6 +42,8 @@ export class ChangepasswordComponent implements OnInit {
   }
 
   onSubmit() {
+    this.displayProgressSpinner = true;
+    this.errorMessage = "";
     let c = new ChangePasswordBindingModel();
     c.OldPassword = this.oldPassword.value;
     c.NewPassword = this.newPassword.value;
@@ -41,29 +52,15 @@ export class ChangepasswordComponent implements OnInit {
     if (c.NewPassword == c.ConfirmPassword) {
       this._userService.ChangePassword(c)
         .subscribe(x => {
-          this.route.navigate(['/']);
+          this.displayProgressSpinner = false;
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 500);
         },
-          error => {
-            //this.alertService.error(error);
-            if (error.errObj.status === 400) {
-
-              //handle validation error
-
-              // return object from GetErrorResult has 2 properties: "$id" and ""
-              // here, we are grabbing last error in ModelState - probably not best way to do it
-              if (error.errObj.error.ModelState) {
-                for (var key in error.errObj.error.ModelState) {
-                  if (error.errObj.error.ModelState.hasOwnProperty(key)) {
-                    this.errorMessage = error.errObj.error.ModelState[key];
-                  }
-                }
-              }
-              else
-                this.errorMessage = error.errMsg;
-            }
-            else
-              this.errorMessage = error.errMsg;
-          });
+        error => {
+          this.displayProgressSpinner = false;
+          this.errorMessage = error.errMsg;
+        });
     }
     else {
       this.errorMessage = "New passwords do not match.";
