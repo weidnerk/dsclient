@@ -780,9 +780,13 @@ export class ListingdbComponent implements OnInit {
         this.statusMessage = this.delimitedToHTML(si);
         this.statusMessage += "<br/><br/>";
         let newItemID = this.getFirstInList(si);
-        let ref = "https://www.ebay.com/itm/" + newItemID;
-        this.statusMessage += "<a target='_blank' href='" + ref + "'" + ">eBay</a>";
-
+        if (newItemID) {
+          let ref = "https://www.ebay.com/itm/" + newItemID;
+          this.statusMessage += "<a target='_blank' href='" + ref + "'" + ">eBay</a>";
+          if (this.listing) {
+            this.listing.ListedItemID = newItemID;
+          }
+        }
         this.statusMessage += "<br/>Presume 1st record in response is just item ID<br/>";
         this.statusMessage += "Presume 2nd record in response is of the form 'Listed: YES'<br/>";
         this.statusMessage += "What happens if the item could not be listed?<br/>";
