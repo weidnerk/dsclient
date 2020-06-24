@@ -18,6 +18,7 @@ import { UserService } from 'src/app/_services';
 import { ConfirmComponent } from 'src/app/confirm/confirm.component';
 import { EndlistingComponent } from 'src/app/endlisting/endlisting.component';
 import { ErrordisplayComponent } from 'src/app/errordisplay/errordisplay.component';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-listing',
@@ -25,6 +26,18 @@ import { ErrordisplayComponent } from 'src/app/errordisplay/errordisplay.compone
   styleUrls: ['./listing.component.scss']
 })
 export class ListingdbComponent implements OnInit {
+  movies = [
+    'Episode I - The Phantom Menace',
+    'Episode II - Attack of the Clones',
+    'Episode III - Revenge of the Sith',
+    'Episode IV - A New Hope',
+    'Episode V - The Empire Strikes Back',
+    'Episode VI - Return of the Jedi',
+    'Episode VII - The Force Awakens',
+    'Episode VIII - The Last Jedi',
+    'Episode IX – The Rise of Skywalker'
+  ];
+
   [x: string]: any;
 
   sourceValues = [
@@ -1329,5 +1342,7 @@ export class ListingdbComponent implements OnInit {
     }
     return null;
   }
-
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
+  }
 }

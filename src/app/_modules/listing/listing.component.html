@@ -673,6 +673,14 @@
         </div>
       </div>
     </mat-tab>
+    <mat-tab [disabled]="userProfile?.isVA" label="Arrange Pics">
+      <br />
+      <div>
+        <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+          <div class="example-box" *ngFor="let movie of movies" cdkDrag>{{movie}}</div>
+        </div>
+      </div>
+    </mat-tab>
   </mat-tab-group>
 </div>
 <app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
