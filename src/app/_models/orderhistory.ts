@@ -270,6 +270,7 @@ export class SalesOrder {
     datePurchased: Date;
     i_paid: number;
     buyer: string;
+    buyerHandle: string;
     buyerPaid: number;
     total: number;
     subTotal: number;

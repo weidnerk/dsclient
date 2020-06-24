@@ -643,13 +643,14 @@ export class OrderHistoryService {
             }
         )
     }
-    getOrders(fromDate: Date, toDate: Date): Observable<SalesOrder[]> {
+    getOrders(fromDate: Date, toDate: Date, orderStatus: string): Observable<SalesOrder[]> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
             let url = this.getOrdersUrl
                 + "?fromDate=" + fromDate
-                + "&toDate=" + toDate;
+                + "&toDate=" + toDate
+                + "&orderStatus=" + orderStatus
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',

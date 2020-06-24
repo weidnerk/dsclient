@@ -417,7 +417,11 @@ export class ListingdbComponent implements OnInit {
   }
   onGetOrders() {
     this.errorMessage = null;
-    this.getOrders();
+    this.getOrders("");
+  }
+  onGetCancelledOrders() {
+    this.errorMessage = null;
+    this.getOrders("Cancelled");
   }
   onSalesOrderAdd(listedItemID: string, buyer: string) {
     this.errorMessage = null;
@@ -506,9 +510,9 @@ export class ListingdbComponent implements OnInit {
       element.profitMargin = (element.profit / element.total);
     });
   }
-  getOrders() {
+  getOrders(orderStatus: string) {
     this.displayProgressSpinner = true;
-    this._orderHistoryService.getOrders(this.ctlFromDate.value, this.ctlToDate.value)
+    this._orderHistoryService.getOrders(this.ctlFromDate.value, this.ctlToDate.value, orderStatus)
       .subscribe(so => {
         this.salesOrder = so;
         this.displayProgressSpinner = false;
