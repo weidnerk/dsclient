@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, Valid
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ChangePasswordBindingModel } from '../_models/ResetPasswordViewModel';
 import { UserService } from '../_services/index';
+import { MatDialog } from '@angular/material/dialog';
+import { ShowmessagesComponent } from '../showmessages/showmessages.component';
 
 @Component({
   selector: 'app-changepassword',
@@ -16,7 +18,8 @@ export class ChangepasswordComponent implements OnInit {
   constructor(private route: Router,
     private router: Router, 
     private fb: FormBuilder, 
-    private _userService: UserService) { }
+    private _userService: UserService,
+    public dialog: MatDialog) { }
 
   form: FormGroup;
   get oldPassword() { return this.form.controls['oldpassword']; }
@@ -53,9 +56,10 @@ export class ChangepasswordComponent implements OnInit {
       this._userService.ChangePassword(c)
         .subscribe(x => {
           this.displayProgressSpinner = false;
-          setTimeout(() => {
-            this.router.navigate(['/']);
-          }, 500);
+          this.showMessage("Password changed.")
+          // setTimeout(() => {
+          //   this.router.navigate(['/']);
+          // }, 500);
         },
         error => {
           this.displayProgressSpinner = false;
@@ -65,5 +69,17 @@ export class ChangepasswordComponent implements OnInit {
     else {
       this.errorMessage = "New passwords do not match.";
     }
+  }
+
+  showMessage(msg: string) {
+    const dialogRef = this.dialog.open(ShowmessagesComponent, {
+      height: '500px',
+      width: '600px',
+      data: { message: msg }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.router.navigate(['/']);
+    });
   }
 }
