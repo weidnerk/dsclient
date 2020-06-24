@@ -67,6 +67,7 @@ export class ChangepasswordComponent implements OnInit {
         });
     }
     else {
+      this.displayProgressSpinner = false;
       this.errorMessage = "New passwords do not match.";
     }
   }
