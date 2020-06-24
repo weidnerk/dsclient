@@ -806,9 +806,11 @@ export class ListingdbComponent implements OnInit {
         this.showMessage(this.statusMessage);
       },
         error => {
-          this.errorMessage = this.delimitedToHTML(error.errMsg);
+          this.errorMessage = "<div class='error'>ERROR</div><br/>";
+          this.errorMessage += this.delimitedToHTML(error.errMsg);
           this.displayProgressSpinner = false;
           this.listingButtonEnable = false;
+          this.showMessage(this.errorMessage);
         });
   }
   onOverrideEndListing(status: string) {
