@@ -155,6 +155,7 @@ export class Dashboard {
     oos: number;
     notListed: number;
     repricerLastRan: Date;
+    repricerElapsedTime: number;
 }
 export class StoreAnalysis {
     dbIsMissingItems: string[];

@@ -10,15 +10,23 @@
     </mat-form-field><br /><br />
     <mat-card>
         <!-- <div class="container-fluid"> -->
-            <div class="row">
-                <div class="col-3">
-                    Repricer last ran:
-                </div>
-                <div class="col-3">
-                    {{dashboard.repricerLastRan | date: 'MM/dd/yyyy hh:mm a'}}
-                </div>
+        <div class="row">
+            <div class="col-3">
+                Repricer last ran:
             </div>
-            <div class="row">
+            <div class="col-3">
+                {{dashboard.repricerLastRan | date: 'MM/dd/yyyy hh:mm a'}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                Repricer elapsed time:
+            </div>
+            <div class="col-3">
+                {{dashboard.repricerElapsedTime | number:'1.2-2'}}
+            </div>
+        </div>
+        <div class="row">
             <div class="col-3">
                 Listed in store:
             </div>
@@ -44,6 +52,12 @@
             </div>
             <div class="col-3">
                 {{dashboard.notListed}}
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-3">
+                SCAN STORE
             </div>
         </div>
         <div class="row">
