@@ -1345,6 +1345,10 @@ export class ListingdbComponent implements OnInit {
     return null;
   }
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
+    // moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
+
+    // non-null assertion operator
+    // https://stackoverflow.com/questions/54496398/typescript-type-string-undefined-is-not-assignable-to-type-string
+    moveItemInArray(this.imgSourceArray!, event.previousIndex, event.currentIndex);
   }
 }

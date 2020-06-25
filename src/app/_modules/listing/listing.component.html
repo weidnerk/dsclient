@@ -677,7 +677,9 @@
       <br />
       <div>
         <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-          <div class="example-box" *ngFor="let movie of movies" cdkDrag>{{movie}}</div>
+          <span class="example-box" *ngFor='let img of imgSourceArray' style="padding: 1px;" cdkDrag>
+            <img [src]="img" height="100px" width="100px">
+          </span>
         </div>
       </div>
     </mat-tab>

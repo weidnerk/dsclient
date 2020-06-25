@@ -57,9 +57,7 @@ export class ChangepasswordComponent implements OnInit {
         .subscribe(x => {
           this.displayProgressSpinner = false;
           this.showMessage("Password changed.")
-          // setTimeout(() => {
-          //   this.router.navigate(['/']);
-          // }, 500);
+         
         },
         error => {
           this.displayProgressSpinner = false;
