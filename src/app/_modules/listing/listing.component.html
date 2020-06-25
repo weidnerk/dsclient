@@ -257,8 +257,8 @@
             <button color="primary" type="button" (click)="onCalculateWMPrice()" mat-raised-button
               [disabled]="!walItem || !ctlPctProfit.value">Calculate
               Price</button>&nbsp;
-            <button color="primary" type="button" (click)="onCalculateProfit()" mat-raised-button matTooltip="Use 7% sales tax for PayPal fee"
-              [disabled]="!walItem || !ctlPctProfit.value">Calculate Approx
+            <button color="primary" type="button" (click)="onCalculateProfit()" mat-raised-button
+              matTooltip="Use 7% sales tax for PayPal fee" [disabled]="!walItem || !ctlPctProfit.value">Calculate Approx
               Profit</button>
             <button class="btn" mat-button mat-raised-button color="primary" type="submit" (click)="storeButtonVal=true"
               [disabled]="!listingForm.valid || !walItem">Save</button>
@@ -419,12 +419,16 @@
             <br />
             <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onSetOrder()"
               [disabled]="listing && !listing.ListedItemID">Fetch Order from eBay</button>
-
-              <!-- this needs to be moved to the sidebar -->
+              <br/><br/>
+            <!-- this needs to be moved to the sidebar -->
             <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onGetOrders()"
               [disabled]="listing && !listing.ListedItemID">Fetch orders from eBay (any item)</button>
-              <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onGetCancelledOrders()"
-              [disabled]="listing && !listing.ListedItemID">Fetch cancelled orders from eBay (any item)</button>
+            <button class="btn" mat-button mat-raised-button color="primary" type="button"
+              (click)="onGetCancelledOrders()" [disabled]="listing && !listing.ListedItemID">Fetch cancelled orders from
+              eBay (any item)</button>
+            <button class="btn" mat-button mat-raised-button color="primary" type="button"
+              (click)="onGetCancelledOrders()" [disabled]="listing && !listing.ListedItemID">Fetch return orders from
+              eBay (any item)</button>
 
             <br /><br />
             <ng-container *ngIf="salesOrder">
