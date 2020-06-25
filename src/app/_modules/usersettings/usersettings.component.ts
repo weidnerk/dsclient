@@ -6,6 +6,8 @@ import { UserSettingsView, UserStoreView, UserSettings, eBayUser } from 'src/app
 import { eBayBusinessPolicies, StoreProfile, eBayStore, ShippingPolicy, PaymentPolicy, ReturnPolicy } from 'src/app/_models/orderhistory';
 import { OrderHistoryService } from 'src/app/_services/orderhistory.service';
 import { UserService } from 'src/app/_services';
+import { MatDialog } from '@angular/material/dialog';
+import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.component';
 
 // https://stackoverflow.com/questions/16334765/regular-expression-for-not-allowing-spaces-in-the-input-field
 const STORENAME_REGEX = /^\S*$/; // a string consisting only of non-whitespaces
@@ -58,7 +60,8 @@ export class UsersettingsComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private _orderHistoryService: OrderHistoryService,
-    private _userService: UserService) { }
+    private _userService: UserService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.buildForm();
@@ -117,10 +120,12 @@ export class UsersettingsComponent implements OnInit {
       this._userService.userSettingsSave(settings, ["PctProfit", "MaxShippingDays", "ShippingProfile", "ReturnProfile", "PaymentProfile"])
         .subscribe(si => {
           this.displayProgressSpinner = false;
+          this.showMessage("Settings saved.");
         },
           error => {
             this.errorMessage = error.errMsg;
             this.displayProgressSpinner = false;
+            this.showMessage("<div class='error'>ERROR</div><br/>" + this.errorMessage!);
           });
     }
     else {
@@ -128,10 +133,12 @@ export class UsersettingsComponent implements OnInit {
         .subscribe(si => {
           this.userSettingsView = si;
           this.displayProgressSpinner = false;
+          this.showMessage("Settings saved.");
         },
           error => {
             this.errorMessage = error.errMsg;
             this.displayProgressSpinner = false;
+            this.showMessage("<div class='error'>ERROR</div><br/>" + this.errorMessage!);
           });
     }
   }
@@ -366,6 +373,17 @@ export class UsersettingsComponent implements OnInit {
       }
     }
     return true;
+  }
+  showMessage(msg: string) {
+    const dialogRef = this.dialog.open(ShowmessagesComponent, {
+      height: '500px',
+      width: '600px',
+      data: { message: msg }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.router.navigate(['/']);
+    });
   }
   /*
   onSaveStore() {
