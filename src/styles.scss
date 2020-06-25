@@ -32,3 +32,11 @@ input {
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.cellright {
+    text-align: right;
+    justify-content: flex-end;
+}
+.cellcenter {
+    text-align: center;
+    // justify-content: flex-end;
+}

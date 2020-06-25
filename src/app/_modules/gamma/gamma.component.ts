@@ -39,6 +39,7 @@ export class GammaComponent {
   logStatus: string;
   userStores: UserStoreView[];
   selectedStore: number;
+  userStoreView: UserStoreView;
   // userSettingsView: UserSettingsView;
   userProfile: UserProfile;
   unlisted = true;
@@ -59,7 +60,7 @@ export class GammaComponent {
     private _userService: UserService) {
 
     this.displayProgressSpinner = true;
-    this.generateHeaders();
+
     this.matIconRegistry.addSvgIcon(
       'wmicon',
       this.domSanitizer.bypassSecurityTrustResourceUrl('./assets/wm.svg')
@@ -91,12 +92,20 @@ export class GammaComponent {
     this._userService.getUserStores()
       .subscribe(x => {
         this.userStores = x;
+        this.lookupStoreProfile();
+        this.generateHeaders();
       },
         error => {
           this.errorMessage = error.errMsg;
         });
   }
-
+  lookupStoreProfile() {
+    for (let m of this.userStores) {
+      if (this.selectedStore === m.storeID) {
+        this.userStoreView = m;
+      }
+    }
+  }
   getUserProfile() {
     this._userService.UserProfileGet()
       .subscribe(profile => {
@@ -152,12 +161,14 @@ export class GammaComponent {
   }
 
   generateHeaders() {
-    this.displayedColumns.push("Source");
-    this.displayedColumns.push("Store");
-    this.displayedColumns.push("QtySold");
-    this.displayedColumns.push("Seller");
     this.displayedColumns.push("SupplierPicURL");
     this.displayedColumns.push("Title");
+    this.displayedColumns.push("Source");
+    this.displayedColumns.push("Store");
+    if (this.userStoreView.salesPermission) {
+      this.displayedColumns.push("QtySold");
+    }
+    this.displayedColumns.push("Seller");
     this.displayedColumns.push("Qty");
     this.displayedColumns.push("ListingPrice");
     this.displayedColumns.push("CreatedByName");

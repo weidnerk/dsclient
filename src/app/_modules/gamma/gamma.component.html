@@ -50,8 +50,8 @@
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="QtySold">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Qty Sold</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.QtySold}}</mat-cell>
+        <mat-header-cell class="cellcenter" *matHeaderCellDef mat-sort-header>Qty Sold</mat-header-cell>
+        <mat-cell class="cellcenter" *matCellDef="let row">{{row.QtySold}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="Seller">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Seller</mat-header-cell>
@@ -70,27 +70,27 @@
           </span></mat-cell>
       </ng-container>
       <ng-container matColumnDef="ListingPrice">
-        <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Listing Price</mat-header-cell>
+        <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Listing Price</mat-header-cell>
         <mat-cell class="cellright" *matCellDef="let row">{{row.ListingPrice | currency}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="Qty">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.Qty}}</mat-cell>
+        <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
+        <mat-cell class="cellright" *matCellDef="let row">{{row.Qty}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="CreatedByName">
-        <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Created By</mat-header-cell>
+        <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Created By</mat-header-cell>
         <mat-cell class="cellright" *matCellDef="let row">{{row.CreatedByName}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="UpdatedByName">
-        <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Updated By</mat-header-cell>
+        <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Updated By</mat-header-cell>
         <mat-cell class="cellright" *matCellDef="let row">{{row.UpdatedByName}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="ListedByName">
-        <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Listed By</mat-header-cell>
+        <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Listed By</mat-header-cell>
         <mat-cell class="cellright" *matCellDef="let row">{{row.ListedByName}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="Listed">
-        <mat-header-cell class="headerright" *matHeaderCellDef mat-sort-header>Listed</mat-header-cell>
+        <mat-header-cell class="cellright" class="cellright" *matHeaderCellDef mat-sort-header>Listed</mat-header-cell>
         <mat-cell class="cellright" *matCellDef="let row">{{row.Listed | date:'MM/dd/yyyy'}}</mat-cell>
       </ng-container>
 

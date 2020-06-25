@@ -62,6 +62,7 @@ export class UserStoreView {
     storeID: number;
     storeName: string;
     eBayUserID: string;
+    salesPermission: boolean;
 }
 export class UserProfileKeys {
     id: number;
