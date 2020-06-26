@@ -283,6 +283,8 @@ export class SalesOrder {
     trackingNumber: string;
     profit: number;
     profitMargin: number;
+    returnStatus: string;
+    cancelStatus: string;
 }
 
 // return type when getting proposed price 

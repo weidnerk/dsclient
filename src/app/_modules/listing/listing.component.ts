@@ -26,17 +26,6 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   styleUrls: ['./listing.component.scss']
 })
 export class ListingdbComponent implements OnInit {
-  movies = [
-    'Episode I - The Phantom Menace',
-    'Episode II - Attack of the Clones',
-    'Episode III - Revenge of the Sith',
-    'Episode IV - A New Hope',
-    'Episode V - The Empire Strikes Back',
-    'Episode VI - Return of the Jedi',
-    'Episode VII - The Force Awakens',
-    'Episode VIII - The Last Jedi',
-    'Episode IX – The Rise of Skywalker'
-  ];
 
   [x: string]: any;
 
@@ -435,6 +424,10 @@ export class ListingdbComponent implements OnInit {
   onGetCancelledOrders() {
     this.errorMessage = null;
     this.getOrders("Cancelled");
+  }
+  onGetReturns() {
+    this.errorMessage = null;
+    this.getOrders("RETURN");
   }
   onSalesOrderAdd(listedItemID: string, buyer: string) {
     this.errorMessage = null;
@@ -1351,4 +1344,9 @@ export class ListingdbComponent implements OnInit {
     // https://stackoverflow.com/questions/54496398/typescript-type-string-undefined-is-not-assignable-to-type-string
     moveItemInArray(this.imgSourceArray!, event.previousIndex, event.currentIndex);
   }
+/*
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.timePeriods, event.previousIndex, event.currentIndex);
+  }
+  */
 }

@@ -427,7 +427,7 @@
               (click)="onGetCancelledOrders()" [disabled]="listing && !listing.ListedItemID">Fetch cancelled orders from
               eBay (any item)</button>
             <button class="btn" mat-button mat-raised-button color="primary" type="button"
-              (click)="onGetCancelledOrders()" [disabled]="listing && !listing.ListedItemID">Fetch return orders from
+              (click)="onGetReturns()" [disabled]="listing && !listing.ListedItemID">Fetch return orders from
               eBay (any item)</button>
 
             <br /><br />
@@ -606,6 +606,22 @@
                   </div>
                   <div class="row">
                     <div class="col-3">
+                      <label>Return status</label>
+                    </div>
+                    <div class="col-4 rightJustify">
+                      {{item.returnStatus}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-3">
+                      <label>Cancel status</label>
+                    </div>
+                    <div class="col-4 rightJustify">
+                      {{item.cancelStatus}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-3">
                       <label>Tracking #</label>
                     </div>
                     <div class="col-4 rightJustify">
@@ -680,10 +696,10 @@
     <mat-tab [disabled]="userProfile?.isVA" label="Arrange Pics">
       <br />
       <div>
-        <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-          <span class="example-box" *ngFor='let img of imgSourceArray' style="padding: 1px;" cdkDrag>
+        <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+          <div class="example-box" *ngFor='let img of imgSourceArray' style="padding: 1px;" cdkDrag>
             <img [src]="img" height="100px" width="100px">
-          </span>
+          </div>
         </div>
       </div>
     </mat-tab>
