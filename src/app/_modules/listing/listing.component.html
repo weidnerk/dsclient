@@ -361,178 +361,180 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab [disabled]='userProfile?.isVA' label="Orders">
-      <ng-container>
-        <div class="container">
-          <br />
-          <div *ngIf="errorMessage" class="error">
-            <span [innerHTML]="errorMessage"></span><br /><br />
-          </div>
-          <form *ngIf="listing" [formGroup]="orderForm" (ngSubmit)="salesOrderStore()">
-            <div class="row">
-              <div class="col-2">
-                <label>from date:</label>
-              </div>
-              <div class="col-10">
-                <mat-form-field appearance="outline" class="outlinepadding Url">
-                  <input matInput formControlName="fromDate" maxlength="40" placeholder="from date">
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-2">
-                <label>to date:</label>
-              </div>
-              <div class="col-10">
-                <mat-form-field appearance="outline" class="outlinepadding Url">
-                  <input matInput formControlName="toDate" maxlength="40" placeholder="to date">
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-2">
-                <label>Supplier order #:</label>
-              </div>
-              <div class="col-10">
-                <mat-form-field appearance="outline" class="outlinepadding Url">
-                  <input matInput formControlName="supplierOrderNumber" maxlength="40" placeholder="supplier order #">
-                  <mat-error *ngIf="ctlSupplierOrderNum.hasError('required')">
-                    <mat-icon>error</mat-icon>&nbsp;
-                    SupplierOrderNumber is required
-                  </mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-2">
-                <label>I Paid:</label>
-              </div>
-              <div class="col-10">
-                <mat-form-field appearance="outline" class="outlinepadding Url">
-                  <input matInput formControlName="ipaid" maxlength="40" placeholder="i paid">
-                  <mat-error *ngIf="ctlIPaid.hasError('required')">
-                    <mat-icon>error</mat-icon>&nbsp;
-                    I paid is required
-                  </mat-error>
-                  <mat-error *ngIf="ctlIPaid.invalid">
-                    <mat-icon>error</mat-icon>&nbsp;
-                    I paid is invalid
-                  </mat-error>
-                </mat-form-field>
-              </div>
-            </div>
+    <ng-container *ngIf="admin">
+      <mat-tab [disabled]='userProfile?.isVA' label="Orders">
+        <ng-container>
+          <div class="container">
             <br />
-            <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onSetOrder()"
-              [disabled]="listing && !listing.ListedItemID">Fetch Order from eBay</button>
-            <br /><br />
-            <!-- this needs to be moved to the sidebar -->
-            <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onGetOrders()"
-              [disabled]="listing && !listing.ListedItemID">Fetch orders from eBay (any item)</button>
-            <button class="btn" mat-button mat-raised-button color="primary" type="button"
-              (click)="onGetCancelledOrders()" [disabled]="listing && !listing.ListedItemID">Fetch cancelled orders from
-              eBay (any item)</button>
-            <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onGetReturns()"
-              [disabled]="listing && !listing.ListedItemID">Fetch return orders from
-              eBay (any item)</button>
+            <div *ngIf="errorMessage" class="error">
+              <span [innerHTML]="errorMessage"></span><br /><br />
+            </div>
+            <form *ngIf="listing" [formGroup]="orderForm" (ngSubmit)="salesOrderStore()">
+              <div class="row">
+                <div class="col-2">
+                  <label>from date:</label>
+                </div>
+                <div class="col-10">
+                  <mat-form-field appearance="outline" class="outlinepadding Url">
+                    <input matInput formControlName="fromDate" maxlength="40" placeholder="from date">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-2">
+                  <label>to date:</label>
+                </div>
+                <div class="col-10">
+                  <mat-form-field appearance="outline" class="outlinepadding Url">
+                    <input matInput formControlName="toDate" maxlength="40" placeholder="to date">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-2">
+                  <label>Supplier order #:</label>
+                </div>
+                <div class="col-10">
+                  <mat-form-field appearance="outline" class="outlinepadding Url">
+                    <input matInput formControlName="supplierOrderNumber" maxlength="40" placeholder="supplier order #">
+                    <mat-error *ngIf="ctlSupplierOrderNum.hasError('required')">
+                      <mat-icon>error</mat-icon>&nbsp;
+                      SupplierOrderNumber is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-2">
+                  <label>I Paid:</label>
+                </div>
+                <div class="col-10">
+                  <mat-form-field appearance="outline" class="outlinepadding Url">
+                    <input matInput formControlName="ipaid" maxlength="40" placeholder="i paid">
+                    <mat-error *ngIf="ctlIPaid.hasError('required')">
+                      <mat-icon>error</mat-icon>&nbsp;
+                      I paid is required
+                    </mat-error>
+                    <mat-error *ngIf="ctlIPaid.invalid">
+                      <mat-icon>error</mat-icon>&nbsp;
+                      I paid is invalid
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <br />
+              <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onSetOrder()"
+                [disabled]="listing && !listing.ListedItemID">Fetch Order from eBay</button>
+              <br /><br />
+              <!-- this needs to be moved to the sidebar -->
+              <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onGetOrders()"
+                [disabled]="listing && !listing.ListedItemID">Fetch orders from eBay (any item)</button>
+              <button class="btn" mat-button mat-raised-button color="primary" type="button"
+                (click)="onGetCancelledOrders()" [disabled]="listing && !listing.ListedItemID">Fetch cancelled orders
+                from
+                eBay (any item)</button>
+              <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onGetReturns()"
+                [disabled]="listing && !listing.ListedItemID">Fetch return orders from
+                eBay (any item)</button>
 
-            <br /><br />
-            <ng-container *ngIf="salesOrder">
-              <div *ngFor="let item of salesOrder">
-                <mat-card>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Listed Item ID</label>
+              <br /><br />
+              <ng-container *ngIf="salesOrder">
+                <div *ngFor="let item of salesOrder">
+                  <mat-card>
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Listed Item ID</label>
+                      </div>
+                      <div class="col-4">
+                        {{item.listedItemID}}
+                      </div>
                     </div>
-                    <div class="col-4">
-                      {{item.listedItemID}}
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Supplier order #</label>
+                      </div>
+                      <div class="col-4">
+                        {{item.supplierOrderNumber}}
+                      </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Supplier order #</label>
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Buyer</label>
+                      </div>
+                      <div class="col-4">
+                        {{item.buyer}}
+                      </div>
+                      <div class="col-3">
+                        {{item.buyerHandle}}
+                      </div>
                     </div>
-                    <div class="col-4">
-                      {{item.supplierOrderNumber}}
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Date purchased</label>
+                      </div>
+                      <div class="col-4">
+                        {{item.datePurchased | date:'M/d/y'}}
+                      </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Buyer</label>
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Buyer State</label>
+                      </div>
+                      <div class="col-4">
+                        {{item.buyerState}}
+                      </div>
                     </div>
-                    <div class="col-4">
-                      {{item.buyer}}
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Qty</label>
+                      </div>
+                      <div class="col-4 rightJustify">
+                        {{item.qty}}
+                      </div>
                     </div>
-                    <div class="col-3">
-                      {{item.buyerHandle}}
+                    <!-- blank line -->
+                    <div class="row">
+                      <div class="col-3">
+                        &nbsp;
+                      </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Date purchased</label>
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Sub total</label>
+                      </div>
+                      <div class="col-4 rightJustify">
+                        {{item.subTotal | currency}}
+                      </div>
                     </div>
-                    <div class="col-4">
-                      {{item.datePurchased | date:'M/d/y'}}
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Shipping</label>
+                      </div>
+                      <div class="col-4 rightJustify">
+                        {{item.shippingCost | currency}}
+                      </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Buyer State</label>
+                    <div class="row border-bottom">
+                      <div class="col-3">
+                        <label>Sales tax</label>
+                      </div>
+                      <div class="col-4 rightJustify">
+                        {{item.salesTax | currency}}
+                      </div>
                     </div>
-                    <div class="col-4">
-                      {{item.buyerState}}
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Buyer paid</label>
+                      </div>
+                      <div class="col-4 rightJustify">
+                        {{item.buyerPaid | currency}}
+                      </div>
+                      <div *ngIf="item.buyerPaid === 0" class="col-3">
+                        <label class="redText">CANCEL</label>
+                      </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Qty</label>
-                    </div>
-                    <div class="col-4 rightJustify">
-                      {{item.qty}}
-                    </div>
-                  </div>
-                  <!-- blank line -->
-                  <div class="row">
-                    <div class="col-3">
-                      &nbsp;
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Sub total</label>
-                    </div>
-                    <div class="col-4 rightJustify">
-                      {{item.subTotal | currency}}
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Shipping</label>
-                    </div>
-                    <div class="col-4 rightJustify">
-                      {{item.shippingCost | currency}}
-                    </div>
-                  </div>
-                  <div class="row border-bottom">
-                    <div class="col-3">
-                      <label>Sales tax</label>
-                    </div>
-                    <div class="col-4 rightJustify">
-                      {{item.salesTax | currency}}
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Buyer paid</label>
-                    </div>
-                    <div class="col-4 rightJustify">
-                      {{item.buyerPaid | currency}}
-                    </div>
-                    <div *ngIf="item.buyerPaid === 0" class="col-3">
-                      <label class="redText">CANCEL</label>
-                    </div>
-                  </div>
 
-                  <!-- <div class="row">
+                    <!-- <div class="row">
                     <div class="col-3">
                       <label>Total</label>
                     </div>
@@ -541,173 +543,168 @@
                     </div>
                   </div> -->
 
-                  <!-- blank line -->
-                  <div class="row">
-                    <div class="col-3">
-                      &nbsp;
+                    <!-- blank line -->
+                    <div class="row">
+                      <div class="col-3">
+                        &nbsp;
+                      </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Final value fee</label>
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Final value fee</label>
+                      </div>
+                      <div class="col-4 rightJustify">
+                        {{item.finalValueFee | currency}}
+                      </div>
+                      <div class="col-5">
+                        Do not include sales tax
+                      </div>
                     </div>
-                    <div class="col-4 rightJustify">
-                      {{item.finalValueFee | currency}}
-                    </div>
-                    <div class="col-5">
-                      Do not include sales tax
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>PayPal fee</label>
-                    </div>
-                    <div class="col-4 rightJustify">
-                      {{item.payPalFee | currency}}
-                    </div>
-                    <div class="col-4">
-                      Include sales tax
-                    </div>
+                    <div class="row">
+                      <div class="col-3">
+                        <label>PayPal fee</label>
+                      </div>
+                      <div class="col-4 rightJustify">
+                        {{item.payPalFee | currency}}
+                      </div>
+                      <div class="col-4">
+                        Include sales tax
+                      </div>
 
-                  </div>
-                  <!-- blank line -->
-                  <div class="row">
-                    <div class="col-3">
-                      &nbsp;
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Profit</label>
+                    <!-- blank line -->
+                    <div class="row">
+                      <div class="col-3">
+                        &nbsp;
+                      </div>
                     </div>
-                    <div class="col-4 rightJustify">
-                      {{item.profit | currency}}
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Profit</label>
+                      </div>
+                      <div class="col-4 rightJustify">
+                        {{item.profit | currency}}
+                      </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Profit margin</label>
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Profit margin</label>
+                      </div>
+                      <div class="col-4 rightJustify">
+                        {{item.profitMargin | percent : '0.1-2'}}
+                      </div>
+                      <div class="col-4">
+                        Include sales tax?
+                      </div>
                     </div>
-                    <div class="col-4 rightJustify">
-                      {{item.profitMargin | percent : '0.1-2'}}
+                    <!-- blank line -->
+                    <div class="row">
+                      <div class="col-3">
+                        &nbsp;
+                      </div>
                     </div>
-                    <div class="col-4">
-                      Include sales tax?
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Order status</label>
+                      </div>
+                      <div class="col-4 rightJustify">
+                        {{item.orderStatus}}
+                      </div>
                     </div>
-                  </div>
-                  <!-- blank line -->
-                  <div class="row">
-                    <div class="col-3">
-                      &nbsp;
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Return status</label>
+                      </div>
+                      <div class="col-4 rightJustify">
+                        {{item.returnStatus}}
+                      </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Order status</label>
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Cancel status</label>
+                      </div>
+                      <div class="col-4 rightJustify">
+                        {{item.cancelStatus}}
+                      </div>
                     </div>
-                    <div class="col-4 rightJustify">
-                      {{item.orderStatus}}
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Tracking #</label>
+                      </div>
+                      <div class="col-4 rightJustify">
+                        {{item.trackingNumber}}
+                      </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Return status</label>
-                    </div>
-                    <div class="col-4 rightJustify">
-                      {{item.returnStatus}}
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Cancel status</label>
-                    </div>
-                    <div class="col-4 rightJustify">
-                      {{item.cancelStatus}}
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label>Tracking #</label>
-                    </div>
-                    <div class="col-4 rightJustify">
-                      {{item.trackingNumber}}
-                    </div>
-                  </div>
-                  <button class="btn" mat-button mat-raised-button color="primary" type="button"
-                    (click)="onSalesOrderAdd(item.listedItemID, item.buyer)"
-                    [disabled]="listing && !listing.ListedItemID">Save Order</button>
-                </mat-card>
-                <br />
-              </div>
-            </ng-container>
-          </form>
-        </div>
-      </ng-container>
-    </mat-tab>
-    <mat-tab [disabled]='true' label="Variations">
-      <br />
-      <ng-container *ngIf="admin">
-        <button class="btn" mat-button mat-raised-button color="primary" type="button"
-          (click)="createVariationListing()">Create Variation Listing</button>
-        <button class="btn" mat-button mat-raised-button color="primary" type="button"
-          (click)="getVariationDisplay()">Get
-          Variation Listing</button>
-        <br /><br />
-        <div *ngIf="sellerVariationItem">
-          <b>Seller</b>
-          <div>{{sellerVariationItem.EbayURL}}</div>
-          <div>{{sellerVariationItem.Title}}</div>
-          <div>{{sellerVariationItem.VariationName}}</div>
-          <div *ngFor='let variation of sellerVariationItem.Variations'>
-            <ul>
-              <li>
-                {{variation.VariationSpecifics.NameValueList.Value}}<br />
-                {{variation.StartPrice}}
-              </li>
-            </ul>
+                    <button class="btn" mat-button mat-raised-button color="primary" type="button"
+                      (click)="onSalesOrderAdd(item.listedItemID, item.buyer)"
+                      [disabled]="listing && !listing.ListedItemID">Save Order</button>
+                  </mat-card>
+                  <br />
+                </div>
+              </ng-container>
+            </form>
           </div>
-        </div>
-        <ng-container *ngIf="variationItem">
-          <ng-container *ngIf="variationItem.SupplierVariation">
-            <br /><b>Walmart</b>
-            <br /><span>{{variationItem.ItemURL}}</span><br />
-            {{ variationItem.VariationName }}
-            <ul>
-              <li *ngFor='let supplierVariation of variationItem.SupplierVariation'>
-                {{ supplierVariation.Variation }}<br />
-                {{ supplierVariation.ItemID }}<br />
-                {{ supplierVariation.URL }}
-                <ul>
-                  <li *ngFor='let pic of supplierVariation.Images'>
-                    <img [src]="pic" height="100px" width="100px" style="padding-top: 15px;">
-                  </li>
-                </ul>
-              </li>
-            </ul>
+        </ng-container>
+      </mat-tab>
+    </ng-container>
+    <ng-container *ngIf="admin">
+      <mat-tab label="Variations">
+        <br />
+        <ng-container *ngIf="admin">
+          <button class="btn" mat-button mat-raised-button color="primary" type="button"
+            (click)="createVariationListing()">Create Variation Listing</button>
+          <button class="btn" mat-button mat-raised-button color="primary" type="button"
+            (click)="getVariationDisplay()">Get
+            Variation Listing</button>
+          <br /><br />
+          <div *ngIf="sellerVariationItem">
+            <b>Seller</b>
+            <div>{{sellerVariationItem.EbayURL}}</div>
+            <div>{{sellerVariationItem.Title}}</div>
+            <div>{{sellerVariationItem.VariationName}}</div>
+            <div *ngFor='let variation of sellerVariationItem.Variations'>
+              <ul>
+                <li>
+                  {{variation.VariationSpecifics.NameValueList.Value}}<br />
+                  {{variation.StartPrice}}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <ng-container *ngIf="variationItem">
+            <ng-container *ngIf="variationItem.SupplierVariation">
+              <br /><b>Walmart</b>
+              <br /><span>{{variationItem.ItemURL}}</span><br />
+              {{ variationItem.VariationName }}
+              <ul>
+                <li *ngFor='let supplierVariation of variationItem.SupplierVariation'>
+                  {{ supplierVariation.Variation }}<br />
+                  {{ supplierVariation.ItemID }}<br />
+                  {{ supplierVariation.URL }}
+                  <ul>
+                    <li *ngFor='let pic of supplierVariation.Images'>
+                      <img [src]="pic" height="100px" width="100px" style="padding-top: 15px;">
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </ng-container>
           </ng-container>
         </ng-container>
-      </ng-container>
-    </mat-tab>
-    <mat-tab [disabled]="userProfile?.isVA" label="Log">
-      <br />
-      <div>
-        <button class="loadwalmart" color="primary" type="button" (click)="onGetListingLog()" mat-raised-button>Get
-          listing log</button>
-        <div *ngIf="log">
-          <app-listinglog [listingID]="listingID"></app-listinglog>
-        </div>
-      </div>
-    </mat-tab>
-    <mat-tab [disabled]="userProfile?.isVA" label="Arrange Pics">
-      <br />
-      <!-- <div>
-        <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-          <div class="example-box" *ngFor='let img of imgSourceArray' style="padding: 1px;" cdkDrag>
-            <img [src]="img" height="100px" width="100px">
+      </mat-tab>
+    </ng-container>
+    <ng-container *ngIf="admin">
+      <mat-tab [disabled]="userProfile?.isVA" label="Log">
+        <br />
+        <div>
+          <button class="loadwalmart" color="primary" type="button" (click)="onGetListingLog()" mat-raised-button>Get
+            listing log</button>
+          <div *ngIf="log">
+            <app-listinglog [listingID]="listingID"></app-listinglog>
           </div>
         </div>
-      </div> -->
-    </mat-tab>
+      </mat-tab>
+    </ng-container>
   </mat-tab-group>
 </div>
 <app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
