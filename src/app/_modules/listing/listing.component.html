@@ -16,9 +16,14 @@
             </div>
           </div> -->
             <div class="col-10">
-              <span *ngFor='let img of imgSourceArray' style="padding: 1px;">
-                <img [src]="img" height="100px" width="100px">
-              </span>
+              <div>
+                <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
+                  (cdkDropListDropped)="drop($event)">
+                  <div class="example-box" *ngFor='let img of imgSourceArray' style="padding: 1px;" cdkDrag>
+                    <img [src]="img" height="75px" width="75px">
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <br />
@@ -419,15 +424,15 @@
             <br />
             <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onSetOrder()"
               [disabled]="listing && !listing.ListedItemID">Fetch Order from eBay</button>
-              <br/><br/>
+            <br /><br />
             <!-- this needs to be moved to the sidebar -->
             <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onGetOrders()"
               [disabled]="listing && !listing.ListedItemID">Fetch orders from eBay (any item)</button>
             <button class="btn" mat-button mat-raised-button color="primary" type="button"
               (click)="onGetCancelledOrders()" [disabled]="listing && !listing.ListedItemID">Fetch cancelled orders from
               eBay (any item)</button>
-            <button class="btn" mat-button mat-raised-button color="primary" type="button"
-              (click)="onGetReturns()" [disabled]="listing && !listing.ListedItemID">Fetch return orders from
+            <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onGetReturns()"
+              [disabled]="listing && !listing.ListedItemID">Fetch return orders from
               eBay (any item)</button>
 
             <br /><br />
@@ -695,13 +700,13 @@
     </mat-tab>
     <mat-tab [disabled]="userProfile?.isVA" label="Arrange Pics">
       <br />
-      <div>
+      <!-- <div>
         <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
           <div class="example-box" *ngFor='let img of imgSourceArray' style="padding: 1px;" cdkDrag>
             <img [src]="img" height="100px" width="100px">
           </div>
         </div>
-      </div>
+      </div> -->
     </mat-tab>
   </mat-tab-group>
 </div>

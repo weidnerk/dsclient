@@ -425,12 +425,13 @@ export class OrderHistoryService {
                 }
             )
     }
-    listingCreate(listingID: number): Observable<string> {
+    listingCreate(listingID: number, reviseUploadImages: boolean): Observable<string> {
         const userJson = localStorage.getItem('currentUser');
         if (userJson) {
             let currentUser = JSON.parse(userJson);
             let url = this.createListingUrl + "?userName=" + currentUser.userName
                 + "&listingID=" + listingID
+                + "&reviseUploadImages=" + reviseUploadImages;
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',
@@ -1017,4 +1018,21 @@ export class OrderHistoryService {
             }
         )
     }
+    convertStringListToArray(strList: string): string[] {
+        var a = strList.split(';');
+        return a;
+    }
+    /**
+       * Get first item in semi-colon delimited string.
+       */
+    getFirstInList(item: string | null): string | null {
+        if (item) {
+            var a = item.split(';');
+            return a[0];
+        }
+        else {
+            return null;
+        }
+    }
+
 }

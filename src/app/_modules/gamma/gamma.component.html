@@ -61,11 +61,11 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
         <mat-cell *matCellDef="let row">{{row.Title}}</mat-cell>
       </ng-container>
-      <ng-container matColumnDef="SupplierPicURL">
+      <ng-container matColumnDef="PictureURL">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Pic</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <span *ngIf="row.SupplierPicURL">
-            <a [routerLink]="['/listingdetaildb',row.ID]"><img [src]="getFirstImg(row.SupplierPicURL)" height="150px"
+          <span *ngIf="row.PictureURL">
+            <a [routerLink]="['/listingdetaildb',row.ID]"><img [src]="getFirstImg(row.PictureURL)" height="150px"
                 width="150px"></a>
           </span></mat-cell>
       </ng-container>

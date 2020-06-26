@@ -87,7 +87,7 @@ export class ListingdbComponent implements OnInit {
   profit: number;
   log: ListingLogView[];
   notesButtonText: string = "Notes";
-
+  reviseLoadImages = false;
   listingButtonEnable = false;
 
   // status spinner variables
@@ -233,7 +233,7 @@ export class ListingdbComponent implements OnInit {
 
           // this.imgSource = this.getFirstInList(this.imgSource);
           if (this.listing) {
-            this.imgSourceArray = this.convertStringListToArray(this.listing.SupplierItem.SupplierPicURL);
+            this.imgSourceArray = this._orderHistoryService.convertStringListToArray(this.listing.PictureURL);
           }
           /*
           if (li.CheckShipping !== null) {
@@ -605,7 +605,8 @@ export class ListingdbComponent implements OnInit {
       this.listing.SupplierItem.Updated = new Date();
       this.listing.SupplierItem.SupplierPrice = this.walItem.SupplierPrice;
       this.listing.ItemID = this.ctlSellerItemID.value;
-      this.listing.PictureURL = this.walItem.SupplierPicURL;
+      // this.listing.PictureURL = this.walItem.SupplierPicURL;
+      this.listing.PictureURL = this.arrayToDelimited(this.imgSourceArray!);
       this.listing.ItemID = this.ctlSellerItemID.value;
       this.listing.ListingPrice = this.ctlListingPrice.value;
       this.listing.ListingTitle = this.ctlListingTitle.value;
@@ -770,7 +771,7 @@ export class ListingdbComponent implements OnInit {
   createListing() {
 
     this.displayProgressSpinner = true;
-    this._orderHistoryService.listingCreate(this.listingID)
+    this._orderHistoryService.listingCreate(this.listingID, this.reviseLoadImages)
       .subscribe(si => {
         this.displayProgressSpinner = false;
         this.listingButtonEnable = false;
@@ -785,7 +786,7 @@ export class ListingdbComponent implements OnInit {
 
         this.statusMessage = this.delimitedToHTML(si);
         this.statusMessage += "<br/><br/>";
-        let newItemID = this.getFirstInList(si);
+        let newItemID = this._orderHistoryService.getFirstInList(si);
         if (newItemID) {
           let ref = "https://www.ebay.com/itm/" + newItemID;
           this.statusMessage += "<a target='_blank' href='" + ref + "'" + ">eBay</a>";
@@ -990,16 +991,18 @@ export class ListingdbComponent implements OnInit {
 
         this.walItem = supp;
 
-        if (!wi.SupplierPicURL) {
-          // this.supplierPicsMsg = "Failed to retrieve item images from supplier."
-          this.showMessage("Failed to retrieve item images from supplier.")
-        }
-        else {
-          this.imgSourceArray = this.convertStringListToArray(wi.SupplierPicURL);
-          if (!this.ctlDescription.value) {
-            this.listingForm.patchValue({
-              description: wi.Description
-            });
+        if (!this.listing) {
+          if (!wi.SupplierPicURL) {
+            // this.supplierPicsMsg = "Failed to retrieve item images from supplier."
+            this.showMessage("Failed to retrieve item images from supplier.")
+          }
+          else {
+            this.imgSourceArray = this._orderHistoryService.convertStringListToArray(wi.SupplierPicURL);
+            if (!this.ctlDescription.value) {
+              this.listingForm.patchValue({
+                description: wi.Description
+              });
+            }
           }
         }
         this.onCalculateWMPrice();
@@ -1074,22 +1077,6 @@ export class ListingdbComponent implements OnInit {
       this.formatedOutput += i + '<br/>';
     }
     return this.formatedOutput;
-  }
-  /**
-   * Get first item in semi-colon delimited string.
-   */
-  getFirstInList(item: string | null): string | null {
-    if (item) {
-      var a = item.split(';');
-      return a[0];
-    }
-    else {
-      return null;
-    }
-  }
-  convertStringListToArray(strList: string): string[] {
-    var a = strList.split(';');
-    return a;
   }
 
   getFirstImg(imgStr: string): string {
@@ -1338,15 +1325,29 @@ export class ListingdbComponent implements OnInit {
     return null;
   }
   drop(event: CdkDragDrop<string[]>) {
-    // moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
 
     // non-null assertion operator
     // https://stackoverflow.com/questions/54496398/typescript-type-string-undefined-is-not-assignable-to-type-string
     moveItemInArray(this.imgSourceArray!, event.previousIndex, event.currentIndex);
+    this.reviseLoadImages = true;
+    /*
+    if (this.imgSourceArray) {
+      for (let m of this.imgSourceArray) {
+        console.log(m);
+      }
+    }
+*/
   }
-/*
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.timePeriods, event.previousIndex, event.currentIndex);
+
+  arrayToDelimited(arr: string[]) {
+    let output: string = "";
+    for (let m of arr) {
+      output += m + ";";
+    }
+    output = output.substring(0, output.length - 1);
+    return output;
   }
-  */
+  getFirstInList(pictureURL: string) {
+    return this._orderHistoryService.getFirstInList(pictureURL);
+  }
 }
