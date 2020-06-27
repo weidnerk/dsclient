@@ -90,8 +90,8 @@
         <mat-cell class="cellright" *matCellDef="let row">{{row.Listed | date:'MM/dd/yyyy'}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="QtySold">
-        <mat-header-cell class="cellcenter" *matHeaderCellDef mat-sort-header>Qty Sold</mat-header-cell>
-        <mat-cell class="cellcenter" *matCellDef="let row">{{row.QtySold}}</mat-cell>
+        <mat-header-cell class="cellright" *matHeaderCellDef mat-sort-header>Qty Sold</mat-header-cell>
+        <mat-cell class="cellright" *matCellDef="let row">{{row.QtySold}}</mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></mat-header-row>

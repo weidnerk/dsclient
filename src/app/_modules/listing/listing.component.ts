@@ -914,8 +914,10 @@ export class ListingdbComponent implements OnInit {
         error => {
           this.displayProgressSpinner = false;
 
-          // this.errorMessage = this.formatOutput(error.errMsg);
           this.errorMessage = error.errMsg;
+          let errMsg = "<div class='error'>ERROR</div><br/>";
+          errMsg += this.errorMessage;
+          this.showMessage(errMsg);
         });
   }
 
