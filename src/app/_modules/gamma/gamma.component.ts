@@ -165,9 +165,6 @@ export class GammaComponent {
     this.displayedColumns.push("Title");
     this.displayedColumns.push("Source");
     this.displayedColumns.push("Store");
-    if (this.userStoreView.salesPermission) {
-      this.displayedColumns.push("QtySold");
-    }
     this.displayedColumns.push("Seller");
     this.displayedColumns.push("Qty");
     this.displayedColumns.push("ListingPrice");
@@ -175,6 +172,9 @@ export class GammaComponent {
     this.displayedColumns.push("UpdatedByName");
     this.displayedColumns.push("ListedByName");
     this.displayedColumns.push("Listed");
+    if (this.userStoreView.salesPermission) {
+      this.displayedColumns.push("QtySold");
+    }
   }
   getFirstImg(imgStr: string): string {
     var a = imgStr.split(';');
