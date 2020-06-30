@@ -675,7 +675,7 @@ export class ListingdbComponent implements OnInit {
           error => {
             this.displayProgressSpinner = false;
             this.errorMessage = error.errMsg;
-            this.showMessage(this.errorMessage!);
+            this.showMessage("<div class='error'>ERROR</div><br/>" + this.errorMessage!);
           });
     }
   }
@@ -687,8 +687,15 @@ export class ListingdbComponent implements OnInit {
       tmsg += this.listing.PrimaryCategoryID + "<br/>";
       tmsg += this.listing.PrimaryCategoryName + "<br/><br/>";
 
+      let dmsg: string = "";
       if (!sellerImgURL) {
-        this.showMessage("No seller image to display.");
+        dmsg += "No seller image to display. ";
+      }
+      if (!this.listing.SellerListing) {
+        dmsg += "SellerListing is null. ";
+      }
+      if (dmsg.length > 0) {
+        this.showMessage(dmsg);
       }
 
       if (!this.listing.Listed && sellerImgURL) {     // new listing, show the user the seller's image
@@ -1032,7 +1039,7 @@ export class ListingdbComponent implements OnInit {
           error => {
             this.errorMessage = error.errMsg;
             this.displayProgressSpinner = false;
-            this.showMessage(this.errorMessage!);
+            this.showMessage("<div class='error'>ERROR</div><br/>" + this.errorMessage!);
           });
     }
   }
