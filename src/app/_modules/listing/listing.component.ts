@@ -19,6 +19,7 @@ import { ConfirmComponent } from 'src/app/confirm/confirm.component';
 import { EndlistingComponent } from 'src/app/endlisting/endlisting.component';
 import { ErrordisplayComponent } from 'src/app/errordisplay/errordisplay.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-listing',
@@ -47,7 +48,51 @@ export class ListingdbComponent implements OnInit {
     { value: '3', viewValue: 'High' },
     { value: '4', viewValue: 'Don\'t know' }
   ];
-
+  config: AngularEditorConfig = {
+    editable: true,
+      spellcheck: true,
+      height: 'auto',
+      minHeight: '0',
+      maxHeight: 'auto',
+      width: 'auto',
+      minWidth: '0',
+      translate: 'yes',
+      enableToolbar: true,
+      showToolbar: true,
+      placeholder: 'Enter text here...',
+      defaultParagraphSeparator: '',
+      defaultFontName: '',
+      defaultFontSize: '',
+      fonts: [
+        {class: 'arial', name: 'Arial'},
+        {class: 'times-new-roman', name: 'Times New Roman'},
+        {class: 'calibri', name: 'Calibri'},
+        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+      ],
+      customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ],
+    uploadUrl: 'v1/image',
+    uploadWithCredentials: false,
+    sanitize: true,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [
+      ['bold', 'italic'],
+      ['fontSize']
+    ]
+};
   constructor(private router: Router,
     private _userService: UserService,
     private route: ActivatedRoute,
@@ -89,6 +134,7 @@ export class ListingdbComponent implements OnInit {
   notesButtonText: string = "Notes";
   reviseLoadImages = false;
   listingButtonEnable = false;
+  htmlContent = '';
 
   // status spinner variables
   color = 'primary';
@@ -99,6 +145,7 @@ export class ListingdbComponent implements OnInit {
 
   // form variables
   listingForm: FormGroup;
+  editorForm: FormGroup;
   formatedPictureUrl: string;
   formatedOutput: string;
   imgSourceArray: string[] | null;
@@ -113,6 +160,7 @@ export class ListingdbComponent implements OnInit {
   get ctlNote() { return this.listingForm.controls['note']; }
   get ctlDescription() { return this.listingForm.controls['description']; }
   get ctlCheckDescription() { return this.listingForm.controls['checkDescription']; }
+  get ctlHtmlContent() { return this.editorForm.controls['htmlContent']; }
 
 
   // get ctlEbayOrderNum() { return this.orderForm.controls['ebayOrderNumber']; }
@@ -135,6 +183,7 @@ export class ListingdbComponent implements OnInit {
     this.admin = this._orderHistoryService.isAdmin();
     this.buildForm();
     this.buildOrderForm();
+    this.buildEditorForm();
     this.getUserProfile();
 
     this.listingForm.controls['variation'].disable();
@@ -1360,5 +1409,11 @@ export class ListingdbComponent implements OnInit {
   }
   getFirstInList(pictureURL: string) {
     return this._orderHistoryService.getFirstInList(pictureURL);
+  }
+
+  buildEditorForm(): void {
+    this.editorForm = this.fb.group({
+      htmlContent: [null]
+    })
   }
 }

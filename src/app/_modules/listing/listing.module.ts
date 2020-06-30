@@ -27,7 +27,8 @@ import { ProgressSpinnerModule } from '../../progress-spinner/progress-spinner.m
 import { ListingRoutingModule } from './listing-routes.module';
 import { MatCardModule } from '@angular/material/card';
 import { ListinglogComponent } from 'src/app/listinglog/listinglog.component';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [ListingdbComponent,
@@ -58,7 +59,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatDialogModule,
     MatTabsModule,
     MatCardModule,
-    DragDropModule
+    DragDropModule,
+    AngularEditorModule
   ]
 })
 export class ListingdbModule { }

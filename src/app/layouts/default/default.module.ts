@@ -22,13 +22,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { DashboardService } from 'src/app/_services/dashboard.service';
 import { DefaultComponent } from './default.component';
 import { Dashboardv2Component } from 'src/app/dashboard-v2/dashboard.component';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AppOverlayModule } from 'src/app/overlay/overlay.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { TimesSoldComponent } from 'src/app/timessold/timessold.component';
-import { FormsModule, ReactiveFormsModule }    from '@angular/forms';
+import { FormsModule, ReactiveFormsModule }    from '@angular/forms'; // not everything in its own module (like login)
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -82,7 +81,6 @@ import { ErrordisplayComponent } from 'src/app/errordisplay/errordisplay.compone
     MatCardModule,
     MatPaginatorModule,
     MatTableModule,
-    MatDialogModule,
     MatTabsModule,
     AppOverlayModule,
     MatIconModule,
@@ -102,7 +100,6 @@ import { ErrordisplayComponent } from 'src/app/errordisplay/errordisplay.compone
     MatSortModule,
     FlexLayoutModule,
     SharedModule,
-    MatTableModule,
     MatDividerModule,
     MatSidenavModule
   ],

@@ -698,6 +698,17 @@
         </div>
       </mat-tab>
     </ng-container>
+    <ng-container *ngIf="admin">
+      <mat-tab [disabled]="userProfile?.isVA" label="Editor">
+        <br />
+        <form [formGroup]="editorForm">
+          <angular-editor formControlName="htmlContent"></angular-editor>
+        </form>
+        <div class="html">
+          {{ ctlHtmlContent.value }}
+        </div>
+      </mat-tab>
+    </ng-container>
   </mat-tab-group>
 </div>
 <app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
