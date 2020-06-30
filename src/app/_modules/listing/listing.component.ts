@@ -675,6 +675,7 @@ export class ListingdbComponent implements OnInit {
           error => {
             this.displayProgressSpinner = false;
             this.errorMessage = error.errMsg;
+            this.showMessage(this.errorMessage!);
           });
     }
   }
@@ -1031,6 +1032,7 @@ export class ListingdbComponent implements OnInit {
           error => {
             this.errorMessage = error.errMsg;
             this.displayProgressSpinner = false;
+            this.showMessage(this.errorMessage!);
           });
     }
   }
