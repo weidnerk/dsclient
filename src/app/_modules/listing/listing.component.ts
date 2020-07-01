@@ -74,7 +74,7 @@ export class ListingdbComponent implements OnInit {
     sanitize: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['bold', 'italic', 'insertImage', 'insertVideo','strikeThrough','superscript','subscript'],
+      ['italic', 'insertImage', 'insertVideo','strikeThrough','superscript','subscript'],
       ['fontSize','toggleEditorMode','link',
       'unlink',]
     ]
