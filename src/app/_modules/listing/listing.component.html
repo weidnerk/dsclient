@@ -9,7 +9,7 @@
         <form [formGroup]="listingForm" (ngSubmit)="onSubmit()">
           <!-- <h3 *ngIf="listing && listing.SellerListing">Seller: {{listing.SellerListing.Seller}}</h3> -->
 
-          <div class="row">
+          <div *ngIf="imgSourceArray" class="row">
             <div class="col-12">
               <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
                 (cdkDropListDropped)="drop($event)">
