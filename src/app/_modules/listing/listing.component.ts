@@ -69,28 +69,14 @@ export class ListingdbComponent implements OnInit {
         {class: 'calibri', name: 'Calibri'},
         {class: 'comic-sans-ms', name: 'Comic Sans MS'}
       ],
-      customClasses: [
-      {
-        name: 'quote',
-        class: 'quote',
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
-      },
-    ],
     uploadUrl: 'v1/image',
     uploadWithCredentials: false,
     sanitize: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['bold', 'italic'],
-      ['fontSize']
+      ['bold', 'italic', 'insertImage', 'insertVideo','strikeThrough','superscript','subscript'],
+      ['fontSize','toggleEditorMode','link',
+      'unlink',]
     ]
 };
   constructor(private router: Router,
@@ -145,7 +131,7 @@ export class ListingdbComponent implements OnInit {
 
   // form variables
   listingForm: FormGroup;
-  editorForm: FormGroup;
+  // editorForm: FormGroup;
   formatedPictureUrl: string;
   formatedOutput: string;
   imgSourceArray: string[] | null;
@@ -158,9 +144,10 @@ export class ListingdbComponent implements OnInit {
   get ctlListingQty() { return this.listingForm.controls['listingQty']; }
   get ctlPctProfit() { return this.listingForm.controls['pctProfit']; }
   get ctlNote() { return this.listingForm.controls['note']; }
-  get ctlDescription() { return this.listingForm.controls['description']; }
   get ctlCheckDescription() { return this.listingForm.controls['checkDescription']; }
-  get ctlHtmlContent() { return this.editorForm.controls['htmlContent']; }
+
+  get ctlDescription() { return this.listingForm.controls['description']; }
+  // get ctlHtmlContent() { return this.listingForm.controls['htmlContent']; }
 
 
   // get ctlEbayOrderNum() { return this.orderForm.controls['ebayOrderNumber']; }
@@ -720,6 +707,7 @@ export class ListingdbComponent implements OnInit {
           this.ctlSellerItemID.disable();
 
           this.displayProgressSpinner = false;
+          this.showMessage("Listing stored.");
         },
           error => {
             this.displayProgressSpinner = false;

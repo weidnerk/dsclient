@@ -316,25 +316,20 @@
           <br />
           <div *ngIf="ctlDescription.value" class="row">
             <div class="col-2">
-              <label>Render: </label>
-            </div>
-            <div class="col-10">
-              <div [innerHTML]='ctlDescription.value'></div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-2">
               <label>Description: </label>
             </div>
             <div class="col-10">
-              <mat-form-field appearance="outline" class="outlinepadding descriptionWidth">
-                <mat-label>Description</mat-label>
-                <textarea rows="20" matInput formControlName="description"></textarea>
-              </mat-form-field>
+              <angular-editor [config]="config" formControlName="description"></angular-editor>
             </div>
           </div>
-
+          <!-- <div *ngIf="ctlDescription.value" class="row">
+            <div class="col-2">
+              <label>HTML</label>
+            </div>
+            <div class="col-10 html">
+              {{ ctlDescription.value }}
+            </div>
+          </div> -->
         </form>
       </div>
     </mat-tab>
@@ -698,7 +693,7 @@
         </div>
       </mat-tab>
     </ng-container>
-    <ng-container *ngIf="admin">
+    <!-- <ng-container *ngIf="admin">
       <mat-tab [disabled]="userProfile?.isVA" label="Editor">
         <br />
         <form [formGroup]="editorForm">
@@ -708,7 +703,7 @@
           {{ ctlHtmlContent.value }}
         </div>
       </mat-tab>
-    </ng-container>
+    </ng-container> -->
   </mat-tab-group>
 </div>
 <app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
