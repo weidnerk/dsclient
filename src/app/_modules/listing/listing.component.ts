@@ -213,9 +213,12 @@ export class ListingdbComponent implements OnInit {
         this.route.params.subscribe(params => {
           this.listingID = +params['listingID'];
           if (this.listingID > 0) {
+            console.log('listingID: ' + this.listingID);
             this.ctlSellerItemID.disable();
+            this.ctlSourceURL.disable();
             if (this.userProfile.isVA) {
               this.ctlPctProfit.disable();
+              this.ctlListingPrice.disable();
             }
             this.getData();
           }
@@ -270,65 +273,6 @@ export class ListingdbComponent implements OnInit {
           // this.imgSource = this.getFirstInList(this.imgSource);
           if (this.listing) {
             this.imgSourceArray = this._orderHistoryService.convertStringListToArray(this.listing.PictureURL);
-          }
-          /*
-          if (li.CheckShipping !== null) {
-            this.listingForm.patchValue({
-              checkShipping: (li.CheckShipping) ? '1' : '0'
-            });
-          }
-          if (li.CheckSource !== null) {
-            this.listingForm.patchValue({
-              checkSource: (li.CheckSource) ? '1' : '0'
-            });
-          }
-          if (li.CheckCategory !== null) {
-            this.listingForm.patchValue({
-              checkCategory: (li.CheckCategory) ? '1' : '0'
-            });
-          }
-
-          if (li.CheckSellerShipping !== null) {
-            this.listingForm.patchValue({
-              checkSellerShipping: (li.CheckSellerShipping) ? '1' : '0'
-            });
-          }
-          if (li.CheckSupplierPrice !== null) {
-            this.listingForm.patchValue({
-              checkSupplierPrice: (li.CheckSupplierPrice) ? '1' : '0'
-            });
-          }
-          if (li.CheckSupplierItem !== null) {
-            this.listingForm.patchValue({
-              checkSupplierItem: (li.CheckSupplierItem) ? '1' : '0'
-            });
-          }
-
-          if (li.CheckSupplierPics !== null) {
-            this.listingForm.patchValue({
-              checkSupplierPics: (li.CheckSupplierPics) ? '1' : '0'
-            });
-          }
-
-          if (li.CheckVariationURL !== null) {
-            this.listingForm.patchValue({
-              checkSupplierVariationURL: (li.CheckVariationURL) ? '1' : '0'
-            });
-          }
-          if (li.CheckSupplierPics !== null) {
-            this.listingForm.patchValue({
-              checkSupplierPics: (li.CheckSupplierPics) ? '1' : '0'
-            });
-          }
-          */
-          this.ctlSourceURL.disable();
-          if (li.Listed) {
-
-            if (!this.admin) {
-              this.ctlListingTitle.disable();
-              this.ctlSourceURL.disable();
-              this.ctlListingPrice.disable();
-            }
           }
         }
         this.displayProgressSpinner = false;
@@ -1140,9 +1084,7 @@ export class ListingdbComponent implements OnInit {
   buildForm(): void {
     this.listingForm = this.fb.group({
       listingTitle: [null, Validators.compose([Validators.maxLength(80)])],
-      listingPrice: [{ value: null, disabled: true }, {
-        validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
-      }],
+      listingPrice: [null, Validators.compose([Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)])],
       profit: [null],
       listingQty: [1, {
         validators: [Validators.required, this._orderHistoryService.validateRequiredNumeric.bind(this)]
