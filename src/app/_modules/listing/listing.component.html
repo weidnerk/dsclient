@@ -416,13 +416,16 @@
               <br /><br />
               <!-- this needs to be moved to the sidebar -->
               <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onGetOrders()"
-                [disabled]="listing && !listing.ListedItemID">Fetch orders from eBay (any item)</button>
+                [disabled]="listing && !listing.ListedItemID">Fetch orders from eBay (any item)</button><br /><br />
               <button class="btn" mat-button mat-raised-button color="primary" type="button"
                 (click)="onGetCancelledOrders()" [disabled]="listing && !listing.ListedItemID">Fetch cancelled orders
                 from
-                eBay (any item)</button>
+                eBay (any item)</button><br /><br />
               <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onGetReturns()"
                 [disabled]="listing && !listing.ListedItemID">Fetch return orders from
+                eBay (any item)</button><br /><br />
+              <button class="btn" mat-button mat-raised-button color="primary" type="button" (click)="onGetReturnRequestPending()"
+                [disabled]="listing && !listing.ListedItemID">Fetch ReturnRequestPending orders from
                 eBay (any item)</button>
 
               <br /><br />

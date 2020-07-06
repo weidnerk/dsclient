@@ -409,6 +409,10 @@ export class ListingdbComponent implements OnInit {
     this.errorMessage = null;
     this.getOrders("RETURN");
   }
+  onGetReturnRequestPending() {
+    this.errorMessage = null;
+    this.getOrders("ReturnRequestPending");
+  }
   onSalesOrderAdd(listedItemID: string, buyer: string) {
     this.errorMessage = null;
     let msg = this.orderFormIsValid();
