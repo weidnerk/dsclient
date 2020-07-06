@@ -15,6 +15,7 @@ import { AppOverlayModule } from '../../overlay/overlay.module';
 import { ProgressSpinnerModule } from '../../progress-spinner/progress-spinner.module';
 import { UsersettingsRoutingModule } from './usersettings-routes.module';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [UsersettingsComponent],
@@ -31,6 +32,7 @@ import { MatCardModule } from '@angular/material/card';
     AppOverlayModule,
     ProgressSpinnerModule,
     UsersettingsRoutingModule,
+    MatDialogModule,
     MatCardModule
   ]
 })

@@ -48,6 +48,7 @@ import { ShowmessagesComponent } from 'src/app/showmessages/showmessages.compone
 import { ConfirmComponent } from 'src/app/confirm/confirm.component';
 import { EndlistingComponent } from 'src/app/endlisting/endlisting.component';
 import { ErrordisplayComponent } from 'src/app/errordisplay/errordisplay.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [ 
@@ -101,7 +102,8 @@ import { ErrordisplayComponent } from 'src/app/errordisplay/errordisplay.compone
     FlexLayoutModule,
     SharedModule,
     MatDividerModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatDialogModule
   ],
   providers: [
     DashboardService

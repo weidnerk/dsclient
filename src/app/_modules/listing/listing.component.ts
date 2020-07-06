@@ -75,7 +75,7 @@ export class ListingdbComponent implements OnInit {
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
       ['italic', 'insertImage', 'insertVideo','strikeThrough','superscript','subscript'],
-      ['fontSize','toggleEditorMode','link',
+      ['fontSize','link',
       'unlink',]
     ]
 };
@@ -918,7 +918,6 @@ export class ListingdbComponent implements OnInit {
     this.errorMessage = "";
     this.displayProgressSpinner = true;
     this.supplierPicsMsg = null;
-    this.imgSourceArray = null;
 
     // If new and already loaded a supplier URL, then clear exisitng fields
     if (this.walItem) {
@@ -926,6 +925,7 @@ export class ListingdbComponent implements OnInit {
         this.walItem = null;
         this.ctlSellerItemID.setValue(null);
         this.ctlDescription.setValue(null);
+        this.imgSourceArray = null;
       }
     }
 

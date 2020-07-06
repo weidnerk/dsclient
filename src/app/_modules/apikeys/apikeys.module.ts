@@ -14,6 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { AppOverlayModule } from '../../overlay/overlay.module';
 import { ProgressSpinnerModule } from '../../progress-spinner/progress-spinner.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [ApikeysComponent],
@@ -30,7 +31,8 @@ import { ProgressSpinnerModule } from '../../progress-spinner/progress-spinner.m
     MatCheckboxModule,
     AppOverlayModule,
     ProgressSpinnerModule,
-    APIKeysRoutingModule
+    APIKeysRoutingModule,
+    MatDialogModule
   ]
 })
 export class ApikeysModule { }
