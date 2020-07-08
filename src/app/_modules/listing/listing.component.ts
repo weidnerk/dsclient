@@ -50,35 +50,35 @@ export class ListingdbComponent implements OnInit {
   ];
   config: AngularEditorConfig = {
     editable: true,
-      spellcheck: true,
-      height: 'auto',
-      minHeight: '0',
-      maxHeight: 'auto',
-      width: 'auto',
-      minWidth: '0',
-      translate: 'yes',
-      enableToolbar: true,
-      showToolbar: true,
-      placeholder: 'Enter text here...',
-      defaultParagraphSeparator: '',
-      defaultFontName: '',
-      defaultFontSize: '',
-      fonts: [
-        {class: 'arial', name: 'Arial'},
-        {class: 'times-new-roman', name: 'Times New Roman'},
-        {class: 'calibri', name: 'Calibri'},
-        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
-      ],
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
+    ],
     uploadUrl: 'v1/image',
     uploadWithCredentials: false,
     sanitize: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['italic', 'insertImage', 'insertVideo','strikeThrough','superscript','subscript'],
-      ['fontSize','link',
-      'unlink',]
+      ['italic', 'insertImage', 'insertVideo', 'strikeThrough', 'superscript', 'subscript'],
+      ['fontSize', 'link',
+        'unlink',]
     ]
-};
+  };
   constructor(private router: Router,
     private _userService: UserService,
     private route: ActivatedRoute,
@@ -361,6 +361,7 @@ export class ListingdbComponent implements OnInit {
           }
           else {
             this.validationMessage = this.validationMessage + ' - record not saved';
+            this.showMessage("<div class='error'>ERROR</div><br/>" + this.validationMessage);
           }
         }
         if (this.listButtonVal == true) {
@@ -371,6 +372,7 @@ export class ListingdbComponent implements OnInit {
           }
           else {
             this.validationMessage = this.validationMessage + ' - record not listed';
+            this.showMessage("<div class='error'>ERROR</div><br/>" + this.validationMessage);
           }
         }
       }
@@ -531,6 +533,9 @@ export class ListingdbComponent implements OnInit {
       if (!this.ctlListingTitle.value) {
         return 'Validation: listing title';
       }
+      if (!this.isTitleValid()) {
+        return 'Validation: listing title contains commas';
+      }
       if (!this.ctlDescription.value) {
         return 'Validation: description';
       }
@@ -545,6 +550,16 @@ export class ListingdbComponent implements OnInit {
       }
     }
     return null;
+  }
+  isTitleValid(): boolean {
+    if (this.ctlListingTitle) {
+      let pos: number = 1;
+      pos = this.ctlListingTitle.value.indexOf(",");
+      if (pos > -1) {
+        return false;
+      }
+    }
+    return true;
   }
   inActive() {
     if (this.listing) {
@@ -1115,6 +1130,7 @@ export class ListingdbComponent implements OnInit {
       pctProfit: [null]
     })
   }
+
   buildOrderForm(): void {
     let fromDate = this.getFormattedDate(new Date());
     let toDate = this.getFormattedDate(this.addDays(new Date(), 1));
