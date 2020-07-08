@@ -87,6 +87,7 @@ export class SellerListing {
     ItemSpecifics: SellerListingItemSpecific[];
     Variations: Variation[];
     VariationName: string;
+    Variation: boolean;
 }
 // used on product research page
 export class Listing {

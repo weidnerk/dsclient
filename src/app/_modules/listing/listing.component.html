@@ -215,6 +215,11 @@
                   style="padding-top: 15px;">
               </span>
             </div>
+            <div class="col-3">
+              <span *ngIf="listing && listing.SellerListing">
+                Variation: {{listing.SellerListing.Variation}}
+              </span>
+            </div>
           </div>
 
           <div class="row">

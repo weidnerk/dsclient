@@ -270,7 +270,6 @@ export class ListingdbComponent implements OnInit {
             pctProfit: li.PctProfit
           })
 
-          // this.imgSource = this.getFirstInList(this.imgSource);
           if (this.listing) {
             this.imgSourceArray = this._orderHistoryService.convertStringListToArray(this.listing.PictureURL);
           }
@@ -331,7 +330,7 @@ export class ListingdbComponent implements OnInit {
     this.errorMessage = null;
     this.statusMessage = null;
     this.validationMessage = null;
-
+    
     this.listingButtonEnable = false;
 
     if (this.walItem) {
@@ -604,7 +603,6 @@ export class ListingdbComponent implements OnInit {
       this.listing.SupplierItem.Updated = new Date();
       this.listing.SupplierItem.SupplierPrice = this.walItem.SupplierPrice;
       this.listing.ItemID = this.ctlSellerItemID.value;
-      // this.listing.PictureURL = this.walItem.SupplierPicURL;
       this.listing.PictureURL = this.arrayToDelimited(this.imgSourceArray!);
       this.listing.ItemID = this.ctlSellerItemID.value;
       this.listing.ListingPrice = this.ctlListingPrice.value;
@@ -1100,6 +1098,9 @@ export class ListingdbComponent implements OnInit {
     window.history.back();
   }
 
+  /**
+   * Look at isValid() for more validation.
+   */
   buildForm(): void {
     this.listingForm = this.fb.group({
       listingTitle: [null, Validators.compose([Validators.maxLength(80)])],
