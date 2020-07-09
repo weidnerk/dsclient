@@ -33,8 +33,8 @@ import { DefaultModule } from './layouts/default/default.module';
     BrowserAnimationsModule,
     DefaultModule // 'heavy lifting' is deferred to here
   ],
-  entryComponents: [SellerprofileComponent, ListingnoteComponent],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}, UserService, AuthGuard, AuthenticationService, OrderHistoryService, RenderingService, ParamService, ListCheckService],
+  // entryComponents: [SellerprofileComponent, ListingnoteComponent],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}, UserService, AuthGuard, AuthenticationService, OrderHistoryService, RenderingService, ParamService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

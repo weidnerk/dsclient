@@ -85,8 +85,7 @@ export class ListingdbComponent implements OnInit {
     private _orderHistoryService: OrderHistoryService,
     private fb: FormBuilder,
     private _parmService: ParamService,
-    public dialog: MatDialog,
-    private _listCheckService: ListCheckService) { }
+    public dialog: MatDialog) { }
 
   // private sub: any;
   listingID: number;  // Listing.ID
