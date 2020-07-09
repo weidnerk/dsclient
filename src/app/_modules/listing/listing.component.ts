@@ -329,7 +329,7 @@ export class ListingdbComponent implements OnInit {
     this.errorMessage = null;
     this.statusMessage = null;
     this.validationMessage = null;
-    
+
     this.listingButtonEnable = false;
 
     if (this.walItem) {
@@ -531,8 +531,9 @@ export class ListingdbComponent implements OnInit {
       if (!this.ctlListingTitle.value) {
         return 'Validation: listing title';
       }
-      if (!this.isTitleValid()) {
-        return 'Validation: listing title contains commas';
+      let validTitle: string | null = this.isTitleValid();
+      if (validTitle) {
+        return validTitle;
       }
       if (!this.ctlDescription.value) {
         return 'Validation: description';
@@ -549,15 +550,25 @@ export class ListingdbComponent implements OnInit {
     }
     return null;
   }
-  isTitleValid(): boolean {
-    if (this.ctlListingTitle) {
-      let pos: number = 1;
-      pos = this.ctlListingTitle.value.indexOf(",");
-      if (pos > -1) {
-        return false;
+  isTitleValid(): string | null {
+    try {
+      if (this.ctlListingTitle) {
+        let pos: number;
+        pos = this.ctlListingTitle.value.indexOf(",");
+        if (pos > -1) {
+          return "Validation: listing title contains commas";
+        }
+        pos = this.ctlListingTitle.value.toUpperCase().indexOf("SHIPPING");
+        if (pos > -1) {
+          return "Validation: listing title contains SHIPPING";
+        }
       }
+      return null;
     }
-    return true;
+    catch (error) {
+      this.showMessage(error);
+      return null;
+    }
   }
   inActive() {
     if (this.listing) {
