@@ -562,6 +562,10 @@ export class ListingdbComponent implements OnInit {
         if (pos > -1) {
           return "Validation: listing title contains SHIPPING";
         }
+        pos = this.ctlListingTitle.value.toUpperCase().indexOf("MULTIPLE");
+        if (pos > -1) {
+          return "Validation: listing title contains MULTIPLE";
+        }
       }
       return null;
     }
