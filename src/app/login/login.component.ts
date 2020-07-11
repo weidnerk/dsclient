@@ -11,7 +11,6 @@ import { User } from '../_models/index';
 })
 
 export class LoginComponent implements OnInit {
-    //model: any = {};
     model: User = <User>{};
     loading = false;
     errorMessage: string;

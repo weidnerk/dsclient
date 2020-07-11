@@ -114,12 +114,14 @@ export class UserService {
 
     /**
      * 
-     * @param appID if appID is null, we are loading user's setting
      */
     UserProfileGet(): Observable<UserProfileView> {
         const userJson = localStorage.getItem('currentUser');
+        // console.log('token:' + userJson);
         if (userJson) {
+            // console.log('userJson is not null');
             let currentUser = JSON.parse(userJson);
+            // console.log(currentUser.access_token);
             let url = environment.API_ENDPOINT + "api/Account/userprofileget?userName=" + currentUser.userName;
             const httpOptions = {
                 headers: new HttpHeaders({
@@ -131,12 +133,14 @@ export class UserService {
                 catchError(this.handleError)
             );
         }
-        else
+        else {
+            
             return observableThrowError(
                 {
                     errMsg: "Could not obtain current user record"
                 }
             )
+        }
     }
 
     UserSettingsViewGet(): Observable<UserSettingsView> {
@@ -454,6 +458,7 @@ export class UserService {
         )
     }
     private handleError(error: HttpErrorResponse) {
+        // console.log('got to err handler');
         let errMsg: string = "";
         let errDetail: string | null = null;
         if (error.error) {
@@ -481,6 +486,7 @@ export class UserService {
             errMsg += ' ' + error.error.Message;
         }
         errMsg += ' ' + errDetail;
+        
         return observableThrowError(
             {
                 "errMsg": errMsg,

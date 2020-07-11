@@ -212,7 +212,7 @@ export class ListingdbComponent implements OnInit {
         this.route.params.subscribe(params => {
           this.listingID = +params['listingID'];
           if (this.listingID > 0) {
-            console.log('listingID: ' + this.listingID);
+            // console.log('listingID: ' + this.listingID);
             this.ctlSellerItemID.disable();
             this.ctlSourceURL.disable();
             if (this.userProfile.isVA) {

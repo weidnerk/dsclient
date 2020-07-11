@@ -32,7 +32,6 @@ export class AuthenticationService {
                     // localStorage.setItem('userName', response.json().userName);
 
                     // localStorage.setItem('currentUser', JSON.stringify({ username: username, token: response.json().access_token }));
-
                     localStorage.setItem('currentUser', JSON.stringify(user));
                 }
             }),
